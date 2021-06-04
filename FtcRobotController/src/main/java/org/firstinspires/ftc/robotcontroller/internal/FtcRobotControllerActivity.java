@@ -85,7 +85,6 @@ import com.qualcomm.hardware.HardwareFactory;
 import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.FtcRobotControllerServiceState;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
-import com.qualcomm.robotcore.factory.RobotFactory;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.hardware.configuration.Utility;
 import com.qualcomm.robotcore.robot.Robot;
@@ -99,7 +98,6 @@ import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkConnectionFactory;
 import com.qualcomm.robotcore.wifi.NetworkType;
 import com.romi.simulation.websockets.SimulationWebSocketClient;
-import com.romi.simulation.websockets.SimulationWebSocketClientFactory;
 
 import org.firstinspires.ftc.ftccommon.external.SoundPlayingRobotMonitor;
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService;
@@ -694,16 +692,16 @@ public class FtcRobotControllerActivity extends Activity
             }
           }
         : null);
-
-      if(simClient == null) {
-        simClient = SimulationWebSocketClientFactory.create();
-        simClient.connect();
-      }
     }
   }
 
   private void requestRobotSetup(@Nullable Runnable runOnComplete) {
     if (controllerService == null) return;
+
+    if(simClient == null) {
+      simClient = SimulationWebSocketClient.getInstance();
+    }
+    simClient.connect();
 
     RobotConfigFile file = cfgFileMgr.getActiveConfigAndUpdateUI();
     HardwareFactory hardwareFactory = new HardwareFactory(context);
@@ -731,6 +729,7 @@ public class FtcRobotControllerActivity extends Activity
   }
 
   private void shutdownRobot() {
+    if (simClient != null) simClient.close();
     if (controllerService != null) controllerService.shutdownRobot();
   }
 

@@ -290,6 +290,8 @@ public class EventLoopManager implements RecvLoopRunnable.RecvLoopCallback, Netw
             }
           }
 
+
+
           // conversely, if any devices have attached, now is a good time for the eventLoop to process them
           synchronized (eventLoopLock) {
             eventLoop.processedRecentlyAttachedUsbDevices();

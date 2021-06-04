@@ -86,6 +86,7 @@ import com.qualcomm.robotcore.robocol.Command;
 import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
+import com.romi.simulation.websockets.SimulationWebSocketClient;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.internal.camera.CameraManagerInternal;
@@ -225,6 +226,8 @@ public class FtcEventLoop extends FtcEventLoopBase {
     Gamepad gamepads[] = ftcEventLoopHandler.getGamepads();
 
     opModeManager.runActiveOpMode(gamepads);
+
+    SimulationWebSocketClient.getInstance().temp2();
   }
 
   @Override
