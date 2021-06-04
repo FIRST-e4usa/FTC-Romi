@@ -25,9 +25,9 @@ dependencies {
      */
 
     implementation project(':RobotCore')
-    implementation project(':RobotServer')
-    implementation project(':FtcCommon')
-    implementation project(':Hardware')
+    //implementation project(':RobotServer')
+    //implementation project(':FtcCommon')
+    //implementation project(':Hardware')
 
     /*
      * External
