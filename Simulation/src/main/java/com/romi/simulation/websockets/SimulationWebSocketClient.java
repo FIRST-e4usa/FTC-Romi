@@ -41,10 +41,9 @@ public class SimulationWebSocketClient {
     private SimulationWebSocketClient() {
         setServer("192.168.49.2", 3300);
 
-        addProvider("DriverStation", "", new DriverStationProvider("DriverStation", ""));
+        addProvider(new DriverStationProvider("DriverStation", ""));
         for(int i = 0; i < 2; i++) {
-            String device = Integer.toString(i);
-            addProvider("PWM", device, new PWMProvider("PWM", device));
+            addProvider(new PWMProvider("PWM", Integer.toString(i)));
         }
     }
 
@@ -153,8 +152,8 @@ public class SimulationWebSocketClient {
         }
     }
 
-    public <T extends Provider> void addProvider(String type, String device, T provider) {
-        String key = getProviderKey(type, device);
+    public <T extends Provider> void addProvider(T provider) {
+        String key = getProviderKey(provider.getType(), provider.getDevice());
         providers.put(key, provider);
     }
 
