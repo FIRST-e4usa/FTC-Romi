@@ -76,7 +76,7 @@ public class SimulationWebSocketClient {
 
                 String type = object.get("type").getAsString();
                 String device = object.get("device").getAsString();
-                JsonObject payload = object.get("payload").getAsJsonObject();
+                JsonObject payload = object.get("data").getAsJsonObject();
 
                 Provider provider = providers.get(getProviderKey(type, device));
                 if(provider != null) {
