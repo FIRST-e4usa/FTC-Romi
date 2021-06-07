@@ -24,7 +24,7 @@ public class SimulationWebSocketClient {
     private WebSocketClient client;
 
     //region Providers
-    DriverStationSupplier driverStationSupplier = new DriverStationSupplier();
+    DriverStationProvider driverStationProvider = new DriverStationProvider();
     //endregion
 
     public static SimulationWebSocketClient getInstance() {
@@ -58,7 +58,7 @@ public class SimulationWebSocketClient {
                 RobotLog.ii(TAG, "WebSocket connected");
 
                 // TODO(Romi) register ALL callbacks
-                driverStationSupplier.registerCallbacks();
+                driverStationProvider.registerCallbacks();
 
                 tempTest();
             }
@@ -72,7 +72,7 @@ public class SimulationWebSocketClient {
             public void onClose(int i, String s, boolean b) {
                 RobotLog.ii(TAG, "WebSocket closed");
 
-                driverStationSupplier.unregisterCallbacks();
+                driverStationProvider.unregisterCallbacks();
             }
 
             @Override

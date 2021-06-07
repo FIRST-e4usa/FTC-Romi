@@ -4,13 +4,13 @@ import com.romi.simulation.data.DriverStationData;
 
 import org.firstinspires.ftc.robotcore.external.Consumer;
 
-public class DriverStationSupplier {
+public class DriverStationProvider {
 
     private static final String type = "DriverStation";
 
     private final DriverStationData data = DriverStationData.getInstance();
 
-    public DriverStationSupplier() {
+    public DriverStationProvider() {
 
     }
 
