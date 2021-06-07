@@ -97,7 +97,6 @@ import com.qualcomm.robotcore.util.WebServer;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkConnectionFactory;
 import com.qualcomm.robotcore.wifi.NetworkType;
-import com.romi.simulation.websockets.SimulationWebSocketClient;
 
 import org.firstinspires.ftc.ftccommon.external.SoundPlayingRobotMonitor;
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService;
@@ -171,8 +170,6 @@ public class FtcRobotControllerActivity extends Activity
 
   protected WifiMuteStateMachine wifiMuteStateMachine;
   protected MotionDetection motionDetection;
-
-  protected SimulationWebSocketClient simClient;
 
   private static boolean permissionsValidated = false;
 
@@ -447,8 +444,6 @@ public class FtcRobotControllerActivity extends Activity
     PreferenceRemoterRC.getInstance().stop(prefRemoterStartResult);
     DeviceNameManagerFactory.getInstance().stop(deviceNameStartResult);
 
-    simClient.close();
-
     unbindFromService();
     // If the app manually (?) is stopped, then we don't need the auto-starting function (?)
     ServiceController.stopService(FtcRobotControllerWatchdogService.class);
@@ -698,11 +693,6 @@ public class FtcRobotControllerActivity extends Activity
   private void requestRobotSetup(@Nullable Runnable runOnComplete) {
     if (controllerService == null) return;
 
-    if(simClient == null) {
-      simClient = SimulationWebSocketClient.getInstance();
-    }
-    simClient.connect();
-
     RobotConfigFile file = cfgFileMgr.getActiveConfigAndUpdateUI();
     HardwareFactory hardwareFactory = new HardwareFactory(context);
     try {
@@ -729,7 +719,6 @@ public class FtcRobotControllerActivity extends Activity
   }
 
   private void shutdownRobot() {
-    if (simClient != null) simClient.close();
     if (controllerService != null) controllerService.shutdownRobot();
   }
 
