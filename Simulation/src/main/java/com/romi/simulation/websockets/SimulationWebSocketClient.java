@@ -54,7 +54,7 @@ public class SimulationWebSocketClient {
 
             @Override
             public void onMessage(String s) {
-                RobotLog.ii(TAG, s);
+                RobotLog.vv(TAG, s);
             }
 
             @Override
@@ -80,6 +80,7 @@ public class SimulationWebSocketClient {
     }
 
     public void close() {
+        RobotLog.ii(TAG, "Close WebSocket");
         client.close();
         client = null;
     }
@@ -90,7 +91,7 @@ public class SimulationWebSocketClient {
 
     public void send(String s) {
         if(isOpen()) {
-            RobotLog.ii(TAG, s);
+            RobotLog.vv(TAG, s);
             client.send(s);
         }
     }
@@ -98,29 +99,12 @@ public class SimulationWebSocketClient {
     //TODO(Romi) Removed
     public void tempTest() {
 
-        send("{\"type\": \"DriverStation\",\"device\": \"\",\"data\": {\">ds\": true}}");
+        //send("{\"type\": \"DriverStation\",\"device\": \"\",\"data\": {\">ds\": true}}");
 
         send("{\"type\": \"PWM\",\"device\": \"0\",\"data\": {\"<init\": true}}");
-
         send("{\"data\": {\"<init\": true},\"device\": \"4\",\"type\": \"DIO\"}");
-        send("" +
-                "{" +
-                "\"data\": {" +
-                "\"<init\": true" +
-                "}," +
-                "\"device\": \"5\"," +
-                "\"type\": \"DIO\"" +
-                "}");
-        send("" +
-                "{" +
-                "\"data\": {" +
-                "\"<channel_a\": 4," +
-                "\"<channel_b\": 5," +
-                "\"<init\": true" +
-                "}," +
-                "\"device\": \"0\"," +
-                "\"type\": \"Encoder\"" +
-                "}");
+        send("{\"data\": {\"<init\": true},\"device\": \"5\",\"type\": \"DIO\"}");
+        send("{\"data\": {\"<channel_a\": 4,\"<channel_b\": 5,\"<init\": true},\"device\": \"0\",\"type\": \"Encoder\"}");
 
         //send("{\"type\":\"DriverStation\",\"device\":\"\",\"data\":{\">new_data\":true}}");
     }
