@@ -1,5 +1,7 @@
 package com.romi.simulation.websockets;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -70,6 +72,19 @@ public class SimulationWebSocketClient {
 
             @Override
             public void onMessage(String s) {
+                JsonObject object = SimulationWebSocketHandler.receive(s);
+
+                String type = object.get("type").getAsString();
+                String device = object.get("device").getAsString();
+                JsonObject payload = object.get("payload").getAsJsonObject();
+
+                Provider provider = providers.get(getProviderKey(type, device));
+                if(provider != null) {
+                    for (Map.Entry<String, JsonElement> entry : payload.entrySet()) {
+                        provider.onNetValueChanged(entry.getKey(), entry.getValue());
+                    }
+                }
+
                 RobotLog.vv(TAG, s);
             }
 
@@ -137,8 +152,12 @@ public class SimulationWebSocketClient {
     }
 
     public <T extends Provider> void addProvider(String type, String device, T provider) {
-        String key = type + (device.equals("") ? "" : ":" + device);
+        String key = getProviderKey(type, device);
         providers.put(key, provider);
+    }
+
+    public static String getProviderKey(String type, String device) {
+        return type + (device.equals("") ? "" : ":" + device);
     }
 
     //TODO(Romi) Removed
@@ -155,7 +174,7 @@ public class SimulationWebSocketClient {
     }
 
     public void temp2() {
-        send("{\"type\": \"DriverStation\",\"device\": \"\",\"data\": {\">enabled\": true}}");
+        //send("{\"type\": \"DriverStation\",\"device\": \"\",\"data\": {\">enabled\": true}}");
         send("{\"type\": \"PWM\",\"device\": \"0\",\"data\": {\"<speed\": 1.0}}");
     }
 }

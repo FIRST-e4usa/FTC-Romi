@@ -1,5 +1,6 @@
 package com.romi.simulation.websockets;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.romi.simulation.data.DriverStationData;
 
@@ -23,7 +24,7 @@ public class DriverStationProvider extends Provider {
     }
 
     @Override
-    public void onNetValueChanged(JsonObject jsonPayload) {
+    public void onNetValueChanged(String key, JsonElement value) {
 
     }
 }

@@ -63,4 +63,8 @@ public class SimulationWebSocketHandler {
         }
         send(type, device, field, array);
     }
+
+    public static JsonObject receive(String message) {
+        return WebSocketJson.getInstance().fromJson(message, JsonObject.class);
+    }
 }

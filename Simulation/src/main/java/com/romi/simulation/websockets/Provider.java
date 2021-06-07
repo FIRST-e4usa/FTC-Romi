@@ -1,5 +1,6 @@
 package com.romi.simulation.websockets;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.firstinspires.ftc.robotcore.external.Consumer;
@@ -23,7 +24,7 @@ public abstract class Provider {
 
     public abstract void registerCallbacks();
     public abstract void unregisterCallbacks();
-    public abstract void onNetValueChanged(final JsonObject jsonPayload);
+    public abstract void onNetValueChanged(String key, JsonElement value);
 
     public class BasicCallback<T> implements Consumer<T> {
         private final String field;
