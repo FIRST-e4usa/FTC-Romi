@@ -10,4 +10,5 @@ public class DriverStationData {
     }
 
     public SimDataValue<Boolean> enabled = new SimDataValue<>(false);
+    public SimDataValue<Boolean> autonomous = new SimDataValue<>(false);
 }
