@@ -66,8 +66,6 @@ public class SimulationWebSocketClient {
                 for(Provider provider : providers.values()) {
                     provider.registerCallbacks();
                 }
-
-                tempTest();
             }
 
             @Override
@@ -158,23 +156,5 @@ public class SimulationWebSocketClient {
 
     public static String getProviderKey(String type, String device) {
         return type + (device.equals("") ? "" : ":" + device);
-    }
-
-    //TODO(Romi) Removed
-    public void tempTest() {
-
-        //send("{\"type\": \"DriverStation\",\"device\": \"\",\"data\": {\">ds\": true}}");
-
-        send("{\"type\": \"PWM\",\"device\": \"0\",\"data\": {\"<init\": true}}");
-        send("{\"data\": {\"<init\": true},\"device\": \"4\",\"type\": \"DIO\"}");
-        send("{\"data\": {\"<init\": true},\"device\": \"5\",\"type\": \"DIO\"}");
-        send("{\"data\": {\"<channel_a\": 4,\"<channel_b\": 5,\"<init\": true},\"device\": \"0\",\"type\": \"Encoder\"}");
-
-        //send("{\"type\":\"DriverStation\",\"device\":\"\",\"data\":{\">new_data\":true}}");
-    }
-
-    public void temp2() {
-        //send("{\"type\": \"DriverStation\",\"device\": \"\",\"data\": {\">enabled\": true}}");
-        send("{\"type\": \"PWM\",\"device\": \"0\",\"data\": {\"<speed\": 1.0}}");
     }
 }
