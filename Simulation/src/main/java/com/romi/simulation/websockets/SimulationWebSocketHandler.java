@@ -23,9 +23,10 @@ public class SimulationWebSocketHandler {
         payload.add(field, value);
         object.add("data", payload);
 
-        String json = WebSocketJson.getInstance().toJson(object);
+        String data = WebSocketJson.getInstance().toJson(object);
 
-        RobotLog.vv(TAG, json);
+        RobotLog.ii(TAG, data);
+        SimulationWebSocketClient.getInstance().send(data);
     }
 
     public static <T> void send(String type, String device, String field, T value) {
