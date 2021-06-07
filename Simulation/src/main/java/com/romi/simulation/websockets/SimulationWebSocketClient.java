@@ -1,5 +1,6 @@
 package com.romi.simulation.websockets;
 
+import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.java_websocket.client.WebSocketClient;
@@ -7,6 +8,8 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import androidx.annotation.NonNull;
 
 public class SimulationWebSocketClient {
 
@@ -19,6 +22,10 @@ public class SimulationWebSocketClient {
     private URI serverUri;
 
     private WebSocketClient client;
+
+    //region Providers
+    DriverStationSupplier driverStationSupplier = new DriverStationSupplier();
+    //endregion
 
     public static SimulationWebSocketClient getInstance() {
         if(instance == null) {
@@ -49,6 +56,10 @@ public class SimulationWebSocketClient {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 RobotLog.ii(TAG, "WebSocket connected");
+
+                // TODO(Romi) register ALL callbacks
+                driverStationSupplier.registerCallbacks();
+
                 tempTest();
             }
 
@@ -60,6 +71,8 @@ public class SimulationWebSocketClient {
             @Override
             public void onClose(int i, String s, boolean b) {
                 RobotLog.ii(TAG, "WebSocket closed");
+
+                driverStationSupplier.unregisterCallbacks();
             }
 
             @Override
@@ -80,13 +93,33 @@ public class SimulationWebSocketClient {
     }
 
     public void close() {
-        RobotLog.ii(TAG, "Close WebSocket");
-        client.close();
+        if(client != null) {
+            RobotLog.ii(TAG, "Close WebSocket");
+            client.close();
+        }
         client = null;
     }
 
     public boolean isOpen() {
         return client != null && client.isOpen();
+    }
+
+    public void updateRobotState(@NonNull RobotState state) {
+        switch(state) {
+            case INIT:
+                connect();
+                break;
+            case RUNNING:
+                // @TODO(Romi) Initialize devices and driver station (or do this on robot init instead)?
+                break;
+            case STOPPED:
+            case EMERGENCY_STOP:
+                close();
+                break;
+            case UNKNOWN:
+            case NOT_STARTED:
+                break;
+        }
     }
 
     public void send(String s) {
