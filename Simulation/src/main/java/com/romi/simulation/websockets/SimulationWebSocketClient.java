@@ -42,6 +42,10 @@ public class SimulationWebSocketClient {
         setServer("192.168.49.2", 3300);
 
         addProvider("DriverStation", "", new DriverStationProvider("DriverStation", ""));
+        for(int i = 0; i < 2; i++) {
+            String device = Integer.toString(i);
+            addProvider("PWM", device, new PWMProvider("PWM", device));
+        }
     }
 
     public void setServer(URI serverUri) {
