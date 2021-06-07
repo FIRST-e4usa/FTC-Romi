@@ -14,12 +14,7 @@ public class DriverStationProvider extends Provider {
 
     @Override
     public void registerCallbacks() {
-        data.enabled.registerCallback(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean value) {
-                SimulationWebSocketHandler.send(type, "", ">enabled", value);
-            }
-        });
+        data.enabled.registerCallback(new BasicCallback<Boolean>(">enabled"));
     }
 
     @Override
