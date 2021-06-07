@@ -8,6 +8,8 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 
@@ -24,7 +26,7 @@ public class SimulationWebSocketClient {
     private WebSocketClient client;
 
     //region Providers
-    DriverStationProvider driverStationProvider = new DriverStationProvider();
+    Map<String, Provider> providers = new HashMap<>();
     //endregion
 
     public static SimulationWebSocketClient getInstance() {
@@ -36,6 +38,8 @@ public class SimulationWebSocketClient {
 
     private SimulationWebSocketClient() {
         setServer("192.168.49.2", 3300);
+
+        addProvider("DriverStation", "", new DriverStationProvider("DriverStation", ""));
     }
 
     public void setServer(URI serverUri) {
@@ -57,8 +61,9 @@ public class SimulationWebSocketClient {
             public void onOpen(ServerHandshake serverHandshake) {
                 RobotLog.ii(TAG, "WebSocket connected");
 
-                // TODO(Romi) register ALL callbacks
-                driverStationProvider.registerCallbacks();
+                for(Provider provider : providers.values()) {
+                    provider.registerCallbacks();
+                }
 
                 tempTest();
             }
@@ -72,7 +77,9 @@ public class SimulationWebSocketClient {
             public void onClose(int i, String s, boolean b) {
                 RobotLog.ii(TAG, "WebSocket closed");
 
-                driverStationProvider.unregisterCallbacks();
+                for(Provider provider : providers.values()) {
+                    provider.unregisterCallbacks();
+                }
             }
 
             @Override
@@ -127,6 +134,11 @@ public class SimulationWebSocketClient {
             RobotLog.vv(TAG, s);
             client.send(s);
         }
+    }
+
+    public <T extends Provider> void addProvider(String type, String device, T provider) {
+        String key = type + (device.equals("") ? "" : ":" + device);
+        providers.put(key, provider);
     }
 
     //TODO(Romi) Removed
