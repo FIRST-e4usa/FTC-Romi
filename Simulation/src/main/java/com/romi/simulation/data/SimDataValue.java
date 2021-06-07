@@ -25,9 +25,18 @@ public class SimDataValue<T> {
         return value;
     }
 
+    /**
+     * Register a callback. By default this will send the initial value to the callback upon registration.
+     * Use {@link #registerCallback(Consumer callback, boolean sendInitial)} with <code>sendInitial = false</code> if this is undesired.
+     * @param callback
+     */
     public void registerCallback(Consumer<T> callback) {
+        registerCallback(callback, true);
+    }
+
+    public void registerCallback(Consumer<T> callback, boolean sendInitial) {
         callbacks.add(callback);
-        callback.accept(this.value);
+        if(sendInitial) callback.accept(this.value);
     }
 
     public void unregisterAllCallbacks() {
