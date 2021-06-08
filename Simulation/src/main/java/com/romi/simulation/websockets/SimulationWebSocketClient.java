@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.util.RobotLog;
 
+import com.romi.simulation.data.*;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -42,7 +44,7 @@ public class SimulationWebSocketClient {
         setServer("192.168.49.2", 3300);
 
         addProvider(new DriverStationProvider("DriverStation", ""));
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
             addProvider(new PWMProvider("PWM", Integer.toString(i)));
         }
     }
