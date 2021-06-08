@@ -47,6 +47,9 @@ public class SimulationWebSocketClient {
         for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
             addProvider(new PWMProvider("PWM", Integer.toString(i)));
         }
+        for(int i = 0; i < DIOData.MAX_DEVICES; i++) {
+            addProvider(new DIOProvider("DIO", Integer.toString(i)));
+        }
     }
 
     public void setServer(URI serverUri) {
