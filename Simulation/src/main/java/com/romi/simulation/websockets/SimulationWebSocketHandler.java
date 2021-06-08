@@ -22,7 +22,6 @@ public class SimulationWebSocketHandler {
 
         String data = WebSocketJson.getInstance().toJson(object);
 
-        RobotLog.ii(TAG, data);
         SimulationWebSocketClient.getInstance().send(data);
     }
 

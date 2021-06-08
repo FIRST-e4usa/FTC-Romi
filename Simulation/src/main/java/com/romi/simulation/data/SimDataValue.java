@@ -15,10 +15,12 @@ public class SimDataValue<T> {
     }
 
     public void set(T value) {
-        this.value = value;
-        for(Consumer<T> callback : callbacks) {
-            callback.accept(value);
+        if(!this.value.equals(value)) {
+            for (Consumer<T> callback : callbacks) {
+                callback.accept(value);
+            }
         }
+        this.value = value;
     }
 
     public T get() {
