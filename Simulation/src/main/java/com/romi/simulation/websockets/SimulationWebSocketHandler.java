@@ -12,21 +12,25 @@ public class SimulationWebSocketHandler {
 
     private static final String TAG = "SimulationWebSocketHandler";
 
-    public static void send(String type, String device, String field, JsonElement value) {
+    public static void send(String type, String device, JsonObject payload) {
         SimulationWebSocketClient client = SimulationWebSocketClient.getInstance();
 
         JsonObject object = new JsonObject();
         object.addProperty("type", type);
         object.addProperty("device", device);
-
-        JsonObject payload = new JsonObject();
-        payload.add(field, value);
         object.add("data", payload);
 
         String data = WebSocketJson.getInstance().toJson(object);
 
         RobotLog.ii(TAG, data);
         SimulationWebSocketClient.getInstance().send(data);
+    }
+
+    public static void send(String type, String device, String field, JsonElement value) {
+        JsonObject payload = new JsonObject();
+        payload.add(field, value);
+
+        send(type, device, payload);
     }
 
     public static <T> void send(String type, String device, String field, T value) {

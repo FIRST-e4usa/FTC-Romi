@@ -52,6 +52,9 @@ public class SimulationWebSocketClient {
         for(int i = 0; i < DIOData.MAX_DEVICES; i++) {
             addProvider(new DIOProvider(Integer.toString(i)));
         }
+        for(int i = 0; i < EncoderData.MAX_DEVICES; i++) {
+            addProvider(new EncoderProvider(Integer.toString(i)));
+        }
     }
 
     public void setServer(URI serverUri) {
