@@ -45,6 +45,7 @@ public class SimulationWebSocketClient {
 
         addProvider(new DriverStationProvider());
         addProvider(new RoboRIOProvider());
+        addProvider(new GyroProvider("RomiGyro"));
         for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
             addProvider(new PWMProvider(Integer.toString(i)));
         }
