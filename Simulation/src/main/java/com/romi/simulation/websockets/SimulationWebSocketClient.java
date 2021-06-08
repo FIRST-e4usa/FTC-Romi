@@ -42,19 +42,6 @@ public class SimulationWebSocketClient {
 
     private SimulationWebSocketClient() {
         setServer("192.168.49.2", 3300);
-
-        addProvider(new DriverStationProvider());
-        addProvider(new RoboRIOProvider());
-        addProvider(new GyroProvider("RomiGyro"));
-        for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
-            addProvider(new PWMProvider(Integer.toString(i)));
-        }
-        for(int i = 0; i < DIOData.MAX_DEVICES; i++) {
-            addProvider(new DIOProvider(Integer.toString(i)));
-        }
-        for(int i = 0; i < EncoderData.MAX_DEVICES; i++) {
-            addProvider(new EncoderProvider(Integer.toString(i)));
-        }
     }
 
     public void setServer(URI serverUri) {
@@ -76,9 +63,7 @@ public class SimulationWebSocketClient {
             public void onOpen(ServerHandshake serverHandshake) {
                 RobotLog.ii(TAG, "WebSocket connected");
 
-                for(Provider provider : providers.values()) {
-                    provider.registerCallbacks();
-                }
+                createProviders();
             }
 
             @Override
@@ -103,9 +88,7 @@ public class SimulationWebSocketClient {
             public void onClose(int i, String s, boolean b) {
                 RobotLog.ii(TAG, "WebSocket closed");
 
-                for(Provider provider : providers.values()) {
-                    provider.unregisterCallbacks();
-                }
+                destroyProviders();
             }
 
             @Override
@@ -165,6 +148,34 @@ public class SimulationWebSocketClient {
     public <T extends Provider> void addProvider(T provider) {
         String key = getProviderKey(provider.getType(), provider.getDevice());
         providers.put(key, provider);
+    }
+
+    public void createProviders() {
+        addProvider(new DriverStationProvider());
+        addProvider(new RoboRIOProvider());
+
+        // TODO move these to init?
+        addProvider(new GyroProvider("RomiGyro"));
+        for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
+            addProvider(new PWMProvider(Integer.toString(i)));
+        }
+        for(int i = 0; i < DIOData.MAX_DEVICES; i++) {
+            addProvider(new DIOProvider(Integer.toString(i)));
+        }
+        for(int i = 0; i < EncoderData.MAX_DEVICES; i++) {
+            addProvider(new EncoderProvider(Integer.toString(i)));
+        }
+
+        for(Provider provider : providers.values()) {
+            provider.registerCallbacks();
+        }
+    }
+
+    public void destroyProviders() {
+        for(Map.Entry<String, Provider> entry : providers.entrySet()) {
+            entry.getValue().unregisterCallbacks();
+            providers.remove(entry.getKey());
+        }
     }
 
     public static String getProviderKey(String type, String device) {
