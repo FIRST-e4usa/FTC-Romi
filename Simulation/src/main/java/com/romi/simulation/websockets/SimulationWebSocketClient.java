@@ -44,6 +44,7 @@ public class SimulationWebSocketClient {
         setServer("192.168.49.2", 3300);
 
         addProvider(new DriverStationProvider("DriverStation", ""));
+        addProvider(new RoboRIOProvider("RoboRIO", ""));
         for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
             addProvider(new PWMProvider("PWM", Integer.toString(i)));
         }

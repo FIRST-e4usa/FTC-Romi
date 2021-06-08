@@ -1,0 +1,30 @@
+package com.romi.simulation.websockets;
+
+import com.google.gson.JsonElement;
+import com.romi.simulation.data.RoboRIOData;
+
+public class RoboRIOProvider extends Provider {
+
+    private final RoboRIOData data = RoboRIOData.getInstance();
+
+    public RoboRIOProvider(String type, String device) {
+        super(type, device);
+    }
+
+    @Override
+    public void registerCallbacks() {
+        data.vinVoltage.registerCallback(new BasicCallback<Double>(">vin_voltage"), false);
+    }
+
+    @Override
+    public void unregisterCallbacks() {
+        data.vinVoltage.unregisterAllCallbacks();
+    }
+
+    @Override
+    public void onNetValueChanged(String key, JsonElement value) {
+        if(key.equals(">vin_voltage")) {
+            data.vinVoltage.set(value.getAsDouble());
+        }
+    }
+}
