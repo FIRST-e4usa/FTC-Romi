@@ -7,8 +7,8 @@ public class PWMProvider extends Provider {
 
     private final PWMData data;
 
-    public PWMProvider(String type, String device) {
-        super(type, device);
+    public PWMProvider(String device) {
+        super("PWM", device);
 
         int port = Integer.parseInt(getDevice());
         if(port < PWMData.getInstances().length) {

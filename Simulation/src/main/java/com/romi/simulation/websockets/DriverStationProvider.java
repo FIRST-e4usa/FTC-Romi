@@ -9,8 +9,8 @@ import org.firstinspires.ftc.robotcore.external.Consumer;
 public class DriverStationProvider extends Provider {
     private final DriverStationData data = DriverStationData.getInstance();
 
-    public DriverStationProvider(String type, String device) {
-        super(type, device);
+    public DriverStationProvider() {
+        super("DriverStation", "");
     }
 
     @Override

@@ -7,8 +7,8 @@ public class RoboRIOProvider extends Provider {
 
     private final RoboRIOData data = RoboRIOData.getInstance();
 
-    public RoboRIOProvider(String type, String device) {
-        super(type, device);
+    public RoboRIOProvider() {
+        super("RoboRIO", "");
     }
 
     @Override

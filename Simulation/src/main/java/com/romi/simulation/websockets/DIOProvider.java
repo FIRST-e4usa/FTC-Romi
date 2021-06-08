@@ -7,8 +7,8 @@ public class DIOProvider extends Provider {
 
     private final DIOData data;
 
-    public DIOProvider(String type, String device) {
-        super(type, device);
+    public DIOProvider(String device) {
+        super("DIO", device);
 
         int port = Integer.parseInt(device);
         if(port >= DIOData.MAX_DEVICES) {

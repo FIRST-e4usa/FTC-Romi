@@ -43,13 +43,13 @@ public class SimulationWebSocketClient {
     private SimulationWebSocketClient() {
         setServer("192.168.49.2", 3300);
 
-        addProvider(new DriverStationProvider("DriverStation", ""));
-        addProvider(new RoboRIOProvider("RoboRIO", ""));
+        addProvider(new DriverStationProvider());
+        addProvider(new RoboRIOProvider());
         for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
-            addProvider(new PWMProvider("PWM", Integer.toString(i)));
+            addProvider(new PWMProvider(Integer.toString(i)));
         }
         for(int i = 0; i < DIOData.MAX_DEVICES; i++) {
-            addProvider(new DIOProvider("DIO", Integer.toString(i)));
+            addProvider(new DIOProvider(Integer.toString(i)));
         }
     }
 
