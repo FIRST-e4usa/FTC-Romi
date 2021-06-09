@@ -11,7 +11,7 @@ public class EncoderProvider extends Provider {
     private final EncoderData data;
 
     public EncoderProvider(String device) {
-        super("DIO", device);
+        super("Encoder", device);
 
         int id = Integer.parseInt(device);
         if(id >= EncoderData.MAX_DEVICES) {
