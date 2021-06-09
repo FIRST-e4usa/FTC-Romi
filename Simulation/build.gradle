@@ -21,13 +21,10 @@ android {
 
 dependencies {
     /*
-     * Other Modules
+     * Other modules
      */
-    implementation project(':Hardware')
-    implementation project(':Inspection')
+
     implementation project(':RobotCore')
-    implementation project(':RobotServer')
-    implementation project(':Simulation')
 
     /*
      * External

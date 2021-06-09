@@ -50,7 +50,6 @@ import com.qualcomm.robotcore.hardware.ServoController;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.ConfigurationUtility;
 import com.qualcomm.robotcore.hardware.configuration.ControllerConfiguration;
-import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.hardware.usb.RobotArmingStateNotifier;
 import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.robot.RobotState;
@@ -59,6 +58,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.MovingStatistics;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.romi.RomiHardwareFactory;
 
 import org.firstinspires.ftc.robotcore.external.function.Supplier;
 
@@ -173,7 +174,11 @@ public class FtcEventLoopHandler implements BatteryChecker.BatteryWatcher {
       if (hardwareMap==null) {
 
         // Create a newly-active hardware map
-        hardwareMap = hardwareFactory.createHardwareMap(eventLoopManager);
+        if(SimulationConstants.isSimulation) {
+          hardwareMap = RomiHardwareFactory.createHardwareMap(robotControllerContext);
+        } else {
+          hardwareMap = hardwareFactory.createHardwareMap(eventLoopManager);
+        }
         hardwareMapExtra = new HardwareMap(robotControllerContext);
       }
       return hardwareMap;
