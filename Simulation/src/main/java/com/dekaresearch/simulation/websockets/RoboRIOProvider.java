@@ -13,7 +13,7 @@ public class RoboRIOProvider extends Provider {
 
     @Override
     public void registerCallbacks() {
-        data.vinVoltage.registerCallback(new BasicCallback<Double>(">vin_voltage"), false);
+        //data.vinVoltage.registerCallback(new BasicCallback<Double>(">vin_voltage"), false);
     }
 
     @Override
