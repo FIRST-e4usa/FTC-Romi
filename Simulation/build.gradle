@@ -25,9 +25,6 @@ dependencies {
      */
 
     implementation project(':RobotCore')
-    //implementation project(':Blocks')
-    //implementation project(':FtcCommon')
-    //implementation project(':Hardware')
 
     /*
      * External
