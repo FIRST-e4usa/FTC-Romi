@@ -1,7 +1,9 @@
-package com.dekaresearch.simulation.hardware;
+package com.dekaresearch.simulation.romi;
 
 import android.content.Context;
 
+import com.dekaresearch.simulation.hardware.SimDcMotor;
+import com.dekaresearch.simulation.hardware.SimVoltageSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class RomiHardwareFactory {

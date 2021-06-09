@@ -59,7 +59,7 @@ import com.qualcomm.robotcore.util.MovingStatistics;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
 import com.dekaresearch.simulation.SimulationConstants;
-import com.dekaresearch.simulation.hardware.RomiHardwareFactory;
+import com.dekaresearch.simulation.romi.RomiHardwareFactory;
 
 import org.firstinspires.ftc.robotcore.external.function.Supplier;
 
