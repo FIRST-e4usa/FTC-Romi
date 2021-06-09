@@ -1,8 +1,10 @@
 package com.romi.simulation.hardware;
 
+import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+import com.qualcomm.robotcore.util.RobotLog;
 import com.romi.simulation.data.PWMData;
 
 public class SimDcMotor implements DcMotor {
@@ -10,7 +12,7 @@ public class SimDcMotor implements DcMotor {
     private int port;
     private PWMData data;
 
-    private Direction direction;
+    private int sign = 1;
 
     public SimDcMotor(int port) {
         this.port = port;
@@ -39,17 +41,18 @@ public class SimDcMotor implements DcMotor {
 
     @Override
     public void setZeroPowerBehavior(ZeroPowerBehavior zeroPowerBehavior) {
-
+        RobotLog.addGlobalWarningMessage("Cannot set zero power behavior on a simulated motor");
     }
 
     @Override
     public ZeroPowerBehavior getZeroPowerBehavior() {
-        return null;
+        return ZeroPowerBehavior.UNKNOWN;
     }
 
     @Override
     public void setPowerFloat() {
-
+        RobotLog.addGlobalWarningMessage("Cannot set power float on a simulated motor");
+        setPower(0);
     }
 
     @Override
@@ -89,22 +92,22 @@ public class SimDcMotor implements DcMotor {
 
     @Override
     public void setDirection(Direction direction) {
-        this.direction = direction;
+        this.sign = direction == Direction.REVERSE ? -1 : 1;
     }
 
     @Override
     public Direction getDirection() {
-        return null;
+        return sign == -1 ? Direction.REVERSE : Direction.FORWARD;
     }
 
     @Override
     public void setPower(double power) {
-        data.speed.set(direction == Direction.REVERSE ? -power : power);
+        data.speed.set(adjustSign(power));
     }
 
     @Override
     public double getPower() {
-        return direction == Direction.REVERSE ? -data.speed.get() : data.speed.get();
+        return adjustSign(data.speed.get());
     }
 
     @Override
@@ -129,11 +132,16 @@ public class SimDcMotor implements DcMotor {
 
     @Override
     public void resetDeviceConfigurationForOpMode() {
+        data.init.set(false);
         data.init.set(true);
     }
 
     @Override
     public void close() {
         data.init.set(false);
+    }
+
+    public double adjustSign(double x) {
+        return x * sign;
     }
 }
