@@ -25,7 +25,7 @@ dependencies {
      */
 
     implementation project(':RobotCore')
-    //implementation project(':RobotServer')
+    //implementation project(':Blocks')
     //implementation project(':FtcCommon')
     //implementation project(':Hardware')
 

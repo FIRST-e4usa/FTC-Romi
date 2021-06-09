@@ -30,6 +30,7 @@ import com.qualcomm.robotcore.hardware.configuration.MotorControllerConfiguratio
 import com.qualcomm.robotcore.hardware.configuration.ReadXMLFileHandler;
 import com.qualcomm.robotcore.hardware.configuration.ServoControllerConfiguration;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.romi.simulation.hardware.RomiHardwareFactory;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -58,6 +59,8 @@ public class HardwareItemMap {
    * Creates a new {@link HardwareItemMap} with the supported hardware items in the active configuration.
    */
   public static HardwareItemMap newHardwareItemMap() {
+    return new HardwareItemMap(RomiHardwareFactory.createHardwareMap(null));
+    /*
     try {
       RobotConfigFileManager robotConfigFileManager = new RobotConfigFileManager();
       RobotConfigFile activeConfig = robotConfigFileManager.getActiveConfig();
@@ -71,6 +74,7 @@ public class HardwareItemMap {
       RobotLog.logStackTrace(e);
       return new HardwareItemMap();
     }
+    */
   }
 
   /**
