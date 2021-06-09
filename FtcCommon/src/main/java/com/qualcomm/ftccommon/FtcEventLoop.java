@@ -86,6 +86,7 @@ import com.qualcomm.robotcore.robocol.Command;
 import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
+import com.romi.simulation.SimulationConstants;
 import com.romi.simulation.SimulationOpModeListener;
 import com.romi.simulation.websockets.SimulationWebSocketClient;
 
@@ -196,8 +197,10 @@ public class FtcEventLoop extends FtcEventLoopBase {
       CachedLynxFirmwareVersions.update(hardwareMap);
       LynxModuleWarningManager.getInstance().init(opModeManager, hardwareMap);
 
-      // SIMULATION TODO(Romi) Move?
-      SimulationOpModeListener.getInstance().init(opModeManager);
+      // TODO(Romi) Move?
+      if(SimulationConstants.isSimulation) {
+        SimulationOpModeListener.getInstance().init(opModeManager);
+      }
     } finally {
       if (temporaryEmbeddedLynxUsb != null) {
         // For performance, we wait until now to close this, so that another delegate will be created before we close this one.

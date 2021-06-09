@@ -61,6 +61,7 @@ import com.qualcomm.robotcore.util.WebServer;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkConnectionFactory;
 import com.qualcomm.robotcore.wifi.NetworkType;
+import com.romi.simulation.SimulationConstants;
 import com.romi.simulation.websockets.SimulationWebSocketClient;
 
 import org.firstinspires.ftc.robotcore.internal.hardware.android.DragonboardIndicatorLED;
@@ -138,7 +139,10 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     if (state == RobotState.RUNNING) {
       updateRobotStatus(RobotStatus.NONE);
     }
-    SimulationWebSocketClient.getInstance().updateRobotState(state);
+
+    if(SimulationConstants.isSimulation) {
+      SimulationWebSocketClient.getInstance().updateRobotState(state);
+    }
   }
 
   @Override public void onPeerConnected() {
