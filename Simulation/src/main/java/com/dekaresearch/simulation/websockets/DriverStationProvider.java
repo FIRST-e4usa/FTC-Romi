@@ -1,10 +1,7 @@
-package com.romi.simulation.websockets;
+package com.dekaresearch.simulation.websockets;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.romi.simulation.data.DriverStationData;
-
-import org.firstinspires.ftc.robotcore.external.Consumer;
+import com.dekaresearch.simulation.data.DriverStationData;
 
 public class DriverStationProvider extends Provider {
     private final DriverStationData data = DriverStationData.getInstance();

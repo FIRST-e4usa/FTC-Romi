@@ -1,11 +1,11 @@
-package com.romi.simulation.websockets;
+package com.dekaresearch.simulation.websockets;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import com.romi.simulation.data.*;
+import com.dekaresearch.simulation.data.*;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;

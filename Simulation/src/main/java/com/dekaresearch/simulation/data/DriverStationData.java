@@ -1,6 +1,4 @@
-package com.romi.simulation.data;
-
-import org.firstinspires.ftc.robotcore.external.Supplier;
+package com.dekaresearch.simulation.data;
 
 public class DriverStationData {
     private static final DriverStationData instance = new DriverStationData();

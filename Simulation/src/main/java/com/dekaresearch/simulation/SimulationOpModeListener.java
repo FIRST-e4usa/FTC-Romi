@@ -1,18 +1,14 @@
-package com.romi.simulation;
+package com.dekaresearch.simulation;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
-import com.romi.simulation.data.DriverStationData;
+import com.dekaresearch.simulation.data.DriverStationData;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl.DEFAULT_OP_MODE_NAME;

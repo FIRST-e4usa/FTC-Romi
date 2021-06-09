@@ -1,7 +1,7 @@
-package com.romi.simulation.websockets;
+package com.dekaresearch.simulation.websockets;
 
 import com.google.gson.JsonElement;
-import com.romi.simulation.data.DIOData;
+import com.dekaresearch.simulation.data.DIOData;
 
 public class DIOProvider extends Provider {
 

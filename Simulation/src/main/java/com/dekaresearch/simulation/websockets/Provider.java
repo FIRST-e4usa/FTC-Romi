@@ -1,7 +1,6 @@
-package com.romi.simulation.websockets;
+package com.dekaresearch.simulation.websockets;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import org.firstinspires.ftc.robotcore.external.Consumer;
 

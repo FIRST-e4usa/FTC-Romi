@@ -1,4 +1,4 @@
-package com.romi.simulation;
+package com.dekaresearch.simulation;
 
 public class SimulationConstants {
 

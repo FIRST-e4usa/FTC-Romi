@@ -1,9 +1,7 @@
-package com.romi.simulation.websockets;
+package com.dekaresearch.simulation.websockets;
 
 import com.google.gson.JsonElement;
-import com.romi.simulation.data.DIOData;
-import com.romi.simulation.data.GyroData;
-import com.romi.simulation.data.PWMData;
+import com.dekaresearch.simulation.data.GyroData;
 
 public class GyroProvider extends Provider {
     private final GyroData data;

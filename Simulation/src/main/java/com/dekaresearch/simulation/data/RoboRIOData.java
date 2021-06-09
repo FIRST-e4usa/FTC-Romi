@@ -1,4 +1,4 @@
-package com.romi.simulation.data;
+package com.dekaresearch.simulation.data;
 
 public class RoboRIOData {
     private static final RoboRIOData instance = new RoboRIOData();

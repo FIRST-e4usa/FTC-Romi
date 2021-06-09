@@ -86,9 +86,8 @@ import com.qualcomm.robotcore.robocol.Command;
 import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
-import com.romi.simulation.SimulationConstants;
-import com.romi.simulation.SimulationOpModeListener;
-import com.romi.simulation.websockets.SimulationWebSocketClient;
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.SimulationOpModeListener;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.internal.camera.CameraManagerInternal;

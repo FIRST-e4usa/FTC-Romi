@@ -1,12 +1,9 @@
-package com.romi.simulation.websockets;
+package com.dekaresearch.simulation.websockets;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.qualcomm.robotcore.util.RobotLog;
-
-import java.util.List;
 
 public class SimulationWebSocketHandler {
 

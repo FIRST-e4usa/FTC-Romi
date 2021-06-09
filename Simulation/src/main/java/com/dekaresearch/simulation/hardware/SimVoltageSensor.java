@@ -1,7 +1,7 @@
-package com.romi.simulation.hardware;
+package com.dekaresearch.simulation.hardware;
 
 import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.romi.simulation.data.RoboRIOData;
+import com.dekaresearch.simulation.data.RoboRIOData;
 
 public class SimVoltageSensor implements VoltageSensor {
     @Override

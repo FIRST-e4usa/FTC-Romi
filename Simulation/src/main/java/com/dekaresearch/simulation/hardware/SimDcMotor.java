@@ -1,11 +1,10 @@
-package com.romi.simulation.hardware;
+package com.dekaresearch.simulation.hardware;
 
-import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.qualcomm.robotcore.util.RobotLog;
-import com.romi.simulation.data.PWMData;
+import com.dekaresearch.simulation.data.PWMData;
 
 public class SimDcMotor implements DcMotor {
 

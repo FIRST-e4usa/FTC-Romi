@@ -61,8 +61,8 @@ import com.qualcomm.robotcore.util.WebServer;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkConnectionFactory;
 import com.qualcomm.robotcore.wifi.NetworkType;
-import com.romi.simulation.SimulationConstants;
-import com.romi.simulation.websockets.SimulationWebSocketClient;
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
 
 import org.firstinspires.ftc.robotcore.internal.hardware.android.DragonboardIndicatorLED;
 import org.firstinspires.ftc.robotcore.internal.network.CallbackResult;

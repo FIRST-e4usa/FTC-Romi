@@ -1,4 +1,4 @@
-package com.romi.simulation.hardware;
+package com.dekaresearch.simulation.hardware;
 
 import android.content.Context;
 

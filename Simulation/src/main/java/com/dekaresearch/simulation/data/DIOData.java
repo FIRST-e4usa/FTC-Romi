@@ -1,4 +1,4 @@
-package com.romi.simulation.data;
+package com.dekaresearch.simulation.data;
 
 public class DIOData {
     public static final int MAX_DEVICES = 8;

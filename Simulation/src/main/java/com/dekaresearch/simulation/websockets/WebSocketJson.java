@@ -1,4 +1,4 @@
-package com.romi.simulation.websockets;
+package com.dekaresearch.simulation.websockets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

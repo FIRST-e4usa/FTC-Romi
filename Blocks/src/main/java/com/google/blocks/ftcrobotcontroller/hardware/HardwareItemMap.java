@@ -30,8 +30,8 @@ import com.qualcomm.robotcore.hardware.configuration.MotorControllerConfiguratio
 import com.qualcomm.robotcore.hardware.configuration.ReadXMLFileHandler;
 import com.qualcomm.robotcore.hardware.configuration.ServoControllerConfiguration;
 import com.qualcomm.robotcore.util.RobotLog;
-import com.romi.simulation.SimulationConstants;
-import com.romi.simulation.hardware.RomiHardwareFactory;
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.hardware.RomiHardwareFactory;
 
 import org.xmlpull.v1.XmlPullParser;
 
