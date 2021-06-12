@@ -15,12 +15,12 @@ public class GyroProvider extends Provider {
     @Override
     public void registerCallbacks() {
         data.init.registerCallback(new BasicCallback<Boolean>("<init"));
-        data.angleX.registerCallback(new BasicCallback<Double>(">angle_x"), false);
-        data.angleY.registerCallback(new BasicCallback<Double>(">angle_y"), false);
-        data.angleZ.registerCallback(new BasicCallback<Double>(">angle_z"), false);
-        data.rateX.registerCallback(new BasicCallback<Double>(">rate_x"), false);
-        data.rateY.registerCallback(new BasicCallback<Double>(">rate_y"), false);
-        data.rateZ.registerCallback(new BasicCallback<Double>(">rate_z"), false);
+        //data.angleX.registerCallback(new BasicCallback<Double>(">angle_x"), false);
+        //data.angleY.registerCallback(new BasicCallback<Double>(">angle_y"), false);
+        //data.angleZ.registerCallback(new BasicCallback<Double>(">angle_z"), false);
+        //data.rateX.registerCallback(new BasicCallback<Double>(">rate_x"), false);
+        //data.rateY.registerCallback(new BasicCallback<Double>(">rate_y"), false);
+        //data.rateZ.registerCallback(new BasicCallback<Double>(">rate_z"), false);
     }
 
     @Override

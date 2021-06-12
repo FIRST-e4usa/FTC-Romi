@@ -41,7 +41,7 @@ public class EncoderProvider extends Provider {
     @Override
     public void unregisterCallbacks() {
         data.init.unregisterAllCallbacks();
-        data.count.unregisterAllCallbacks();
+        //data.count.unregisterAllCallbacks();
     }
 
     @Override
