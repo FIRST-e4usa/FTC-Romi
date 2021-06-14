@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:orientation="vertical"
+    android:background="#70d3d3d3"
+    android:visibility="gone"
+    android:clickable="true"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:textSize="48.0sp"
+        android:typeface="normal"
+        android:gravity="center"
+        android:id="@id/countdownDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Wifi Disabling In"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center" />
+
+    <TextView
+        android:textSize="256.0sp"
+        android:typeface="normal"
+        android:gravity="center"
+        android:id="@id/countdownNumber"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="10"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center" />
+
+    <TextView
+        android:textSize="48.0sp"
+        android:typeface="normal"
+        android:gravity="center"
+        android:id="@id/wifiDisabledNotification"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Wifi disabled, touch to enable"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center" />
+</FrameLayout>

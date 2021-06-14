@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include
+        android:id="@id/backbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0.0dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        layout="@layout/backbar_layout" />
+
+    <TextView
+        android:textSize="18.0sp"
+        android:id="@id/wifiApDescriptiveText"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wifiApDescription"
+        android:layout_below="@id/backbar"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:textSize="18.0sp"
+        android:id="@id/textViewCurrentApLabel"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25.0dip"
+        android:text="@string/currentApLabel"
+        android:layout_below="@id/wifiApDescriptiveText"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:textSize="18.0sp"
+        android:textColor="@color/bright_red"
+        android:id="@id/textViewCurrentAp"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dip"
+        android:text="TextView"
+        android:layout_below="@id/textViewCurrentApLabel"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@id/buttonWirelessApSettings"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15.0dip"
+        android:text="@string/buttonWirelessApSettingsLabel"
+        android:layout_below="@id/textViewCurrentAp"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

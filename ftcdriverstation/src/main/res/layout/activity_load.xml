@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include
+        android:id="@id/included_header"
+        layout="@layout/header" />
+
+    <include
+        android:id="@id/backbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0.0dip"
+        android:layout_below="@id/included_header"
+        android:layout_alignParentStart="true"
+        layout="@layout/backbar_layout" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@id/holds_buttons"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="5.0dip"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="8.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/load_bottom"
+        android:layout_below="@id/backbar">
+
+        <Button
+            android:textSize="16.0sp"
+            android:id="@id/new_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0.0dip"
+            android:minHeight="0.0dip"
+            android:text="@string/buttonNameNew"
+            android:onClick="onNewButtonPressed" />
+
+        <View
+            android:background="?lineBright"
+            android:layout_width="fill_parent"
+            android:layout_height="2.0dip" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0"
+            android:shrinkColumns="0">
+
+            <TableRow
+                android:id="@id/files_holder"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textSize="14.0sp"
+                        android:textStyle="bold"
+                        android:id="@id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/availableConfigListCaption" />
+
+                    <TextView
+                        android:textSize="12.0sp"
+                        android:id="@id/readOnlyExplanation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/readOnlyExplanation" />
+                </LinearLayout>
+
+                <include
+                    android:layout_width="60.0dip"
+                    android:layout_height="60.0dip"
+                    layout="@layout/info_button" />
+            </TableRow>
+        </TableLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@id/inclusionlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip" />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:id="@id/empty_filelist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@id/load_bottom"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="5.0dip"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="8.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:background="?lineBright"
+            android:layout_width="fill_parent"
+            android:layout_height="2.0dip" />
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:id="@id/configureFromTemplateArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:textSize="15.0sp"
+                android:id="@id/configureFromTemplate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0.0dip"
+                android:minHeight="0.0dip"
+                android:text="@string/configureFromTemplate"
+                android:onClick="onConfigureFromTemplatePressed" />
+
+            <include
+                android:layout_width="60.0dip"
+                android:layout_height="60.0dip"
+                layout="@layout/info_button" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

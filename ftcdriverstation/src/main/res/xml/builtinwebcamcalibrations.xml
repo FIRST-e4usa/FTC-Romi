@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Calibrations>
+    <Camera
+        pid="0x00000779"
+        vid="Microsoft">
+        <Calibration
+            distortionCoefficients="0.154576f, -1.19143f, 0f, 0f, 2.06105f, 0f, 0f, 0f"
+            focalLength="678.154f, 678.17f"
+            principalPoint="318.135f, 228.374f"
+            size="640 480" />
+    </Camera>
+    <Camera
+        pid="0x00000810"
+        vid="Microsoft">
+        <Calibration
+            distortionCoefficients="0.154576f, -1.19143f, 0f, 0f, 2.06105f, 0f, 0f, 0f"
+            focalLength="678.154f, 678.17f"
+            principalPoint="318.135f, 228.374f"
+            size="640 480" />
+    </Camera>
+    <Camera
+        pid="0x0000081B"
+        vid="Logitech">
+        <Calibration
+            distortionCoefficients="-0.018522, 1.03979, 0, 0, -3.3171, 0, 0, 0"
+            focalLength="821.993f, 821.993f"
+            principalPoint="330.489f, 248.997f"
+            size="640 480" />
+        <Calibration
+            distortionCoefficients="-0.0258948, 1.06258, 0, 0, -3.40245, 0, 0, 0"
+            focalLength="715.307f, 715.307f"
+            principalPoint="319.759f, 188.917f"
+            size="640 360" />
+    </Camera>
+    <Camera
+        pid="0x0000082D"
+        vid="Logitech">
+        <Calibration
+            distortionCoefficients="0.1208, -0.261599, 0, 0, 0.10308, 0, 0, 0"
+            focalLength="622.001f, 622.001f"
+            principalPoint="319.803f, 241.251f"
+            size="640 480" />
+        <Calibration
+            distortionCoefficients="0.112507, -0.272067, 0, 0, 0.15775, 0, 0, 0"
+            focalLength="775.79f, 775.79f"
+            principalPoint="400.898f, 300.79f"
+            size="800 600" />
+        <Calibration
+            distortionCoefficients="0.111626 , -0.255626, 0, 0, 0.107992, 0, 0, 0"
+            focalLength="463.566f, 463.566f"
+            principalPoint="316.402f, 176.412f"
+            size="640 360" />
+        <Calibration
+            distortionCoefficients="0.117627, -0.248549, 0, 0, 0.107441, 0, 0, 0"
+            focalLength="1385.92f , 1385.92f"
+            principalPoint="951.982f , 534.084f"
+            size="1920, 1080" />
+        <Calibration
+            distortionCoefficients="0.12175, -0.251652 , 0, 0, 0.112142, 0, 0, 0"
+            focalLength="578.272f , 578.272f"
+            principalPoint="402.145f , 221.506f"
+            size="800, 448" />
+        <Calibration
+            distortionCoefficients="0.120988, -0.253336 , 0, 0, 0.102445, 0, 0, 0"
+            focalLength="626.909f , 626.909f"
+            principalPoint="426.007f , 236.834f"
+            size="864, 480" />
+    </Camera>
+    <Camera
+        pid="0x00000825"
+        vid="Logitech">
+        <Calibration
+            distortionCoefficients="-0.0449369, 1.17277, 0, 0, -3.63244, 0, 0, 0"
+            focalLength="822.317f, 822.317f"
+            principalPoint="319.495f, 242.502f"
+            size="640 480" />
+    </Camera>
+</Calibrations>

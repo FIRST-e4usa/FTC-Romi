@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="app_theme_colors">
+        <item>@color/medium_light_red</item>
+        <item>@color/medium_light_green</item>
+        <item>@color/medium_light_blue</item>
+        <item>@color/medium_light_purple</item>
+        <item>@color/medium_light_orange</item>
+        <item>@color/medium_light_teal</item>
+    </array>
+    <array name="app_theme_ids">
+        <item>@style/AppThemeRedDS</item>
+        <item>@style/AppThemeGreenDS</item>
+        <item>@style/AppThemeBlueDS</item>
+        <item>@style/AppThemePurpleDS</item>
+        <item>@style/AppThemeOrangeDS</item>
+        <item>@style/AppThemeTealDS</item>
+    </array>
+    <string-array name="app_theme_names">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Purple</item>
+        <item>Orange</item>
+        <item>Teal</item>
+    </string-array>
+    <string-array name="app_theme_tokens">
+        <item>@string/tokenThemeRed</item>
+        <item>@string/tokenThemeGreen</item>
+        <item>@string/tokenThemeBlue</item>
+        <item>@string/tokenThemePurple</item>
+        <item>@string/tokenThemeOrange</item>
+        <item>@string/tokenThemeTeal</item>
+    </string-array>
+    <string-array name="choice_array_legacy_module">
+        <item>NOTHING</item>
+        <item>GYRO</item>
+        <item>TOUCH_SENSOR</item>
+        <item>COMPASS</item>
+        <item>IR_SEEKER</item>
+        <item>LIGHT_SENSOR</item>
+        <item>ACCELEROMETER</item>
+        <item>ULTRASONIC_SENSOR</item>
+        <item>MOTOR_CONTROLLER</item>
+        <item>SERVO_CONTROLLER</item>
+        <item>MATRIX_CONTROLLER</item>
+        <item>TOUCH_SENSOR_MULTIPLEXER</item>
+        <item>COLOR_SENSOR</item>
+    </string-array>
+    <string-array name="device_interface_module_options_array">
+        <item>PWM Devices|EDIT_PWM_PORT</item>
+        <item>I2C Devices|EDIT_I2C_PORT</item>
+        <item>Analog Input Devices|EDIT_ANALOG_INPUT</item>
+        <item>Digital Devices|EDIT_DIGITAL</item>
+        <item>Analog Output Devices|EDIT_ANALOG_OUTPUT</item>
+    </string-array>
+    <string-array name="lynx_module_options_array">
+        <item>Motors|EDIT_MOTOR_LIST</item>
+        <item>Servos|EDIT_SERVO_LIST</item>
+        <item>Digital Devices|EDIT_DIGITAL</item>
+        <item>Analog Input Devices|EDIT_ANALOG_INPUT</item>
+        <item>I2C Bus 0|EDIT_I2C_BUS0</item>
+        <item>I2C Bus 1|EDIT_I2C_BUS1</item>
+        <item>I2C Bus 2|EDIT_I2C_BUS2</item>
+        <item>I2C Bus 3|EDIT_I2C_BUS3</item>
+    </string-array>
+    <string-array name="networkTypes">
+        <item>Wifi Direct</item>
+        <item>Control Hub</item>
+    </string-array>
+    <string-array name="pref_ds_layout_entries">
+        <item>@string/ds_ui_portrait</item>
+        <item>@string/ds_ui_land</item>
+    </string-array>
+    <string-array name="pref_gamepad_type_entries">
+        <item>@string/gamepad_logitech_f310</item>
+        <item>@string/gamepad_microsoft_xbox_360</item>
+        <item>@string/gamepad_android_standard</item>
+    </string-array>
+    <string-array name="pref_pairing_kind_values">
+        <item>WifiDirect</item>
+        <item>WirelessAP</item>
+    </string-array>
+    <string-array name="wifi_direct_channels">
+        <item>Auto – device selects channel|0</item>
+        <item>Channel 1 – 2.412 GHz|1</item>
+        <item>Channel 2 – 2.417 GHz|2</item>
+        <item>Channel 3 – 2.422 GHz|3</item>
+        <item>Channel 4 – 2.427 GHz|4</item>
+        <item>Channel 5 – 2.432 GHz|5</item>
+        <item>Channel 6 – 2.437 GHz|6</item>
+        <item>Channel 7 – 2.442 GHz|7</item>
+        <item>Channel 8 – 2.447 GHz|8</item>
+        <item>Channel 9 – 2.452 GHz|9</item>
+        <item>Channel 10 – 2.457 GHz|10</item>
+        <item>Channel 11 – 2.462 GHz|11</item>
+        <item>Channel 36 – 5.180 GHz|36</item>
+        <item>Channel 40 – 5.200 GHz|40</item>
+        <item>Channel 44 – 5.220 GHz|44</item>
+        <item>Channel 48 – 5.240 GHz|48</item>
+        <item>Channel 149 – 5.745 GHz|149</item>
+        <item>Channel 153 – 5.765 GHz|153</item>
+        <item>Channel 157 – 5.785 GHz|157</item>
+        <item>Channel 161 – 5.805 GHz|161</item>
+    </string-array>
+</resources>

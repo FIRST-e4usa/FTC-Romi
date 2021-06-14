@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:background="?backgroundLight"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:keepScreenOn="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/activity_ds_land_header" />
+
+    <RelativeLayout
+        android:background="?backgroundVeryDark"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="2.0dip">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@id/divider">
+
+            <RelativeLayout
+                android:id="@id/configAndTimerRegion"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@id/controlPanelRegion">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_above="@id/yetAnotherDivider">
+
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_toLeftOf="@id/dividerAboveControlPanel"
+                        android:alpha="@dimen/alpha_control">
+
+                        <TextView
+                            android:textAppearance="@style/FtcTextViewStyleBold"
+                            android:textSize="11.0dip"
+                            android:textColor="@color/text_white"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Practice Timer"
+                            android:layout_above="@id/timerLayout"
+                            android:layout_centerHorizontal="true" />
+
+                        <LinearLayout
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:id="@id/timerLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:textAppearance="@style/FtcTextViewStyleBold"
+                                android:textSize="20.0dip"
+                                android:textColor="@color/text_white"
+                                android:id="@id/practiceTimerTimeView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="20.0dip"
+                                android:text="2:30" />
+
+                            <ImageView
+                                android:layout_gravity="center_vertical"
+                                android:id="@id/practiceTimerStartStopBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_play_circle_filled_24dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@id/dividerAboveControlPanel"
+                        android:background="?backgroundLight"
+                        android:layout_width="3.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_centerHorizontal="true" />
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_toRightOf="@id/dividerAboveControlPanel">
+
+                        <ImageView
+                            android:id="@id/robot_logo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30.0dip"
+                            android:layout_margin="10.0dip"
+                            android:src="@drawable/icon_robotcontroller"
+                            android:adjustViewBounds="true" />
+
+                        <TextView
+                            android:textAppearance="@style/FtcTextViewStyleBold"
+                            android:textSize="10.0dip"
+                            android:textColor="@color/text_white"
+                            android:id="@id/activeConfigName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Config: beepBoop" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:id="@id/yetAnotherDivider"
+                    android:background="?backgroundLight"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="3.0dip"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:textAppearance="@style/FtcTextViewStyleBold"
+                    android:textSize="15.0dip"
+                    android:textColor="@color/text_white"
+                    android:padding="15.0dip"
+                    android:visibility="gone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Checklist:\n1) Lift pulley taught\n2) Intake stowed\n3) Base aligned with floor tile"
+                    android:layout_below="@id/yetAnotherDivider" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@id/controlPanelRegion"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:alpha="@dimen/alpha_control">
+
+                <include
+                    android:id="@id/scoreHeaderLinearLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/activity_ds_land_opmode_menu" />
+
+                <include
+                    android:layout_gravity="center_vertical"
+                    android:id="@id/controlPanel"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/activity_ds_land_opmode_ctrls" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:id="@id/divider"
+            android:background="?backgroundLight"
+            android:layout_width="3.0dip"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@id/divider">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@id/battery_info_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="43.0dip"
+                android:alpha="@dimen/alpha_control">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.0">
+
+                    <TextView
+                        android:textAppearance="@style/FtcTextViewStyleBold"
+                        android:textSize="12.0dip"
+                        android:textColor="@color/text_white"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@id/dsBatteryInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5.0dip"
+                        android:text="DS: 92%" />
+
+                    <ImageView
+                        android:layout_gravity="center_horizontal"
+                        android:id="@id/DS_battery_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_margin="4.0dip"
+                        android:src="@drawable/icon_battery100"
+                        android:adjustViewBounds="true" />
+                </LinearLayout>
+
+                <View
+                    android:background="?backgroundLight"
+                    android:layout_width="3.0dip"
+                    android:layout_height="fill_parent" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@id/rcBatteryContainer"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2.0">
+
+                        <TextView
+                            android:textAppearance="@style/FtcTextViewStyleBold"
+                            android:textSize="12.0dip"
+                            android:textColor="@color/text_white"
+                            android:layout_gravity="center_horizontal"
+                            android:id="@id/rcBatteryTelemetry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5.0dip"
+                            android:text="RC: 95%" />
+
+                        <TextView
+                            android:id="@id/rcBatteryInfo"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <RelativeLayout
+                            android:id="@id/rcBatteryBackgroundReference"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <ImageView
+                            android:layout_gravity="center_horizontal"
+                            android:id="@id/rc_battery_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_margin="4.0dip"
+                            android:src="@drawable/icon_battery100"
+                            android:adjustViewBounds="true" />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@id/dividerRcBatt12vBatt"
+                        android:background="?backgroundLight"
+                        android:layout_width="3.0dip"
+                        android:layout_height="fill_parent" />
+
+                    <RelativeLayout
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:id="@id/robot_battery_background"
+                        android:background="?backgroundVeryDark"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.0"
+                        android:onClick="onClickRobotBatteryToast">
+
+                        <TextView
+                            android:textSize="10.0dip"
+                            android:textColor="?textWhite"
+                            android:orientation="horizontal"
+                            android:id="@id/rc_no_voltage_sensor"
+                            android:background="@android:color/transparent"
+                            android:visibility="visible"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/noVoltageSensor"
+                            android:layout_centerInParent="true" />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:id="@id/rc_battery_layout"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_centerHorizontal="true">
+
+                            <ImageView
+                                android:id="@id/robot_battery_icon"
+                                android:layout_width="48.0dip"
+                                android:layout_height="fill_parent"
+                                android:layout_margin="10.0dip"
+                                android:src="@drawable/icon_voltage"
+                                android:adjustViewBounds="true" />
+
+                            <LinearLayout
+                                android:gravity="center_vertical"
+                                android:orientation="vertical"
+                                android:id="@id/battery_voltage_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="fill_parent"
+                                android:layout_margin="2.0dip"
+                                android:layout_marginTop="4.0dip">
+
+                                <TextView
+                                    android:textSize="16.0dip"
+                                    android:textColor="?textWhite"
+                                    android:gravity="center_horizontal"
+                                    android:layout_gravity="center_horizontal"
+                                    android:id="@id/robotBatteryTelemetry"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="0.0dip"
+                                    android:text="00.00 V" />
+
+                                <TextView
+                                    android:textSize="9.0dip"
+                                    android:textColor="?textWhite"
+                                    android:gravity="center_horizontal"
+                                    android:id="@id/robotBatteryMinimum"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="0.0dip"
+                                    android:text="( 00.00 V )"
+                                    android:maxLines="1"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:background="?backgroundLight"
+                android:layout_width="wrap_content"
+                android:layout_height="3.0dip" />
+
+            <FrameLayout
+                android:id="@id/telemetryRegion"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:textSize="12.0dip"
+                            android:textColor="?textBright"
+                            android:id="@id/textSystemTelemetry"
+                            android:visibility="gone"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5.0dip"
+                            style="@style/FtcTextViewStyleBold" />
+
+                        <TextView
+                            android:textSize="12.0dip"
+                            android:textColor="@color/text_white"
+                            android:id="@id/textTelemetry"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5.0dip"
+                            android:text="Status: robot is stopped"
+                            android:alpha="@dimen/alpha_control" />
+                    </LinearLayout>
+                </ScrollView>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@id/cameraStreamLayout"
+                    android:background="@color/background_black"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:clickable="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <TextView
+                        android:textColor="?textWhite"
+                        android:gravity="center_horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cameraRefresh" />
+
+                    <ImageView
+                        android:id="@id/cameraStreamImageView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.0dip"
+                        android:layout_weight="1.0" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

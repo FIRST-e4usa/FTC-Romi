@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@id/feedback"
+    android:background="?feedbackShape"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5.0dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="1.0dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1.0dip">
+
+        <TextView
+            android:gravity="center"
+            android:id="@id/feedbackText0"
+            android:padding="3.0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(replaced)"
+            style="@style/FeedbackText" />
+
+        <TextView
+            android:gravity="start"
+            android:id="@id/feedbackText1"
+            android:padding="3.0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(replaced)"
+            style="@style/FeedbackText" />
+
+        <Button
+            android:id="@id/feedbackOKButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNameOK"
+            style="@style/FeedbackButton" />
+    </LinearLayout>
+</LinearLayout>
