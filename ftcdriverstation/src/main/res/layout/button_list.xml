@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@id/buttonList"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@id/doneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNameDone"
+            android:onClick="onDoneButtonPressed"
+            android:layout_marginEnd="5.0dip" />
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNameCancel"
+            android:onClick="onCancelButtonPressed"
+            android:layout_marginEnd="5.0dip"
+            android:layout_toEndOf="@id/doneButton" />
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@id/addButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNameAdd"
+            android:onClick="onAddButtonPressed"
+            android:layout_marginEnd="5.0dip"
+            android:layout_toEndOf="@id/cancelButton" />
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@id/scanButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNameScan"
+            android:onClick="onScanButtonPressed"
+            android:layout_marginEnd="5.0dip"
+            android:layout_toEndOf="@id/addButton" />
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@id/fixButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNameFix"
+            android:onClick="onFixButtonPressed"
+            android:layout_marginEnd="5.0dip"
+            android:layout_toEndOf="@id/scanButton" />
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@id/swapButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonNameSwap"
+            android:onClick="onSwapButtonPressed"
+            android:layout_marginEnd="5.0dip"
+            android:layout_toEndOf="@id/fixButton" />
+    </RelativeLayout>
+</merge>

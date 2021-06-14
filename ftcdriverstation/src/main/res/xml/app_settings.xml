@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/prefcat_configure_ds">
+        <PreferenceScreen
+            android:title="@string/prefedit_pair_rc"
+            android:key="@string/pref_pair_rc"
+            android:summary="@string/prefedit_pair_rc_summary" />
+        <ListPreference
+            android:entries="@array/networkTypes"
+            android:title="@string/pairing_kind_title"
+            android:key="@string/pref_pairing_kind"
+            android:summary="%s"
+            android:defaultValue="@string/pref_pairing_kind_default"
+            android:entryValues="@array/pref_pairing_kind_values" />
+        <EditTextPreference
+            android:title="@string/prefedit_device_name_ds"
+            android:key="@string/pref_device_name"
+            android:summary="@string/prefedit_device_name_summary_ds"
+            android:defaultValue="" />
+        <org.firstinspires.ftc.robotcore.internal.ui.ColorListPreference
+            android:entries="@array/app_theme_names"
+            android:title="@string/prefedit_app_theme_ds"
+            android:key="@string/pref_app_theme"
+            android:summary="@string/prefedit_app_theme_summary_ds"
+            android:entryValues="@array/app_theme_tokens"
+            app:colors="@array/app_theme_colors" />
+        <ListPreference
+            android:entries="@array/pref_ds_layout_entries"
+            android:title="Driver Station Layout"
+            android:key="@string/key_ds_layout"
+            android:summary="Change the Driver Station UI layout. Will take effect on next app launch"
+            android:defaultValue="@string/ds_ui_portrait"
+            android:entryValues="@array/pref_ds_layout_entries" />
+        <SwitchPreference
+            android:title="@string/prefedit_sound_on_off"
+            android:key="@string/pref_sound_on_off"
+            android:summary="@string/prefedit_sound_on_off_summary_ds"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Gamepads">
+        <PreferenceScreen
+            android:title="Gamepad Type Overrides"
+            android:key="things"
+            android:summary="Manually map VID/PID to gamepad type">
+            <intent
+                android:targetPackage="@string/packageNameDriverStation"
+                android:targetClass="com.qualcomm.ftcdriverstation.EditGamepadTypeOverridesActivity" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/prefcat_configure_robot">
+        <EditTextPreference
+            android:title="@string/prefedit_device_name_rc"
+            android:key="@string/pref_device_name_rc"
+            android:summary="@string/prefedit_device_name_summary_rc"
+            android:defaultValue="" />
+        <org.firstinspires.ftc.robotcore.internal.ui.ColorListPreference
+            android:entries="@array/app_theme_names"
+            android:title="@string/prefedit_app_theme_rc"
+            android:key="@string/pref_app_theme_rc"
+            android:summary="@string/prefedit_app_theme_summary_rc"
+            android:entryValues="@array/app_theme_tokens"
+            app:colors="@array/app_theme_colors" />
+        <SwitchPreference
+            android:title="@string/prefedit_sound_on_off"
+            android:key="@string/pref_sound_on_off_rc"
+            android:summary="@string/prefedit_sound_on_off_summary_rc"
+            android:defaultValue="true" />
+        <PreferenceScreen
+            android:title="@string/titleAdvancedRCSettings"
+            android:key="@string/pref_launch_advanced_rc_settings"
+            android:summary="@string/summaryAdvancedRCSettings">
+            <intent
+                android:targetPackage="@string/packageName"
+                android:targetClass="com.qualcomm.ftccommon.FtcAdvancedRCSettingsActivity" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/prefcat_logging">
+        <SwitchPreference
+            android:title="@string/pref_match_logging_on_off_title"
+            android:key="@string/pref_match_logging_on_off"
+            android:summary="@string/pref_match_logging_on_off_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:title="@string/prefedit_debug_driver_station_logs"
+            android:key="@string/pref_debug_driver_station_logs"
+            android:summary="@string/prefedit_debug_driver_station_logs_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center_vertical"
+    android:id="@id/controlPanelRegion"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="200.0dip"
+        android:layout_marginStart="2.0dip"
+        android:layout_marginEnd="2.0dip">
+
+        <ImageView
+            android:id="@id/controlPanelBackgroundCircle"
+            android:layout_width="314.0dip"
+            android:layout_height="314.0dip"
+            android:layout_marginTop="-57.0dip"
+            android:layout_marginBottom="-57.0dip"
+            android:src="?circleMediumMedium"
+            android:scaleType="centerInside"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@id/controlPanel"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants"
+        android:layout_width="fill_parent"
+        android:layout_height="200.0dip"
+        android:alpha="1.0"
+        android:layout_marginStart="2.0dip"
+        android:layout_marginEnd="2.0dip">
+
+        <RelativeLayout
+            android:id="@id/buttonsAndTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <FrameLayout
+                android:id="@id/buttonsFrame"
+                android:layout_width="130.0dip"
+                android:layout_height="170.0dip"
+                android:layout_marginStart="35.0dip"
+                android:layout_marginEnd="10.0dip">
+
+                <FrameLayout
+                    android:id="@id/buttonStart"
+                    android:visibility="visible"
+                    android:layout_width="130.0dip"
+                    android:layout_height="170.0dip">
+
+                    <ImageButton
+                        android:enabled="false"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:padding="0.0dip"
+                        android:layout_width="130.0dip"
+                        android:layout_height="130.0dip"
+                        android:src="?buttonOutline"
+                        android:scaleType="centerInside"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="true"
+                        android:onClick="onClickButtonStart" />
+
+                    <ImageButton
+                        android:layout_gravity="center"
+                        android:id="@id/buttonStartArrow"
+                        android:background="@android:color/transparent"
+                        android:layout_width="55.0dip"
+                        android:layout_height="55.0dip"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:onClick="onClickButtonStart" />
+
+                    <ImageButton
+                        android:id="@id/buttonStartArrowColor"
+                        android:background="?backgroundMediumLight"
+                        android:visibility="visible"
+                        android:layout_width="1.0dip"
+                        android:layout_height="1.0dip" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@id/buttonInit"
+                    android:visibility="gone"
+                    android:layout_width="130.0dip"
+                    android:layout_height="170.0dip"
+                    android:layout_marginLeft="0.0dip">
+
+                    <ImageButton
+                        android:enabled="false"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:padding="0.0dip"
+                        android:layout_width="130.0dip"
+                        android:layout_height="130.0dip"
+                        android:src="?buttonOutline"
+                        android:scaleType="centerInside"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="true"
+                        android:onClick="onClickButtonInit" />
+
+                    <TextView
+                        android:textSize="25.0sp"
+                        android:textColor="?backgroundMedium"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="INIT"
+                        style="@style/FtcTextViewStyleBold" />
+                </FrameLayout>
+
+                <ImageButton
+                    android:enabled="false"
+                    android:id="@id/buttonStop"
+                    android:background="@android:color/transparent"
+                    android:padding="0.0dip"
+                    android:visibility="gone"
+                    android:layout_width="130.0dip"
+                    android:layout_height="170.0dip"
+                    android:src="?buttonStop"
+                    android:scaleType="centerInside"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="true"
+                    android:onClick="onClickButtonStop" />
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@id/timerAndTimerSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:onClick="onClickTimer"
+                android:layout_toEndOf="@id/buttonsFrame">
+
+                <FrameLayout
+                    android:id="@id/timerOnly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@id/timerBackground"
+                        android:background="@android:color/transparent"
+                        android:visibility="visible"
+                        android:layout_width="60.0dip"
+                        android:layout_height="60.0dip"
+                        android:src="?circleVeryVeryDark"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="true"
+                        android:onClick="onClickTimer" />
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@id/timerStopWatch"
+                        android:background="@android:color/transparent"
+                        android:visibility="invisible"
+                        android:layout_width="30.0dip"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_launcher"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="true"
+                        android:onClick="onClickTimer" />
+
+                    <TextView
+                        android:id="@id/timerStopWatchColorHolder"
+                        android:background="?backgroundLight"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textSize="30.0sp"
+                        android:textColor="?textBright"
+                        android:layout_gravity="center"
+                        android:id="@id/timerText"
+                        android:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:onClick="onClickTimer" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@id/timerSwitch"
+                    android:paddingTop="8.0dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/timerOnly"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageButton
+                        android:layout_gravity="center"
+                        android:id="@id/timerSwitchOff"
+                        android:background="@android:color/transparent"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/timer_switch_off_teal"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:onClick="onClickTimer" />
+
+                    <ImageButton
+                        android:layout_gravity="center"
+                        android:id="@id/timerSwitchOn"
+                        android:background="@android:color/transparent"
+                        android:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/timer_switch_on"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:onClick="onClickTimer" />
+                </FrameLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <ImageButton
+            android:enabled="false"
+            android:id="@id/buttonInitStop"
+            android:background="@android:color/transparent"
+            android:padding="5.0dip"
+            android:visibility="visible"
+            android:layout_width="60.0dip"
+            android:layout_height="60.0dip"
+            android:src="?buttonStop"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:onClick="onClickButtonStop" />
+    </RelativeLayout>
+</FrameLayout>

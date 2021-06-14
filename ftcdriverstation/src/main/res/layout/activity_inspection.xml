@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:id="@id/entire_screen"
+    android:focusable="true"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@id/top_bar"
+        android:background="?backgroundMedium"
+        android:layout_width="fill_parent"
+        android:layout_height="80.0dip">
+
+        <ImageView
+            android:id="@id/robotIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_margin="1.0dip"
+            android:src="@drawable/icon_robotcontroller"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textSize="24.0sp"
+            android:textStyle="bold"
+            android:textColor="?textWhite"
+            android:gravity="center_vertical"
+            android:id="@id/textDeviceName"
+            android:padding="8.0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/titleInspectionReportRC"
+            android:layout_centerVertical="true"
+            android:foregroundGravity="center_vertical"
+            android:layout_toStartOf="@id/menu_buttons"
+            android:layout_toEndOf="@id/robotIcon" />
+
+        <ImageButton
+            android:id="@id/menu_buttons"
+            android:background="@android:color/transparent"
+            android:padding="15.0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10.0dip"
+            android:src="@drawable/icon_menu"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="menu_buttons"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <include
+        android:id="@id/backbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0.0dip"
+        layout="@layout/backbar_layout" />
+
+    <ScrollView
+        android:scrollbars="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@id/inspectionRootLayout"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="2.0dip"
+            android:layout_marginBottom="2.0dip">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/labelManufacturer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stringManufacturer"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/txtManufacturer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/labelModel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stringModel"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/txtModel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@id/androidVersionLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Android Version:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/androidVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@id/controlHubOsVersionLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Control Hub OS Version:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/controlHubOsVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textViewHubFirmware"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hub Firmware: " />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:gravity="end"
+                    android:id="@id/hubFirmware"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView8"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Battery Level:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/batteryLevel"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.0" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@id/airplaneModeLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Airplane Mode:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/airplaneMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bluetooth:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/bluetoothEnabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textViewPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RC Password:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/isDefaultPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WiFi Enabled:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/wifiEnabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WiFi Connected:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/wifiConnected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/labelWifiName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WiFi Name:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/wifiName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WiDi Connection Status:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/widiConnected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/trafficCountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rx/Tx Data:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/trafficCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/bytesPerSecondLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bytes Per Second:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/bytesPerSecond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/appsInstalled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apps Installed:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/appsStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip"
+                android:layout_marginStart="20.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Robot Controller:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/txtIsRCInstalled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@id/isRCInstalled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip"
+                android:layout_marginStart="20.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Driver Station:"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:id="@id/txtIsDSInstalled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@id/isDSInstalled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5.0dip"
+                android:layout_marginBottom="2.0dip"
+                android:layout_weight="1.0" />
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip">
+
+                <TextView
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:gravity="center_horizontal"
+                    android:id="@id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Software courtesy of Team HazMat \n9277 &amp; 10650" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

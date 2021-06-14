@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include
+        android:id="@id/included_header"
+        layout="@layout/header" />
+
+    <include layout="@layout/button_list" />
+
+    <include layout="@layout/gray_line" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:keepScreenOn="true">
+
+            <include layout="@layout/red_line" />
+
+            <TableLayout android:id="@id/tableLayout_analog_input_devices"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
+
+                <include layout="@layout/port_attached_row" />
+
+                <View
+                    android:background="?lineBright"
+                    android:layout_height="2.0dip" />
+
+                <include layout="@layout/item_list_parent" />
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

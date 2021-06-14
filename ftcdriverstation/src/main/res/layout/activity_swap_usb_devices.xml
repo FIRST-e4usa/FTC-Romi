@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include
+        android:id="@id/included_header"
+        layout="@layout/header" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/activity_horizontal_margin">
+
+        <include layout="@layout/button_list" />
+    </LinearLayout>
+
+    <include layout="@layout/gray_line" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@id/swapCaption"
+            android:paddingTop="3.0dip"
+            android:paddingBottom="3.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="(replaced at runtime)" />
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:id="@id/feedbackAnchor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <include layout="@layout/red_line" />
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:id="@id/devices_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16.0sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/captionAvailableSwapDevices" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ListView
+                android:id="@id/controllersList"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:id="@id/orange_end_of_list_anchor"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

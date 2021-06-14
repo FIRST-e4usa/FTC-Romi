@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@id/opmodeMenu"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:enabled="false"
+                android:textSize="12.0sp"
+                android:textColor="?textWhite"
+                android:gravity="start|center"
+                android:id="@id/buttonAutonomous"
+                android:background="?backgroundLight"
+                android:paddingLeft="20.0dip"
+                android:paddingRight="20.0dip"
+                android:layout_width="0.0dip"
+                android:layout_height="43.0dip"
+                android:layout_marginTop="0.0dip"
+                android:layout_marginBottom="2.0dip"
+                android:layout_weight="0.5"
+                android:onClick="onClickButtonAutonomous"
+                android:drawableStart="@drawable/icon_arrow"
+                android:layout_marginStart="0.0dip" />
+
+            <Button
+                android:enabled="false"
+                android:textSize="12.0sp"
+                android:textColor="?textWhite"
+                android:gravity="start|center"
+                android:id="@id/buttonTeleOp"
+                android:background="?backgroundLight"
+                android:paddingLeft="20.0dip"
+                android:paddingRight="20.0dip"
+                android:layout_width="0.0dip"
+                android:layout_height="43.0dip"
+                android:layout_marginTop="0.0dip"
+                android:layout_marginBottom="2.0dip"
+                android:layout_weight="0.5"
+                android:onClick="onClickButtonTeleOp"
+                android:drawableEnd="@drawable/icon_arrow"
+                android:layout_marginEnd="0.0dip" />
+        </LinearLayout>
+
+        <TextView
+            android:textSize="14.0dip"
+            android:textColor="?textWhite"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:id="@id/chooseOpModePrompt"
+            android:paddingBottom="3.0dip"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonTextSelectOpMode"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:textSize="14.0dip"
+            android:textStyle="bold"
+            android:textColor="?textWhite"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:id="@id/currentOpModeName"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(replaced)"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+</LinearLayout>
