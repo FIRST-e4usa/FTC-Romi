@@ -44,7 +44,7 @@ public static NetworkConnection getNetworkConnection(NetworkType type, Context c
       case WIFIDIRECT:
         return WifiDirectAssistant.getWifiDirectAssistant(context);
       case LOOPBACK:
-        return null;  // not yet implemented
+        return LoopbackAssistant.getLoopbackAssistant(context);  // not yet implemented
       case SOFTAP:
         return SoftApAssistant.getSoftApAssistant(context);
       case WIRELESSAP:
