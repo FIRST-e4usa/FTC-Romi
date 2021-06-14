@@ -41,7 +41,7 @@ public class SimulationWebSocketClient {
     }
 
     private SimulationWebSocketClient() {
-        setServer("10.0.0.2", 3300);
+        setServer("192.168.49.2", 3300);
     }
 
     public void setServer(URI serverUri) {
