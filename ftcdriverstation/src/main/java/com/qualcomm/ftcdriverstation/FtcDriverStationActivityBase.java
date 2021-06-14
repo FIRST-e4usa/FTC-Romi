@@ -156,7 +156,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
       this.uiState = FtcDriverStationActivityBase.UIState.UNKNOWN;
       this.telemetryMode = Telemetry.DisplayFormat.CLASSIC;
       this.debugLogging = false;
-      this.networkConnectionHandler = NetworkConnectionHandler.getInstance();
+      this.networkConnectionHandler = NetworkConnectionHandler.getDriverStationInstance();
       this.appUtil = AppUtil.getInstance();
       this.deviceNameManagerStartResult = new StartResult();
       this.prefRemoterStartResult = new StartResult();
@@ -913,7 +913,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
          this.preferencesHelper = new PreferencesHelper(TAG, this.preferences);
          DeviceNameManagerFactory.getInstance().start(this.deviceNameManagerStartResult);
          PreferenceRemoterDS.getInstance().start(this.prefRemoterStartResult);
-         NetworkConnectionHandler.getInstance().registerPeerStatusCallback(this);
+         networkConnectionHandler.registerPeerStatusCallback(this);
          setClientConnected(false);
          if (permissionsValidated) {
             RobotLog.ii(TAG, "Processing all classes through class filter");

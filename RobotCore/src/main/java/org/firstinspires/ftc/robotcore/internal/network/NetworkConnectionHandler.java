@@ -78,10 +78,14 @@ public class NetworkConnectionHandler {
 
     public static final String TAG = "NetworkConnectionHandler";
     private static final NetworkConnectionHandler theInstance = new NetworkConnectionHandler();
+    private static final NetworkConnectionHandler dsInstance = new NetworkConnectionHandler();
     private static final int IP_ADDRESS_TIMEOUT_SECONDS = 3;
 
     public static NetworkConnectionHandler getInstance() {
         return theInstance;
+    }
+    public static NetworkConnectionHandler getDriverStationInstance() {
+        return dsInstance;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -145,12 +149,16 @@ public class NetworkConnectionHandler {
      */
     public static NetworkType getDefaultNetworkType(Context context) {
 
+        return NetworkType.LOOPBACK;
+
+        /*
         if (Device.isRevControlHub() == true) {
             return NetworkType.RCWIRELESSAP;
         } else {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             return NetworkType.fromString(preferences.getString(context.getString(R.string.pref_pairing_kind), NetworkType.globalDefaultAsString()));
         }
+        */
     }
 
     /**
