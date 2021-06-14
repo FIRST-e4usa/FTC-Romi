@@ -2,6 +2,7 @@ package com.dekaresearch.simulation.romi;
 
 import android.content.Context;
 
+import com.dekaresearch.simulation.hardware.SimAccelerationSensor;
 import com.dekaresearch.simulation.hardware.SimDcMotor;
 import com.dekaresearch.simulation.hardware.SimDcMotorEncoded;
 import com.dekaresearch.simulation.hardware.SimDigitalChannel;
@@ -21,6 +22,7 @@ public class RomiHardwareFactory {
         }
 
         map.gyroSensor.put("gyro", new SimGyroSensor());
+        map.accelerationSensor.put("accelerometer", new SimAccelerationSensor());
 
         return map;
     }

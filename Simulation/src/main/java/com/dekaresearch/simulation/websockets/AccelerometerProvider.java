@@ -14,8 +14,8 @@ public class AccelerometerProvider extends Provider {
 
     @Override
     public void registerCallbacks() {
-        data.init.registerCallback(new BasicCallback<Boolean>(">init"));
-        data.range.registerCallback(new BasicCallback<Double>(">range"));
+        data.init.registerCallback(new BasicCallback<Boolean>("<init"));
+        data.range.registerCallback(new BasicCallback<Double>("<range"));
     }
 
     @Override
