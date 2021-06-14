@@ -78,15 +78,15 @@ public class NetworkConnectionHandler {
 
     public static final String TAG = "NetworkConnectionHandler";
     private static final NetworkConnectionHandler theInstance = new NetworkConnectionHandler();
-    private static final NetworkConnectionHandler dsInstance = new NetworkConnectionHandler();
+    //private static final NetworkConnectionHandler dsInstance = new NetworkConnectionHandler();
     private static final int IP_ADDRESS_TIMEOUT_SECONDS = 3;
 
     public static NetworkConnectionHandler getInstance() {
         return theInstance;
     }
-    public static NetworkConnectionHandler getDriverStationInstance() {
+    /*public static NetworkConnectionHandler getDriverStationInstance() {
         return dsInstance;
-    }
+    }*/
 
     //----------------------------------------------------------------------------------------------
     // State
@@ -452,6 +452,12 @@ public class NetworkConnectionHandler {
             }
         }
         return result;
+    }
+
+    private CallbackResult handleLoopbackPeersAvailable() {
+        networkConnection.connect("");
+
+        return CallbackResult.HANDLED;
     }
 
     /**

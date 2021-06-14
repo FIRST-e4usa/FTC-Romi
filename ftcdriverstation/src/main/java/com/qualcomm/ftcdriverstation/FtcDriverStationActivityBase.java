@@ -156,7 +156,7 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
       this.uiState = FtcDriverStationActivityBase.UIState.UNKNOWN;
       this.telemetryMode = Telemetry.DisplayFormat.CLASSIC;
       this.debugLogging = false;
-      this.networkConnectionHandler = NetworkConnectionHandler.getDriverStationInstance();
+      this.networkConnectionHandler = NetworkConnectionHandler.getInstance();
       this.appUtil = AppUtil.getInstance();
       this.deviceNameManagerStartResult = new StartResult();
       this.prefRemoterStartResult = new StartResult();
