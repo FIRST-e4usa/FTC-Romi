@@ -2,12 +2,22 @@ package com.dekaresearch.simulation.hardware;
 
 import com.dekaresearch.simulation.data.EncoderData;
 import com.dekaresearch.simulation.data.PWMData;
+import com.dekaresearch.simulation.util.MiniPID;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.qualcomm.robotcore.util.RobotLog;
 
-public class SimDcMotorEncoded implements DcMotor {
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
+
+public class SimDcMotorEncoded implements DcMotor, DcMotorEx, OpModeManagerNotifier.Notifications {
     private int port;
     private int channelA;
     private int channelB;
@@ -15,7 +25,15 @@ public class SimDcMotorEncoded implements DcMotor {
     private PWMData pwmData;
     private EncoderData encoderData;
 
+    private final Thread pidThread = new Thread(new PIDRunnable());
+    private final MiniPID pid = new MiniPID(0.0006, 0, 0);
+    private int tolerance = 50;
+
+    private double lastPower = 0;
+    private RunMode mode = RunMode.RUN_WITHOUT_ENCODER;
     private int sign = 1;
+    private int targetPosition;
+    private boolean isBusy;
 
     public SimDcMotorEncoded(int port, int channelA, int channelB) {
         this.port = port;
@@ -74,17 +92,17 @@ public class SimDcMotorEncoded implements DcMotor {
 
     @Override
     public void setTargetPosition(int position) {
-
+        this.targetPosition = position;
     }
 
     @Override
     public int getTargetPosition() {
-        return 0;
+        return this.targetPosition;
     }
 
     @Override
     public boolean isBusy() {
-        return false;
+        return this.isBusy;
     }
 
     @Override
@@ -98,11 +116,18 @@ public class SimDcMotorEncoded implements DcMotor {
             encoderData.reset.set(true);
             encoderData.reset.set(false);
         }
+
+        if(mode != RunMode.RUN_TO_POSITION) {
+            // Ensure that the motor is set to the correct power after PID
+            //pwmData.speed.set(lastPower);
+        }
+
+        this.mode = mode;
     }
 
     @Override
     public RunMode getMode() {
-        return null;
+        return mode;
     }
 
     @Override
@@ -118,6 +143,7 @@ public class SimDcMotorEncoded implements DcMotor {
     @Override
     public void setPower(double power) {
         pwmData.speed.set(adjustSign(power));
+        this.lastPower = power;
     }
 
     @Override
@@ -156,7 +182,157 @@ public class SimDcMotorEncoded implements DcMotor {
         //encoderData.init.set(false);
     }
 
-    public double adjustSign(double x) {
+    private double adjustSign(double x) {
         return x * sign;
     }
+
+    private double ramp(double target, double current, double rate) {
+        if((target - current) > rate) {
+            return current + rate;
+        } else if((current - target) > rate) {
+            return current - rate;
+        } else {
+            return current;
+        }
+    }
+
+    @Override
+    public void onOpModePreInit(OpMode opMode) {
+
+    }
+
+    @Override
+    public void onOpModePreStart(OpMode opMode) {
+        if(!(opMode instanceof OpModeManagerImpl.DefaultOpMode)) {
+            pidThread.start();
+        }
+    }
+
+    @Override
+    public void onOpModePostStop(OpMode opMode) {
+        if(!(opMode instanceof OpModeManagerImpl.DefaultOpMode)) {
+            pidThread.interrupt();
+        }
+    }
+
+    private class PIDRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            while(!Thread.interrupted()) {
+                if(mode == RunMode.RUN_TO_POSITION) {
+                    isBusy = Math.abs(getCurrentPosition() - targetPosition) > tolerance;
+
+                    if(isBusy) {
+                        pid.setOutputLimits(Math.abs(lastPower));
+                        double output = pid.getOutput(getCurrentPosition(), targetPosition);
+                        output = adjustSign(output);
+
+                        pwmData.speed.set(output);
+                    } else {
+                        pwmData.speed.set(0.0);
+                    }
+                } else {
+                    isBusy = false;
+                }
+            }
+        }
+    }
+
+    // region DC Motor Ex
+    @Override
+    public void setMotorEnable() {
+
+    }
+
+    @Override
+    public void setMotorDisable() {
+
+    }
+
+    @Override
+    public boolean isMotorEnabled() {
+        return true;
+    }
+
+    @Override
+    public void setVelocity(double angularRate) {
+
+    }
+
+    @Override
+    public void setVelocity(double angularRate, AngleUnit unit) {
+
+    }
+
+    @Override
+    public double getVelocity() {
+        return 0;
+    }
+
+    @Override
+    public double getVelocity(AngleUnit unit) {
+        return 0;
+    }
+
+    @Override
+    public void setPIDCoefficients(RunMode mode, PIDCoefficients pidCoefficients) {
+
+    }
+
+    @Override
+    public void setPIDFCoefficients(RunMode mode, PIDFCoefficients pidfCoefficients) throws UnsupportedOperationException {
+
+    }
+
+    @Override
+    public void setVelocityPIDFCoefficients(double p, double i, double d, double f) {
+
+    }
+
+    @Override
+    public void setPositionPIDFCoefficients(double p) {
+
+    }
+
+    @Override
+    public PIDCoefficients getPIDCoefficients(RunMode mode) {
+        return null;
+    }
+
+    @Override
+    public PIDFCoefficients getPIDFCoefficients(RunMode mode) {
+        return null;
+    }
+
+    @Override
+    public void setTargetPositionTolerance(int tolerance) {
+        this.tolerance = tolerance;
+    }
+
+    @Override
+    public int getTargetPositionTolerance() {
+        return this.tolerance;
+    }
+
+    @Override
+    public double getCurrent(CurrentUnit unit) {
+        return 0;
+    }
+
+    @Override
+    public double getCurrentAlert(CurrentUnit unit) {
+        return 0;
+    }
+
+    @Override
+    public void setCurrentAlert(double current, CurrentUnit unit) {
+
+    }
+
+    @Override
+    public boolean isOverCurrent() {
+        return false;
+    }
+    //endregion
 }
