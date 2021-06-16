@@ -86,152 +86,82 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <include layout="@layout/header"
            android:id="@+id/included_header"/>
 
-  <RelativeLayout
+  <LinearLayout
     android:background="@color/background_very_light_grey"
-    android:id="@+id/RelativeLayout"
+    android:id="@+id/LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+      android:orientation="vertical"
     android:keepScreenOn="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <LinearLayout
-        android:id="@+id/opmodeMenu"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".50"
+        android:keepScreenOn="true">
 
-      <RelativeLayout
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-          <Button
-              android:id="@+id/buttonAutonomous"
-              android:layout_width="0.0dip"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="2.0dip"
-              android:layout_marginTop="2.0dip"
-              android:layout_marginBottom="2.0dip"
-              android:layout_weight="0.5"
-              android:background="?backgroundLight"
-              android:drawableStart="@drawable/icon_arrow"
-              android:enabled="false"
-              android:gravity="start|center"
-              android:onClick="onClickButtonAutonomous"
-              android:paddingLeft="20.0dip"
-              android:paddingRight="20.0dip"
-              android:textColor="?textWhite"
-              android:textSize="12.0sp" />
-
-          <Button
-              android:id="@+id/buttonTeleOp"
-              android:layout_width="0.0dip"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="2.0dip"
-              android:layout_marginEnd="2.0dip"
-              android:layout_marginBottom="2.0dip"
-              android:layout_weight="0.5"
-              android:background="?backgroundLight"
-              android:drawableEnd="@drawable/icon_arrow"
-              android:enabled="false"
-              android:gravity="start|center"
-              android:onClick="onClickButtonTeleOp"
-              android:paddingLeft="20.0dip"
-              android:paddingRight="20.0dip"
-              android:textColor="?textWhite"
-              android:textSize="12.0sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/chooseOpModePrompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:text="@string/buttonTextSelectOpMode"
-            android:textColor="?textWhite"
-            android:textSize="12.0sp"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/currentOpModeName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:text="(replaced)"
-            android:textColor="?textWhite"
-            android:textSize="16.0sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-      </RelativeLayout>
-    </LinearLayout>
-
-    <TextView
-      android:id="@+id/textNetworkConnectionStatus"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:visibility="invisible"
-      android:text="" />
-
-    <TextView
-      android:id="@+id/textRobotStatus"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/textNetworkConnectionStatus"
-      android:visibility="invisible"
-      android:text="" />
-
-    <TextView
-      android:id="@+id/textOpMode"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/textRobotStatus"
-      android:visibility="invisible"
-      android:text="" />
-
-    <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/textOpMode"
-      android:layout_above="@+id/textGamepad1">
-
-      <LinearLayout
-          android:id="@+id/monitorContainer"
+      <TextView
+          android:id="@+id/textNetworkConnectionStatus"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical">
+          android:layout_height="wrap_content"
+          android:visibility="invisible"
+          android:text="" />
+
+      <TextView
+          android:id="@+id/textRobotStatus"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/textNetworkConnectionStatus"
+          android:visibility="invisible"
+          android:text="" />
+
+      <TextView
+          android:id="@+id/textOpMode"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/textRobotStatus"
+          android:visibility="invisible"
+          android:text="" />
+
+      <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/textOpMode"
+          android:layout_above="@+id/textGamepad1">
 
         <LinearLayout
-            android:id="@+id/cameraMonitorViewId"
-            android:visibility="gone"
+            android:id="@+id/monitorContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            />
-        <FrameLayout
-            android:id="@+id/tfodMonitorViewId"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+          <LinearLayout
+              android:id="@+id/cameraMonitorViewId"
+              android:visibility="gone"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+              android:orientation="vertical"
+              />
+          <FrameLayout
+              android:id="@+id/tfodMonitorViewId"
+              android:visibility="gone"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+              />
 
         </LinearLayout>
 
-      <!-- When visible, the error message will overlay and thus partially
-           obscure part of the camera monitor. We make this trade off so as to
-           allow for a bigger camera monitor view in the common case when the
-           error is not in fact present
-        -->
+        <!-- When visible, the error message will overlay and thus partially
+             obscure part of the camera monitor. We make this trade off so as to
+             allow for a bigger camera monitor view in the common case when the
+             error is not in fact present
+          -->
         <TextView style="@style/FtcTextViewStyleBold"
             android:id="@+id/textErrorMessage"
             android:layout_width="match_parent"
@@ -240,25 +170,110 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             android:visibility="invisible"
             android:textColor="?attr/textMediumDark" />
 
-    </FrameLayout>
+      </FrameLayout>
 
-    <TextView
-      android:id="@+id/textGamepad1"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_above="@+id/textGamepad2"
-      android:visibility="invisible"
-      android:text="" />
+      <TextView
+          android:id="@+id/textGamepad1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_above="@+id/textGamepad2"
+          android:visibility="invisible"
+          android:text="" />
 
-    <TextView
-      android:id="@+id/textGamepad2"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      android:visibility="invisible"
-      android:text="" />
+      <TextView
+          android:id="@+id/textGamepad2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:visibility="invisible"
+          android:text="" />
 
-  </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5">
+
+      <LinearLayout
+          android:id="@+id/opmodeMenu"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+          <LinearLayout
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/buttonAutonomous"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2.0dip"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginBottom="2.0dip"
+                android:layout_weight="0.5"
+                android:background="?backgroundLight"
+                android:drawableStart="@drawable/icon_arrow"
+                android:enabled="true"
+                android:gravity="start|center"
+                android:onClick="onClickButtonAutonomous"
+                android:paddingLeft="20.0dip"
+                android:paddingRight="20.0dip"
+                android:textColor="?textWhite"
+                android:textSize="12.0sp" />
+
+            <Button
+                android:id="@+id/buttonTeleOp"
+                android:layout_width="0.0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.0dip"
+                android:layout_marginEnd="2.0dip"
+                android:layout_marginBottom="2.0dip"
+                android:layout_weight="0.5"
+                android:background="?backgroundLight"
+                android:drawableEnd="@drawable/icon_arrow"
+                android:enabled="true"
+                android:gravity="start|center"
+                android:onClick="onClickButtonTeleOp"
+                android:paddingLeft="20.0dip"
+                android:paddingRight="20.0dip"
+                android:textColor="?textWhite"
+                android:textSize="12.0sp" />
+          </LinearLayout>
+
+          <TextView
+              android:id="@+id/chooseOpModePrompt"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
+              android:gravity="center_horizontal"
+              android:orientation="horizontal"
+              android:text="@string/buttonTextSelectOpMode"
+              android:textColor="?textWhite"
+              android:textSize="12.0sp"
+              android:visibility="visible" />
+
+          <TextView
+              android:id="@+id/currentOpModeName"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
+              android:gravity="center_horizontal"
+              android:orientation="horizontal"
+              android:text="(replaced)"
+              android:textColor="?textWhite"
+              android:textSize="16.0sp"
+              android:textStyle="bold"
+              android:visibility="gone" />
+        </RelativeLayout>
+      </LinearLayout>
+    </RelativeLayout>
+
+  </LinearLayout>
 
   <WebView
     android:id="@+id/webViewBlocksRuntime"

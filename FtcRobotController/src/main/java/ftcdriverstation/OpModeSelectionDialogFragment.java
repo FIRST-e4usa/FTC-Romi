@@ -32,7 +32,7 @@ public class OpModeSelectionDialogFragment extends DialogFragment {
       ((TextView)inflate.findViewById(R.id.opmodeDialogTitle)).setText(this.title);
       Builder var3 = new Builder(this.getActivity());
       var3.setCustomTitle(inflate);
-      ArrayAdapter var4 = new ArrayAdapter(this.getActivity(), 2131427419, 2131231011, this.opModes) {
+      ArrayAdapter var4 = new ArrayAdapter(this.getActivity(), R.layout.opmode_dialog_item, R.id.opmodeDialogItemText, this.opModes) {
          public View getView(int i, View view, ViewGroup viewGroup) {
             View view2 = super.getView(i, view, viewGroup);
             ((ImageView) view2.findViewById(R.id.opmodeDialogItemTextSeparator)).setVisibility((i >= OpModeSelectionDialogFragment.this.opModes.size() + -1 || ((OpModeMeta) OpModeSelectionDialogFragment.this.opModes.get(i)).group.equals(((OpModeMeta) OpModeSelectionDialogFragment.this.opModes.get(i + 1)).group)) ? View.GONE : View.VISIBLE);

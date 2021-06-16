@@ -118,6 +118,7 @@ import org.firstinspires.ftc.robotcore.internal.network.WifiMuteEvent;
 import org.firstinspires.ftc.robotcore.internal.network.WifiMuteStateMachine;
 import org.firstinspires.ftc.robotcore.internal.opmode.ClassManager;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
+import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes;
 import org.firstinspires.ftc.robotcore.internal.system.AppAliveNotifier;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.system.Assert;
@@ -129,12 +130,13 @@ import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo
 import org.firstinspires.ftc.robotserver.internal.programmingmode.ProgrammingModeManager;
 import org.firstinspires.inspection.RcInspectionActivity;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @SuppressWarnings("WeakerAccess")
-public class FtcRobotControllerActivity extends Activity
+public class FtcRobotControllerActivity extends Activity implements OpModeSelectionDialogFragment.OpModeSelectionDialogListener
   {
   public static final String TAG = "RCActivity";
   public String getTag() { return TAG; }
@@ -181,7 +183,7 @@ public class FtcRobotControllerActivity extends Activity
 
   private WifiDirectChannelChanger wifiDirectChannelChanger;
 
-  protected class RobotRestarter implements Restarter {
+    protected class RobotRestarter implements Restarter {
 
     public void requestRestart() {
       requestRobotRestart();
@@ -827,11 +829,19 @@ public class FtcRobotControllerActivity extends Activity
   }
 
   public void onClickButtonAutonomous(View view) {
-
+    showOpModeDialog(filterOpModes(new Predicate<OpModeMeta>() {
+      public boolean test(OpModeMeta opModeMeta) {
+        return opModeMeta.flavor == OpModeMeta.Flavor.AUTONOMOUS;
+      }
+    }), R.string.opmodeDialogTitleAutonomous);
   }
 
   public void onClickButtonTeleOp(View view) {
-
+    showOpModeDialog(filterOpModes(new Predicate<OpModeMeta>() {
+      public boolean test(OpModeMeta opModeMeta) {
+        return opModeMeta.flavor == OpModeMeta.Flavor.TELEOP;
+      }
+    }), R.string.opmodeDialogTitleTeleOp);
   }
 
   protected void showOpModeDialog(final List<OpModeMeta> opModes, final int title) {
@@ -846,5 +856,20 @@ public class FtcRobotControllerActivity extends Activity
 
   protected void initDefaultOpMode() {
     //this.networkConnectionHandler.sendCommand(new Command("CMD_INIT_OP_MODE", this.defaultOpMode.name));
+  }
+
+  public List<OpModeMeta> filterOpModes(Predicate<OpModeMeta> predicate) {
+    LinkedList linkedList = new LinkedList();
+    for (OpModeMeta next : RegisteredOpModes.getInstance().getOpModes()) {
+      if (predicate.test(next)) {
+        linkedList.add(next);
+      }
+    }
+    return linkedList;
+  }
+
+  @Override
+  public void onOpModeSelectionClick(OpModeMeta var1) {
+
   }
 }
