@@ -97,6 +97,83 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
+    <LinearLayout
+        android:id="@+id/opmodeMenu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+      <RelativeLayout
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+          <Button
+              android:id="@+id/buttonAutonomous"
+              android:layout_width="0.0dip"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="2.0dip"
+              android:layout_marginTop="2.0dip"
+              android:layout_marginBottom="2.0dip"
+              android:layout_weight="0.5"
+              android:background="?backgroundLight"
+              android:drawableStart="@drawable/icon_arrow"
+              android:enabled="false"
+              android:gravity="start|center"
+              android:onClick="onClickButtonAutonomous"
+              android:paddingLeft="20.0dip"
+              android:paddingRight="20.0dip"
+              android:textColor="?textWhite"
+              android:textSize="12.0sp" />
+
+          <Button
+              android:id="@+id/buttonTeleOp"
+              android:layout_width="0.0dip"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="2.0dip"
+              android:layout_marginEnd="2.0dip"
+              android:layout_marginBottom="2.0dip"
+              android:layout_weight="0.5"
+              android:background="?backgroundLight"
+              android:drawableEnd="@drawable/icon_arrow"
+              android:enabled="false"
+              android:gravity="start|center"
+              android:onClick="onClickButtonTeleOp"
+              android:paddingLeft="20.0dip"
+              android:paddingRight="20.0dip"
+              android:textColor="?textWhite"
+              android:textSize="12.0sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/chooseOpModePrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:text="@string/buttonTextSelectOpMode"
+            android:textColor="?textWhite"
+            android:textSize="12.0sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/currentOpModeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:text="(replaced)"
+            android:textColor="?textWhite"
+            android:textSize="16.0sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+      </RelativeLayout>
+    </LinearLayout>
+
     <TextView
       android:id="@+id/textNetworkConnectionStatus"
       android:layout_width="match_parent"
