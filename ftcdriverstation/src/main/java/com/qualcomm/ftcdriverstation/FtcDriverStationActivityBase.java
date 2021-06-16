@@ -1055,26 +1055,26 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
    public CallbackResult onNetworkConnectionEvent(NetworkConnection.NetworkEvent networkEvent) {
       CallbackResult callbackResult = CallbackResult.NOT_HANDLED;
       RobotLog.i("Received networkConnectionEvent: " + networkEvent.toString());
-      switch (networkEvent.ordinal()) {
-         case 1:
+      switch (networkEvent) {
+         case PEERS_AVAILABLE:
             if (this.networkConnectionHandler.isWifiDirect()) {
                onPeersAvailableWifiDirect();
             } else {
                onPeersAvailableSoftAP();
             }
             return CallbackResult.HANDLED;
-         case 2:
+         case GROUP_CREATED:
             RobotLog.ee(TAG, "Wifi Direct - connected as Group Owner, was expecting Peer");
             showWifiStatus(false, getString(R.string.wifiStatusErrorConnectedAsGroupOwner));
             ConfigWifiDirectActivity.launch(getBaseContext(), ConfigWifiDirectActivity.Flag.WIFI_DIRECT_DEVICE_NAME_INVALID);
             return CallbackResult.HANDLED;
-         case 3:
+         case CONNECTING:
             showWifiStatus(false, getString(R.string.wifiStatusConnecting));
             return CallbackResult.HANDLED;
-         case 4:
+         case CONNECTED_AS_PEER:
             showWifiStatus(false, getString(R.string.wifiStatusConnected));
             return CallbackResult.HANDLED;
-         case 5:
+         case CONNECTED_AS_GROUP_OWNER:
             showWifiStatus(true, getBestRobotControllerName());
             showWifiChannel();
             if (!NetworkConnection.isDeviceNameValid(this.networkConnectionHandler.getDeviceName())) {
@@ -1096,14 +1096,14 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
             this.networkConnectionHandler.cancelConnectionSearch();
             assumeClientConnectAndRefreshUI(ControlPanelBack.NO_CHANGE);
             return CallbackResult.HANDLED;
-         case 6:
+         case DISCONNECTED:
             String string = getString(R.string.wifiStatusDisconnected);
             showWifiStatus(false, string);
             RobotLog.vv(TAG, "Network Connection - " + string);
             this.networkConnectionHandler.discoverPotentialConnections();
             assumeClientDisconnect();
             return CallbackResult.HANDLED;
-         case 7:
+         case CONNECTION_INFO_AVAILABLE:
             String string2 = getString(R.string.dsErrorMessage, new Object[]{this.networkConnectionHandler.getFailureReason()});
             showWifiStatus(false, string2);
             RobotLog.vv(TAG, "Network Connection - " + string2);
@@ -1121,52 +1121,48 @@ public abstract class FtcDriverStationActivityBase extends ThemedActivity implem
    public boolean onOptionsItemSelected(final MenuItem menuItem) {
       this.wifiMuteStateMachine.consumeEvent((Event)WifiMuteEvent.ACTIVITY_OTHER);
       this.wifiMuteStateMachine.maskEvent((Event)WifiMuteEvent.STOPPED_OPMODE);
-      switch (menuItem.getItemId()) {
-         default:
-            return super.onOptionsItemSelected(menuItem);
-         case 2131230784:
-            this.startActivityForResult(new Intent(this.getBaseContext(), (Class)FtcDriverStationSettingsActivity.class), LaunchActivityConstantsList.RequestCode.SETTINGS_DRIVER_STATION.ordinal());
-            return true;
-         case 2131230783:
-            this.networkConnectionHandler.sendCommand(new Command("CMD_RESTART_ROBOT"));
-            this.wifiMuteStateMachine.consumeEvent((Event)WifiMuteEvent.ACTIVITY_START);
-            this.wifiMuteStateMachine.maskEvent((Event)WifiMuteEvent.STOPPED_OPMODE);
-            return true;
-         case 2131230782:
-            RobotLog.vv("DriverStation", "action_program_and_manage clicked");
-            this.networkConnectionHandler.sendCommand(new Command("CMD_START_DS_PROGRAM_AND_MANAGE"));
-            return true;
-         case 2131230776:
-            this.startActivityForResult(new Intent(this.getBaseContext(), (Class)FtcDriverStationInspectionReportsActivity.class), LaunchActivityConstantsList.RequestCode.INSPECTIONS.ordinal());
-            return true;
-         case 2131230773: {
-            this.finishAffinity();
-            final Iterator<ActivityManager.AppTask> iterator = (Iterator<ActivityManager.AppTask>)((ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE)).getAppTasks().iterator();
-            while (iterator.hasNext()) {
-               iterator.next().finishAndRemoveTask();
-            }
-            AppUtil.getInstance().exitApplication();
-            return true;
+      int itemId = menuItem.getItemId();
+      if (itemId == R.id.action_settings) {
+         this.startActivityForResult(new Intent(this.getBaseContext(), (Class) FtcDriverStationSettingsActivity.class), LaunchActivityConstantsList.RequestCode.SETTINGS_DRIVER_STATION.ordinal());
+         return true;
+      } else if (itemId == R.id.action_restart_robot) {
+         this.networkConnectionHandler.sendCommand(new Command("CMD_RESTART_ROBOT"));
+         this.wifiMuteStateMachine.consumeEvent((Event) WifiMuteEvent.ACTIVITY_START);
+         this.wifiMuteStateMachine.maskEvent((Event) WifiMuteEvent.STOPPED_OPMODE);
+         return true;
+      } else if (itemId == R.id.action_program_and_manage) {
+         RobotLog.vv("DriverStation", "action_program_and_manage clicked");
+         this.networkConnectionHandler.sendCommand(new Command("CMD_START_DS_PROGRAM_AND_MANAGE"));
+         return true;
+      } else if (itemId == R.id.action_inspection_mode) {
+         this.startActivityForResult(new Intent(this.getBaseContext(), (Class) FtcDriverStationInspectionReportsActivity.class), LaunchActivityConstantsList.RequestCode.INSPECTIONS.ordinal());
+         return true;
+      } else if (itemId == R.id.action_exit_app) {
+         this.finishAffinity();
+         final Iterator<ActivityManager.AppTask> iterator = (Iterator<ActivityManager.AppTask>) ((ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE)).getAppTasks().iterator();
+         while (iterator.hasNext()) {
+            iterator.next().finishAndRemoveTask();
          }
-         case 2131230769: {
-            final EditParameters editParameters = new EditParameters();
-            final Intent intent = new Intent(AppUtil.getDefContext(), (Class)FtcLoadFileActivity.class);
-            editParameters.putIntent(intent);
-            this.startActivityForResult(intent, LaunchActivityConstantsList.RequestCode.CONFIGURE_DRIVER_STATION.ordinal());
-            return true;
+         AppUtil.getInstance().exitApplication();
+         return true;
+      } else if (itemId == R.id.action_configure) {
+         final EditParameters editParameters = new EditParameters();
+         final Intent intent = new Intent(AppUtil.getDefContext(), (Class) FtcLoadFileActivity.class);
+         editParameters.putIntent(intent);
+         this.startActivityForResult(intent, LaunchActivityConstantsList.RequestCode.CONFIGURE_DRIVER_STATION.ordinal());
+         return true;
+      } else if (itemId == R.id.action_camera_stream) {
+         if (this.cameraStreamOpen) {
+            this.hideCameraStream();
+         } else {
+            this.showCameraStream();
          }
-         case 2131230768:
-            if (this.cameraStreamOpen) {
-               this.hideCameraStream();
-            }
-            else {
-               this.showCameraStream();
-            }
-            return true;
-         case 2131230760:
-            this.startActivity(new Intent(AppUtil.getDefContext(), (Class)FtcAboutActivity.class));
-            return true;
+         return true;
+      } else if (itemId == R.id.action_about) {
+         this.startActivity(new Intent(AppUtil.getDefContext(), (Class) FtcAboutActivity.class));
+         return true;
       }
+      return super.onOptionsItemSelected(menuItem);
    }
 
    protected void onPause() {
