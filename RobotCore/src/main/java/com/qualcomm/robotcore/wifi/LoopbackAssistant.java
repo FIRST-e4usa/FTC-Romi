@@ -32,7 +32,7 @@ public class LoopbackAssistant extends NetworkConnection {
 
     @Override
     public void enable() {
-
+        sendEvent(NetworkEvent.CONNECTED_AS_GROUP_OWNER);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class LoopbackAssistant extends NetworkConnection {
 
     @Override
     public void discoverPotentialConnections() {
-        sendEvent(NetworkEvent.CONNECTED_AS_PEER);
+        sendEvent(NetworkEvent.CONNECTED_AS_GROUP_OWNER);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class LoopbackAssistant extends NetworkConnection {
 
     @Override
     public String getDeviceName() {
-        return "";
+        return "E";
     }
 
     @Override

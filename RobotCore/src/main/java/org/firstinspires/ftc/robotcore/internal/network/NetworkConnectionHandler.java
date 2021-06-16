@@ -259,6 +259,8 @@ public class NetworkConnectionHandler {
      * runs on the driver station.
      */
     public boolean connectedWithUnexpectedDevice() {
+        if (getNetworkType() == NetworkType.LOOPBACK) return false;
+
         if ((getNetworkType() != NetworkType.WIRELESSAP) && (connectionOwner != null)) {
             if (!connectionOwner.equals(networkConnection.getConnectionOwnerMacAddress())) {
                 RobotLog.ee(TAG,"Network Connection - connected to " + networkConnection.getConnectionOwnerMacAddress() + ", expected " + connectionOwner);
