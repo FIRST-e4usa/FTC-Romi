@@ -109,6 +109,7 @@ import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogServic
 import org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity;
 import org.firstinspires.ftc.onbotjava.OnBotJavaHelperImpl;
 import org.firstinspires.ftc.onbotjava.OnBotJavaProgrammingMode;
+import org.firstinspires.ftc.robotcore.external.Event;
 import org.firstinspires.ftc.robotcore.external.Predicate;
 import org.firstinspires.ftc.robotcore.external.navigation.MotionDetection;
 import org.firstinspires.ftc.robotcore.internal.hardware.android.AndroidBoard;
@@ -834,12 +835,13 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
 
   // DRIVER STATION
   //protected View batteryInfo;
-  //protected Button buttonAutonomous;
-  //protected View buttonInit;
-  //protected View buttonInitStop;
-  //protected View buttonStart;
-  //protected ImageButton buttonStop;
-  //protected Button buttonTeleOp;
+  protected Button buttonAutonomous;
+  protected View buttonInit;
+  protected View buttonInitStop;
+  protected View buttonStart;
+  protected ImageButton buttonStop;
+  protected Button buttonTeleOp;
+  protected View controlPanelBack;
   //protected ImageView cameraStreamImageView;
   //protected LinearLayout cameraStreamLayout;
   //protected boolean cameraStreamOpen;
@@ -849,6 +851,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
   //protected String connectionOwnerPassword;
   //protected View controlPanelBack;
   protected TextView currentOpModeName;
+  protected View timerAndTimerSwitch;
 
   protected UIState uiState;
 
@@ -862,12 +865,18 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
   }
 
   public void driverStationOnCreate() {
-    //this.timerAndTimerSwitch = findViewById(R.id.timerAndTimerSwitch);
-    //this.buttonAutonomous = (Button) findViewById(R.id.buttonAutonomous);
-    //this.buttonTeleOp = (Button) findViewById(R.id.buttonTeleOp);
+    this.timerAndTimerSwitch = findViewById(R.id.timerAndTimerSwitch);
+    this.buttonAutonomous = (Button) findViewById(R.id.buttonAutonomous);
+    this.buttonTeleOp = (Button) findViewById(R.id.buttonTeleOp);
     this.currentOpModeName = (TextView) findViewById(R.id.currentOpModeName);
     this.chooseOpModePrompt = findViewById(R.id.chooseOpModePrompt);
-    //this.buttonStop = (ImageButton) findViewById(R.id.buttonStop);
+    this.buttonInit = findViewById(R.id.buttonInit);
+    this.buttonInitStop = findViewById(R.id.buttonInitStop);
+    this.buttonStart = findViewById(R.id.buttonStart);
+    this.buttonStop = (ImageButton) findViewById(R.id.buttonStop);
+    this.controlPanelBack = findViewById(R.id.controlPanel);
+
+    handleDefaultOpModeInitOrStart(false);
   }
 
   public void onClickButtonAutonomous(View view) {
@@ -884,6 +893,59 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
         return opModeMeta.flavor == OpModeMeta.Flavor.TELEOP;
       }
     }), R.string.opmodeDialogTitleTeleOp);
+  }
+
+  public void onClickButtonInit(final View view) {
+    //this.handleOpModeInit();
+  }
+
+  public void onClickButtonStart(final View view) {
+    //this.handleOpModeStart();
+  }
+
+  public void onClickButtonStop(final View view) {
+    //this.handleOpModeStop();
+  }
+
+  public void onClickTimer(final View view) {
+    //this.enableAndResetTimer(this.opModeUseTimer ^= true);
+  }
+
+  protected void handleDefaultOpModeInitOrStart(final boolean b) {
+
+    if (this.isDefaultOpMode(this.queuedOpMode)) {
+      this.uiWaitingForOpModeSelection();
+    }
+    else {
+      this.uiWaitingForInitEvent();
+      /*
+      if (!b) {
+        this.runDefaultOpMode();
+      }
+      */
+    }
+  }
+
+  protected void handleOpModeInit() {
+    if (this.uiState != UIState.WAITING_FOR_INIT_EVENT) {
+      return;
+    }
+    this.traceUiStateChange("ui:uiWaitingForAck", UIState.WAITING_FOR_ACK);
+    //this.sendMatchNumberIfNecessary();
+    //this.networkConnectionHandler.sendCommand(new Command("CMD_INIT_OP_MODE", this.queuedOpMode.name));
+    if (!this.queuedOpMode.name.equals(this.defaultOpMode.name)) {
+      this.wifiMuteStateMachine.consumeEvent((Event)WifiMuteEvent.RUNNING_OPMODE);
+    }
+    //this.hideCameraStream();
+  }
+
+  protected void uiWaitingForOpModeSelection() {
+    this.traceUiStateChange("ui:uiWaitingForOpModeSelection", UIState.WAITING_FOR_OPMODE_SELECTION);
+    this.checkConnectedEnableBrighten(ControlPanelBack.DIM);
+    this.dimControlPanelBack();
+    this.enableAndBrightenOpModeMenu();
+    this.showQueuedOpModeName();
+    this.disableOpModeControls();
   }
 
   protected void showOpModeDialog(final List<OpModeMeta> opModes, final int title) {
@@ -922,29 +984,6 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     this.uiWaitingForInitEvent();
   }
 
-  protected void uiWaitingForInitEvent() {
-    this.traceUiStateChange("ui:uiWaitingForInitEvent", UIState.WAITING_FOR_INIT_EVENT);
-    //this.checkConnectedEnableBrighten(FtcDriverStationActivityBase.ControlPanelBack.BRIGHT);
-    //this.brightenControlPanelBack();
-    this.showQueuedOpModeName();
-    //this.enableAndBrightenOpModeMenu();
-    //this.setEnabled(this.buttonInit, true);
-    //this.setVisibility(this.buttonInit, 0);
-    //this.setVisibility(this.buttonStart, 4);
-    //this.setVisibility((View)this.buttonStop, 4);
-    //this.setVisibility(this.buttonInitStop, 4);
-    //this.setTimerButtonEnabled(true);
-    //this.setVisibility(this.timerAndTimerSwitch, 0);
-    //this.hideCameraStream();
-  }
-
-  protected void traceUiStateChange(final String s, final UIState uiState) {
-    RobotLog.vv("DriverStation", s);
-    this.uiState = uiState;
-    //this.setTextView(this.textDsUiStateIndicator, uiState.indicator);
-    this.invalidateOptionsMenu();
-  }
-
   protected boolean setQueuedOpModeIfDifferent(final OpModeMeta queuedOpMode) {
     if (!queuedOpMode.name.equals(this.queuedOpMode.name)) {
       this.queuedOpMode = queuedOpMode;
@@ -976,6 +1015,92 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
 
   protected boolean isDefaultOpMode(final String anObject) {
     return this.defaultOpMode.name.equals(anObject);
+  }
+
+  protected void traceUiStateChange(final String s, final UIState uiState) {
+    RobotLog.vv("DriverStation", s);
+    this.uiState = uiState;
+    //this.setTextView(this.textDsUiStateIndicator, uiState.indicator);
+    this.invalidateOptionsMenu();
+  }
+
+  protected void uiWaitingForInitEvent() {
+    this.traceUiStateChange("ui:uiWaitingForInitEvent", UIState.WAITING_FOR_INIT_EVENT);
+    this.checkConnectedEnableBrighten(ControlPanelBack.BRIGHT);
+    this.brightenControlPanelBack();
+    this.showQueuedOpModeName();
+    this.enableAndBrightenOpModeMenu();
+    this.setEnabled(this.buttonInit, true);
+    this.setVisibility(this.buttonInit, 0);
+    this.setVisibility(this.buttonStart, 4);
+    this.setVisibility((View)this.buttonStop, 4);
+    this.setVisibility(this.buttonInitStop, 4);
+    this.setTimerButtonEnabled(true);
+    this.setVisibility(this.timerAndTimerSwitch, 0);
+    //this.hideCameraStream();
+  }
+
+  protected void disableOpModeControls() {
+    this.setEnabled(this.buttonInit, false);
+    this.setVisibility(this.buttonInit, 0);
+    this.setVisibility(this.buttonStart, 4);
+    this.setVisibility((View)this.buttonStop, 4);
+    this.setVisibility(this.buttonInitStop, 4);
+    this.setVisibility(this.timerAndTimerSwitch, 4);
+    //this.hideCameraStream();
+  }
+
+  public void setTimerButtonEnabled(boolean z) {
+    setEnabled(this.timerAndTimerSwitch, z);
+    setEnabled(findViewById(R.id.timerBackground), z);
+    setEnabled(findViewById(R.id.timerStopWatch), z);
+    setEnabled(findViewById(R.id.timerText), z);
+    setEnabled(findViewById(R.id.timerSwitchOn), z);
+    setEnabled(findViewById(R.id.timerSwitchOff), z);
+  }
+
+  public void setControlPanelBack(ControlPanelBack controlPanelBack2) {
+    if (controlPanelBack2 == ControlPanelBack.DIM) {
+      dimControlPanelBack();
+    } else if (controlPanelBack2 == ControlPanelBack.BRIGHT) {
+      brightenControlPanelBack();
+    }
+  }
+
+  protected void dimControlPanelBack() {
+    this.setOpacity(this.controlPanelBack, 0.3f);
+  }
+
+  protected void brightenControlPanelBack() {
+    this.setOpacity(this.controlPanelBack, 1.0f);
+  }
+
+  protected void checkConnectedEnableBrighten(final ControlPanelBack controlPanelBack) {
+    if (true) {
+      RobotLog.vv("DriverStation", "auto-rebrightening for connected state");
+      this.enableAndBrightenForConnected(controlPanelBack);
+      //this.setClientConnected(true);
+      //this.requestUIState();
+    }
+  }
+
+  protected void enableAndBrightenForConnected(final ControlPanelBack controlPanelBack) {
+    this.setControlPanelBack(controlPanelBack);
+    //this.setOpacity(this.wifiInfo, 1.0f);
+    //this.setOpacity(this.batteryInfo, 1.0f);
+    this.enableAndBrightenOpModeMenu();
+  }
+
+  protected void enableAndBrightenOpModeMenu() {
+    this.enableAndBrighten((View)this.buttonAutonomous);
+    this.enableAndBrighten((View)this.buttonTeleOp);
+    this.setOpacity((View)this.currentOpModeName, 1.0f);
+    this.setOpacity(this.chooseOpModePrompt, 1.0f);
+  }
+
+  protected void enableAndBrighten(final View view) {
+    this.setOpacity(view, 1.0f);
+    this.setEnabled(view, true);
   }
 
   public void setEnabled(final View view, final boolean z) {
@@ -1010,6 +1135,14 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     });
   }
 
+  public void setOpacity(final View view, final float f) {
+    runOnUiThread(new Runnable() {
+      public void run() {
+        view.setAlpha(f);
+      }
+    });
+  }
+
   protected enum UIState {
     UNKNOWN("U"),
     CANT_CONTINUE("E"),
@@ -1027,5 +1160,11 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     private UIState(String str) {
       this.indicator = str;
     }
+  }
+
+  protected enum ControlPanelBack {
+    NO_CHANGE,
+    DIM,
+    BRIGHT
   }
 }
