@@ -4,6 +4,7 @@
 
 package com.qualcomm.ftccommon.configuration;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import androidx.annotation.XmlRes;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dekaresearch.simulation.SimulationConstants;
 import com.google.gson.reflect.TypeToken;
 import com.qualcomm.ftccommon.CommandList;
 import com.qualcomm.ftccommon.R;
@@ -250,27 +252,37 @@ public class RobotConfigFileManager {
             {
                 @Override public void run()
                 {
-                    String fileName = stripFileNameExtension(fileNameIn).trim();
-                    if (fileName.isEmpty()) {
-                        fileName = noConfig;
-                    }
-                    if (dirty) {
-                        fileName = String.format(context.getString(R.string.configDirtyLabel), fileName);
-                    }
-
-                    TextView activeFile = (TextView) activity.findViewById(idActiveConfigName);
-                    if (activeFile != null) {
-                        activeFile.setText(fileName);
+                    if(SimulationConstants.isSimulation && SimulationConstants.isRomi) {
+                        TextView activeFile = (TextView) activity.findViewById(idActiveConfigName);
+                        if (activeFile != null) {
+                            activeFile.setText("Romi (built in)");
+                            changeHeaderBackground(R.id.backgroundMediumHolder);
+                        } else {
+                            RobotLog.ee(TAG, "unable to find header text 0x%08x", idActiveConfigName);
+                        }
                     } else {
-                        RobotLog.ee(TAG, "unable to find header text 0x%08x", idActiveConfigName);
-                    }
+                        String fileName = stripFileNameExtension(fileNameIn).trim();
+                        if (fileName.isEmpty()) {
+                            fileName = noConfig;
+                        }
+                        if (dirty) {
+                            fileName = String.format(context.getString(R.string.configDirtyLabel), fileName);
+                        }
 
-                    if (!dirty && fileName.equalsIgnoreCase(noConfig)) {
-                        changeHeaderBackground(R.id.backgroundLightHolder);
-                    } else if (dirty) {
-                        changeHeaderBackground(R.id.backgroundDarkGrayHolder);
-                    } else {
-                        changeHeaderBackground(R.id.backgroundMediumHolder);
+                        TextView activeFile = (TextView) activity.findViewById(idActiveConfigName);
+                        if (activeFile != null) {
+                            activeFile.setText(fileName);
+                        } else {
+                            RobotLog.ee(TAG, "unable to find header text 0x%08x", idActiveConfigName);
+                        }
+
+                        if (!dirty && fileName.equalsIgnoreCase(noConfig)) {
+                            changeHeaderBackground(R.id.backgroundLightHolder);
+                        } else if (dirty) {
+                            changeHeaderBackground(R.id.backgroundDarkGrayHolder);
+                        } else {
+                            changeHeaderBackground(R.id.backgroundMediumHolder);
+                        }
                     }
                 }
             });

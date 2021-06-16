@@ -62,6 +62,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.dekaresearch.simulation.SimulationConstants;
 import com.google.blocks.ftcrobotcontroller.ProgrammingWebHandlers;
 import com.google.blocks.ftcrobotcontroller.runtime.BlocksOpMode;
 import com.qualcomm.ftccommon.ClassManagerFactory;
@@ -311,6 +312,10 @@ public class FtcRobotControllerActivity extends Activity
           }
         });
         popupMenu.inflate(R.menu.ftc_robot_controller);
+        if(SimulationConstants.isSimulation) {
+          popupMenu.getMenu().findItem(R.id.action_configure_robot).setVisible(false);
+          // TODO(Romi) make simulation related buttons visible
+        }
         popupMenu.show();
       }
     });
