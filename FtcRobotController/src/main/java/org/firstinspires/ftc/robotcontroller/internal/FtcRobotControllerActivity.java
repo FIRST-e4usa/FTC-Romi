@@ -58,7 +58,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupMenu;
@@ -301,6 +303,8 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     eventLoop = null;
 
     setContentView(R.layout.activity_ftc_controller);
+
+    driverStationOnCreate();
 
     preferencesHelper = new PreferencesHelper(TAG, context);
     preferencesHelper.writeBooleanPrefIfDifferent(context.getString(R.string.pref_rc_connected), true);
@@ -828,6 +832,44 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     }
   }
 
+  // DRIVER STATION
+  //protected View batteryInfo;
+  //protected Button buttonAutonomous;
+  //protected View buttonInit;
+  //protected View buttonInitStop;
+  //protected View buttonStart;
+  //protected ImageButton buttonStop;
+  //protected Button buttonTeleOp;
+  //protected ImageView cameraStreamImageView;
+  //protected LinearLayout cameraStreamLayout;
+  //protected boolean cameraStreamOpen;
+  protected View chooseOpModePrompt;
+  //protected boolean clientConnected;
+  //protected String connectionOwner;
+  //protected String connectionOwnerPassword;
+  //protected View controlPanelBack;
+  protected TextView currentOpModeName;
+
+  protected UIState uiState;
+
+  protected OpModeMeta queuedOpMode;
+  protected final OpModeMeta defaultOpMode;
+
+  public FtcRobotControllerActivity() {
+    final OpModeMeta queuedOpModeWhenMuted = new OpModeMeta.Builder().setName(".Stop.Robot.").build();
+    this.defaultOpMode = queuedOpModeWhenMuted;
+    this.queuedOpMode = queuedOpModeWhenMuted;
+  }
+
+  public void driverStationOnCreate() {
+    //this.timerAndTimerSwitch = findViewById(R.id.timerAndTimerSwitch);
+    //this.buttonAutonomous = (Button) findViewById(R.id.buttonAutonomous);
+    //this.buttonTeleOp = (Button) findViewById(R.id.buttonTeleOp);
+    this.currentOpModeName = (TextView) findViewById(R.id.currentOpModeName);
+    this.chooseOpModePrompt = findViewById(R.id.chooseOpModePrompt);
+    //this.buttonStop = (ImageButton) findViewById(R.id.buttonStop);
+  }
+
   public void onClickButtonAutonomous(View view) {
     showOpModeDialog(filterOpModes(new Predicate<OpModeMeta>() {
       public boolean test(OpModeMeta opModeMeta) {
@@ -870,6 +912,120 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
 
   @Override
   public void onOpModeSelectionClick(OpModeMeta var1) {
+    this.handleOpModeQueued(var1);
+  }
 
+  protected void handleOpModeQueued(final OpModeMeta queuedOpModeIfDifferent) {
+    if (this.setQueuedOpModeIfDifferent(queuedOpModeIfDifferent)) {
+      //this.enableAndResetTimerForQueued();
+    }
+    this.uiWaitingForInitEvent();
+  }
+
+  protected void uiWaitingForInitEvent() {
+    this.traceUiStateChange("ui:uiWaitingForInitEvent", UIState.WAITING_FOR_INIT_EVENT);
+    //this.checkConnectedEnableBrighten(FtcDriverStationActivityBase.ControlPanelBack.BRIGHT);
+    //this.brightenControlPanelBack();
+    this.showQueuedOpModeName();
+    //this.enableAndBrightenOpModeMenu();
+    //this.setEnabled(this.buttonInit, true);
+    //this.setVisibility(this.buttonInit, 0);
+    //this.setVisibility(this.buttonStart, 4);
+    //this.setVisibility((View)this.buttonStop, 4);
+    //this.setVisibility(this.buttonInitStop, 4);
+    //this.setTimerButtonEnabled(true);
+    //this.setVisibility(this.timerAndTimerSwitch, 0);
+    //this.hideCameraStream();
+  }
+
+  protected void traceUiStateChange(final String s, final UIState uiState) {
+    RobotLog.vv("DriverStation", s);
+    this.uiState = uiState;
+    //this.setTextView(this.textDsUiStateIndicator, uiState.indicator);
+    this.invalidateOptionsMenu();
+  }
+
+  protected boolean setQueuedOpModeIfDifferent(final OpModeMeta queuedOpMode) {
+    if (!queuedOpMode.name.equals(this.queuedOpMode.name)) {
+      this.queuedOpMode = queuedOpMode;
+      this.showQueuedOpModeName();
+      return true;
+    }
+    return false;
+  }
+
+  protected void showQueuedOpModeName() {
+    this.showQueuedOpModeName(this.queuedOpMode);
+  }
+
+  protected void showQueuedOpModeName(final OpModeMeta opModeMeta) {
+    if (this.isDefaultOpMode(opModeMeta)) {
+      this.setVisibility((View)this.currentOpModeName, 8);
+      this.setVisibility(this.chooseOpModePrompt, 0);
+    }
+    else {
+      this.setTextView(this.currentOpModeName, opModeMeta.name);
+      this.setVisibility((View)this.currentOpModeName, 0);
+      this.setVisibility(this.chooseOpModePrompt, 8);
+    }
+  }
+
+  protected boolean isDefaultOpMode(final OpModeMeta opModeMeta) {
+    return this.isDefaultOpMode(opModeMeta.name);
+  }
+
+  protected boolean isDefaultOpMode(final String anObject) {
+    return this.defaultOpMode.name.equals(anObject);
+  }
+
+  public void setEnabled(final View view, final boolean z) {
+    runOnUiThread(new Runnable() {
+      public void run() {
+        view.setEnabled(z);
+      }
+    });
+  }
+
+  public void setVisibility(final View view, final int i) {
+    runOnUiThread(new Runnable() {
+      public void run() {
+        view.setVisibility(i);
+      }
+    });
+  }
+
+  public void setTextColor(final TextView textView, final int i) {
+    runOnUiThread(new Runnable() {
+      public void run() {
+        textView.setTextColor(i);
+      }
+    });
+  }
+
+  public void setTextView(final TextView textView, final CharSequence charSequence) {
+    runOnUiThread(new Runnable() {
+      public void run() {
+        textView.setText(charSequence);
+      }
+    });
+  }
+
+  protected enum UIState {
+    UNKNOWN("U"),
+    CANT_CONTINUE("E"),
+    DISCONNECTED("X"),
+    CONNNECTED("C"),
+    WAITING_FOR_OPMODE_SELECTION("M"),
+    WAITING_FOR_INIT_EVENT("K"),
+    WAITING_FOR_ACK("KW"),
+    WAITING_FOR_START_EVENT("S"),
+    WAITING_FOR_STOP_EVENT("P"),
+    ROBOT_STOPPED("Z");
+
+    public final String indicator;
+
+    private UIState(String str) {
+      this.indicator = str;
+    }
   }
 }
