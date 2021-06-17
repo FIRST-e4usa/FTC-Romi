@@ -63,6 +63,9 @@ package com.qualcomm.ftccommon;
 
 import android.app.Activity;
 import android.hardware.usb.UsbDevice;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+
 import androidx.annotation.Nullable;
 
 import com.qualcomm.ftccommon.configuration.RobotConfigFile;
@@ -122,6 +125,9 @@ public class FtcEventLoop extends FtcEventLoopBase {
   protected UsbModuleAttachmentHandler     usbModuleAttachmentHandler;
   protected final  Map<String,Long>        recentlyAttachedUsbDevices;  // serialNumber -> when to attach
   protected final  AtomicReference<OpMode> opModeStopRequested;
+
+  // For simulation only
+  protected final Gamepad localGamepad = new Gamepad();
 
   //------------------------------------------------------------------------------------------------
   // Construction
@@ -229,7 +235,13 @@ public class FtcEventLoop extends FtcEventLoopBase {
     checkForChangedOpModes();
 
     ftcEventLoopHandler.displayGamePadInfo(opModeManager.getActiveOpModeName());
-    Gamepad gamepads[] = ftcEventLoopHandler.getGamepads();
+
+    Gamepad gamepads[];
+    if(SimulationConstants.isSimulation) {
+      gamepads = new Gamepad[] { localGamepad, localGamepad };
+    } else {
+      gamepads = ftcEventLoopHandler.getGamepads();
+    }
 
     opModeManager.runActiveOpMode(gamepads);
   }
@@ -569,5 +581,13 @@ public class FtcEventLoop extends FtcEventLoopBase {
     String nameOfUsbModule(RobotUsbModule module) {
       return HardwareFactory.getDeviceDisplayName(activityContext, module.getSerialNumber());
     }
+  }
+
+  public void updateLocalGamepad(KeyEvent keyEvent) {
+    localGamepad.update(keyEvent);
+  }
+
+  public void updateLocalGamepad(MotionEvent motionEvent) {
+    localGamepad.update(motionEvent);
   }
 }

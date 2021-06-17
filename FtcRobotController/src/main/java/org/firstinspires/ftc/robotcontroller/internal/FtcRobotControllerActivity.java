@@ -53,6 +53,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import ftcdriverstation.OpModeSelectionDialogFragment;
 
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -91,6 +92,7 @@ import com.qualcomm.hardware.HardwareFactory;
 import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.FtcRobotControllerServiceState;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.hardware.configuration.Utility;
 import com.qualcomm.robotcore.robocol.Command;
@@ -135,6 +137,7 @@ import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo
 import org.firstinspires.ftc.robotserver.internal.programmingmode.ProgrammingModeManager;
 import org.firstinspires.inspection.RcInspectionActivity;
 
+import java.security.Key;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -879,6 +882,27 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     this.controlPanelBack = findViewById(R.id.controlPanel);
 
     handleDefaultOpModeInitOrStart(false);
+  }
+
+  @Override
+  public boolean dispatchKeyEvent(final KeyEvent keyEvent) {
+    eventLoop.updateLocalGamepad(keyEvent);
+    if (Gamepad.isGamepadDevice(keyEvent.getDeviceId())) {
+      //this.gamepadManager.handleGamepadEvent(keyEvent);
+      eventLoop.updateLocalGamepad(keyEvent);
+      return true;
+    }
+    return super.dispatchKeyEvent(keyEvent);
+  }
+
+  @Override
+  public boolean dispatchGenericMotionEvent(final MotionEvent motionEvent) {
+    if (Gamepad.isGamepadDevice(motionEvent.getDeviceId())) {
+      //this.gamepadManager.handleGamepadEvent(motionEvent);
+      eventLoop.updateLocalGamepad(motionEvent);
+      return true;
+    }
+    return super.dispatchGenericMotionEvent(motionEvent);
   }
 
   public void onClickButtonAutonomous(View view) {

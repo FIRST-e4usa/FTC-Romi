@@ -32,6 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftccommon;
 
 import android.content.Context;
+import android.view.KeyEvent;
+
 import androidx.annotation.Nullable;
 
 import com.qualcomm.ftccommon.configuration.USBScanManager;
