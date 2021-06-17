@@ -96,8 +96,10 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.hardware.configuration.Utility;
 import com.qualcomm.robotcore.robocol.Command;
+import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.robot.RobotState;
+import com.qualcomm.robotcore.util.BatteryChecker;
 import com.qualcomm.robotcore.util.Device;
 import com.qualcomm.robotcore.util.Dimmer;
 import com.qualcomm.robotcore.util.ImmersiveMode;
@@ -140,7 +142,9 @@ import org.firstinspires.inspection.RcInspectionActivity;
 import java.security.Key;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @SuppressWarnings("WeakerAccess")
@@ -412,6 +416,9 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     UpdateUI result = new UpdateUI(this, dimmer);
     result.setRestarter(restarter);
     result.setTextViews(textNetworkConnectionStatus, textRobotStatus, textGamepad, textOpMode, textErrorMessage, textDeviceName);
+    if(SimulationConstants.isSimulation) {
+      result.setExtraTextViews(textTelemetry);
+    }
     return result;
   }
 
@@ -858,6 +865,10 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
   protected TextView currentOpModeName;
   protected View timerAndTimerSwitch;
 
+  protected TextView systemTelemetry;
+  protected int systemTelemetryOriginalColor;
+  protected TextView textTelemetry;
+
   protected UIState uiState;
 
   protected OpModeMeta queuedOpMode;
@@ -880,6 +891,11 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     this.buttonStart = findViewById(R.id.buttonStart);
     this.buttonStop = (ImageButton) findViewById(R.id.buttonStop);
     this.controlPanelBack = findViewById(R.id.controlPanel);
+
+    this.textTelemetry = (TextView) findViewById(R.id.textTelemetry);
+    //TextView textView = (TextView) findViewById(R.id.textSystemTelemetry);
+    //this.systemTelemetry = textView;
+    //this.systemTelemetryOriginalColor = textView.getCurrentTextColor();
 
     handleDefaultOpModeInitOrStart(false);
   }
@@ -979,7 +995,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       });
       handleDefaultOpModeInitOrStart(false);
     } else {
-      //clearUserTelemetry();
+      callback.clearUserTelemetry();
       //startKeepAlives();
       if (setQueuedOpModeIfDifferent(queuedOpMode)) {
         RobotLog.vv(TAG, "timer: init new opmode");
@@ -1122,6 +1138,20 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       return new OpModeMeta.Builder().setName(anObject).build();
     }
   }
+  //endregion
+
+  //region Telemetry
+
+  /*
+  protected void clearSystemTelemetry() {
+    this.setVisibility((View)this.systemTelemetry, 8);
+    this.setTextView(this.systemTelemetry, "");
+    this.setTextColor(this.systemTelemetry, this.systemTelemetryOriginalColor);
+    RobotLog.clearGlobalErrorMsg();
+    RobotLog.clearGlobalWarningMsg();
+  }
+  */
+
   //endregion
 
   //region UI state

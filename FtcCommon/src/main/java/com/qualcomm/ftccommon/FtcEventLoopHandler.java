@@ -376,7 +376,11 @@ public class FtcEventLoopHandler implements BatteryChecker.BatteryWatcher {
         // data has already been send.
         if (telemetry.hasData()) {
           if (eventLoopManager!=null) {
-            eventLoopManager.sendTelemetryData(telemetry);
+            if(SimulationConstants.isSimulation) {
+              callback.receiveTelemetry(telemetry);
+            } else {
+              eventLoopManager.sendTelemetryData(telemetry);
+            }
           }
           telemetry.clearData();
         }
