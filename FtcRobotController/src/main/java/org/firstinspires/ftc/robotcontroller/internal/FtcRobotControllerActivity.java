@@ -377,7 +377,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     textGamepad[1] = (TextView) findViewById(R.id.textGamepad2);
     immersion = new ImmersiveMode(getWindow().getDecorView());
     dimmer = new Dimmer(this);
-    dimmer.longBright();
+    //dimmer.longBright();
 
     programmingModeManager = new ProgrammingModeManager();
     programmingModeManager.register(new ProgrammingWebHandlers());
@@ -438,7 +438,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     entireScreenLayout.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
-        dimmer.handleDimTimer();
+        //dimmer.handleDimTimer();
         return false;
       }
     });
@@ -588,7 +588,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       startActivity(inspectionModeIntent);
       return true;
     } else if (id == R.id.action_restart_robot) {
-      dimmer.handleDimTimer();
+      //dimmer.handleDimTimer();
       AppUtil.getInstance().showToast(UILocation.BOTH, context.getString(R.string.toastRestartingRobot));
       requestRobotRestart();
       return true;
@@ -795,7 +795,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
         @Override
         public void onMenuVisibilityChanged(boolean isVisible) {
           if (isVisible) {
-            dimmer.handleDimTimer();
+            //dimmer.handleDimTimer();
           }
         }
       });
