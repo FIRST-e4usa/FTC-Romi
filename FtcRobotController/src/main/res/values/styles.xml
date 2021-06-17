@@ -14,7 +14,7 @@
 
     <style name="AppThemeGreenRC" parent="AppTheme.Green">
         <item name="buttonOutline">@drawable/button_outline_green</item>
-        <item name="buttonStart">@drawable/button_start_red</item>
+        <item name="buttonStart">@drawable/button_start_green</item>
         <item name="buttonStop">@drawable/button_stop_green</item>
         <item name="circleMedium">@drawable/circle_medium_green</item>
         <item name="circleMediumMedium">@drawable/circle_medium_medium_green</item>
@@ -24,7 +24,7 @@
 
     <style name="AppThemeBlueRC" parent="AppTheme.Blue">
         <item name="buttonOutline">@drawable/button_outline_blue</item>
-        <item name="buttonStart">@drawable/button_start_red</item>
+        <item name="buttonStart">@drawable/button_start_blue</item>
         <item name="buttonStop">@drawable/button_stop_blue</item>
         <item name="circleMedium">@drawable/circle_medium_blue</item>
         <item name="circleMediumMedium">@drawable/circle_medium_medium_blue</item>
@@ -34,7 +34,7 @@
 
     <style name="AppThemePurpleRC" parent="AppTheme.Purple">
         <item name="buttonOutline">@drawable/button_outline_purple</item>
-        <item name="buttonStart">@drawable/button_start_red</item>
+        <item name="buttonStart">@drawable/button_start_purple</item>
         <item name="buttonStop">@drawable/button_stop_purple</item>
         <item name="circleMedium">@drawable/circle_medium_purple</item>
         <item name="circleMediumMedium">@drawable/circle_medium_medium_purple</item>
@@ -44,7 +44,7 @@
 
     <style name="AppThemeOrangeRC" parent="AppTheme.Orange">
         <item name="buttonOutline">@drawable/button_outline_orange</item>
-        <item name="buttonStart">@drawable/button_start_red</item>
+        <item name="buttonStart">@drawable/button_start_orange</item>
         <item name="buttonStop">@drawable/button_stop_orange</item>
         <item name="circleMedium">@drawable/circle_medium_orange</item>
         <item name="circleMediumMedium">@drawable/circle_medium_medium_orange</item>
@@ -54,7 +54,7 @@
 
     <style name="AppThemeTealRC" parent="AppTheme.Teal">
         <item name="buttonOutline">@drawable/button_outline_teal</item>
-        <item name="buttonStart">@drawable/button_start_red</item>
+        <item name="buttonStart">@drawable/button_start_teal</item>
         <item name="buttonStop">@drawable/button_stop_teal</item>
         <item name="circleMedium">@drawable/circle_medium_teal</item>
         <item name="circleMediumMedium">@drawable/circle_medium_medium_teal</item>
