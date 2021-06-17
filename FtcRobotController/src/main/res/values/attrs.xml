@@ -98,6 +98,7 @@
     <attr name="buttonIconDimen" format="dimension" />
     <attr name="buttonOutline" format="reference" />
     <attr name="buttonPanelSideLayout" format="reference" />
+    <attr name="buttonStart" format="reference" />
     <attr name="buttonStop" format="reference" />
     <attr name="buttonStyle" format="reference" />
     <attr name="buttonStyleSmall" format="reference" />
