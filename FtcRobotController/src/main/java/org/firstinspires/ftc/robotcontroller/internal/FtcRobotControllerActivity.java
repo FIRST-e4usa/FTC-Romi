@@ -884,6 +884,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     handleDefaultOpModeInitOrStart(false);
   }
 
+  //region Gamepad events
   @Override
   public boolean dispatchKeyEvent(final KeyEvent keyEvent) {
     eventLoop.updateLocalGamepad(keyEvent);
@@ -904,7 +905,9 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     }
     return super.dispatchGenericMotionEvent(motionEvent);
   }
+  //endregion
 
+  //region Button clicks
   public void onClickButtonAutonomous(View view) {
     showOpModeDialog(filterOpModes(new Predicate<OpModeMeta>() {
       public boolean test(OpModeMeta opModeMeta) {
@@ -936,7 +939,9 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
   public void onClickTimer(final View view) {
     //this.enableAndResetTimer(this.opModeUseTimer ^= true);
   }
+  //endregion
 
+  //region OpMode lifecycle
   protected void handleDefaultOpModeInitOrStart(final boolean b) {
 
     if (this.isDefaultOpMode(this.queuedOpMode)) {
@@ -1028,16 +1033,9 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     //this.clearMatchNumberIfNecessary();
     this.initDefaultOpMode();
   }
+  //endregion
 
-  protected void uiWaitingForOpModeSelection() {
-    this.traceUiStateChange("ui:uiWaitingForOpModeSelection", UIState.WAITING_FOR_OPMODE_SELECTION);
-    this.checkConnectedEnableBrighten(ControlPanelBack.DIM);
-    this.dimControlPanelBack();
-    this.enableAndBrightenOpModeMenu();
-    this.showQueuedOpModeName();
-    this.disableOpModeControls();
-  }
-
+  //region OpMode selection
   protected void showOpModeDialog(final List<OpModeMeta> opModes, final int title) {
     //this.stopTimerPreservingRemainingTime();
     this.initDefaultOpMode();
@@ -1124,12 +1122,23 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       return new OpModeMeta.Builder().setName(anObject).build();
     }
   }
+  //endregion
 
+  //region UI state
   protected void traceUiStateChange(final String s, final UIState uiState) {
     RobotLog.vv("DriverStation", s);
     this.uiState = uiState;
     //this.setTextView(this.textDsUiStateIndicator, uiState.indicator);
     this.invalidateOptionsMenu();
+  }
+
+  protected void uiWaitingForOpModeSelection() {
+    this.traceUiStateChange("ui:uiWaitingForOpModeSelection", UIState.WAITING_FOR_OPMODE_SELECTION);
+    this.checkConnectedEnableBrighten(ControlPanelBack.DIM);
+    this.dimControlPanelBack();
+    this.enableAndBrightenOpModeMenu();
+    this.showQueuedOpModeName();
+    this.disableOpModeControls();
   }
 
   protected void uiWaitingForInitEvent() {
@@ -1175,7 +1184,9 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     //this.setVisibility(this.timerAndTimerSwitch, 0);
     //this.hideCameraStream();
   }
+  //endregion
 
+  //region UI util
   protected void disableOpModeControls() {
     this.setEnabled(this.buttonInit, false);
     this.setVisibility(this.buttonInit, 0);
@@ -1278,6 +1289,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       }
     });
   }
+  //endregion
 
   protected enum UIState {
     UNKNOWN("U"),
