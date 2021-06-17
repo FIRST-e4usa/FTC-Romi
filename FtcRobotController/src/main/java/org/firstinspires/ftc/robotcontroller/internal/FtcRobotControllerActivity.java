@@ -173,6 +173,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
   protected TextView textDeviceName;
   protected TextView textNetworkConnectionStatus;
   protected TextView textRobotStatus;
+  protected TextView textWebSocketStatus;
   protected TextView[] textGamepad = new TextView[NUM_GAMEPADS];
   protected TextView textOpMode;
   protected TextView textErrorMessage;
@@ -370,6 +371,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     textNetworkConnectionStatus = (TextView) findViewById(R.id.textNetworkConnectionStatus);
     textRobotStatus = (TextView) findViewById(R.id.textRobotStatus);
     textOpMode = (TextView) findViewById(R.id.textOpMode);
+    textWebSocketStatus = (TextView) findViewById(R.id.textWebSocketStatus);
     textErrorMessage = (TextView) findViewById(R.id.textErrorMessage);
     textGamepad[0] = (TextView) findViewById(R.id.textGamepad1);
     textGamepad[1] = (TextView) findViewById(R.id.textGamepad2);
@@ -417,7 +419,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     result.setRestarter(restarter);
     result.setTextViews(textNetworkConnectionStatus, textRobotStatus, textGamepad, textOpMode, textErrorMessage, textDeviceName);
     if(SimulationConstants.isSimulation) {
-      result.setExtraTextViews(textTelemetry);
+      result.setExtraTextViews(textTelemetry, textWebSocketStatus);
     }
     return result;
   }

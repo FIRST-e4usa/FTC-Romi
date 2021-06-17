@@ -119,10 +119,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           android:text="" />
 
       <TextView
-          android:id="@+id/textOpMode"
+          android:id="@+id/textWebSocketStatus"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_below="@+id/textRobotStatus"
+          android:visibility="invisible"
+          android:text="" />
+
+      <TextView
+          android:id="@+id/textOpMode"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/textWebSocketStatus"
           android:visibility="invisible"
           android:text="" />
 

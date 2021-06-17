@@ -29,6 +29,8 @@ public class SimulationWebSocketClient {
 
     private WebSocketClient client;
 
+    private Listener listener;
+
     //region Providers
     Map<String, Provider> providers = new HashMap<>();
     //endregion
@@ -64,6 +66,8 @@ public class SimulationWebSocketClient {
                 RobotLog.ii(TAG, "WebSocket connected");
 
                 createProviders();
+
+                if(listener != null) listener.onOpen();
             }
 
             @Override
@@ -89,6 +93,8 @@ public class SimulationWebSocketClient {
                 RobotLog.ii(TAG, "WebSocket closed");
 
                 destroyProviders();
+
+                if(listener != null) listener.onClose();
             }
 
             @Override
@@ -102,6 +108,9 @@ public class SimulationWebSocketClient {
 
     public void connect() {
         RobotLog.ii(TAG, "Try connect");
+
+        if(listener != null) listener.onOpening();
+
         if(client == null || client.isClosed()) {
             createClient();
         }
@@ -145,6 +154,10 @@ public class SimulationWebSocketClient {
         }
     }
 
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
     public <T extends Provider> void addProvider(T provider) {
         String key = getProviderKey(provider.getType(), provider.getDevice());
         providers.put(key, provider);
@@ -181,5 +194,11 @@ public class SimulationWebSocketClient {
 
     public static String getProviderKey(String type, String device) {
         return type + (device.equals("") ? "" : ":" + device);
+    }
+
+    public interface Listener {
+        void onOpen();
+        void onClose();
+        void onOpening();
     }
 }

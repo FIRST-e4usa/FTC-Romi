@@ -289,7 +289,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
         try {
 
           shutdownRobot();
-          awaitUSB();
+          if(!SimulationConstants.isSimulation) awaitUSB();
           initializeEventLoopAndRobot();  // unclear why this step couldn't be folded into startRobot()
           waitForNetwork();
           startRobot();

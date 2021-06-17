@@ -39,6 +39,8 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
 import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -58,6 +60,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.network.WifiDirectDeviceNameManager;
 import org.firstinspires.ftc.robotcore.internal.network.NetworkStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PeerStatus;
+import org.w3c.dom.Text;
 
 import java.util.Map;
 import java.util.TreeSet;
@@ -76,6 +79,25 @@ public class UpdateUI {
 
     public Callback() {
       DeviceNameManagerFactory.getInstance().registerCallback(deviceNameManagerCallback);
+
+      if(SimulationConstants.isSimulation) {
+        SimulationWebSocketClient.getInstance().setListener(new SimulationWebSocketClient.Listener() {
+          @Override
+          public void onOpen() {
+            setWebSocketStatus("connected");
+          }
+
+          @Override
+          public void onClose() {
+            setWebSocketStatus("disconnected");
+          }
+
+          @Override
+          public void onOpening() {
+            setWebSocketStatus("connecting...");
+          }
+        });
+      }
     }
 
     public void close() {
@@ -208,6 +230,9 @@ public class UpdateUI {
       String format = activity.getString(R.string.networkStatusFormat);
       String strNetworkStatus = networkStatus.toString(activity, networkStatusExtra);
       String strPeerStatus    = peerStatus==PeerStatus.UNKNOWN ? "" : String.format(", %s", peerStatus.toString(activity));
+      if(SimulationConstants.isSimulation) {
+        strPeerStatus = "";
+      }
       final String message = String.format(format, strNetworkStatus, strPeerStatus);
 
       // Log if changed
@@ -289,6 +314,15 @@ public class UpdateUI {
           stateMonitor.updateWarningMessage(null);
         }
       }
+    }
+
+    public void setWebSocketStatus(final String status) {
+      activity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          setText(textWebSocketStatus, String.format("WebSocket Client Status: %s", status));
+        }
+      });
     }
 
     public void receiveTelemetry(final TelemetryMessage telemetryMessage) {
@@ -387,6 +421,8 @@ public class UpdateUI {
   protected Telemetry.DisplayFormat telemetryMode = Telemetry.DisplayFormat.CLASSIC;
   protected TextView textTelemetry;
 
+  protected TextView textWebSocketStatus;
+
   Restarter restarter;
   FtcRobotControllerService controllerService;
 
@@ -415,8 +451,9 @@ public class UpdateUI {
     this.textDeviceName = textDeviceName;
   }
 
-  public void setExtraTextViews(TextView textTelemetry) {
+  public void setExtraTextViews(TextView textTelemetry, TextView textWebSocketStatus) {
     this.textTelemetry = textTelemetry;
+    this.textWebSocketStatus = textWebSocketStatus;
   }
 
   //------------------------------------------------------------------------------------------------
