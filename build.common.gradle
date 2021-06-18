@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.qualcomm.ftcrobotcontroller'
+        applicationId 'com.dekaresearch.ftcromicontroller'
         minSdkVersion 23
         targetSdkVersion 28
         multiDexEnabled false
@@ -99,6 +99,14 @@ android {
     sourceSets.main {
         jni.srcDirs = []
         jniLibs.srcDir rootProject.file('libs')
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
+    dexOptions {
+        jumboMode true
     }
 }
 
