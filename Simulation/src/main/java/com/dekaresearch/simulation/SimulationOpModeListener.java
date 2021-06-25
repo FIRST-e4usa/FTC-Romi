@@ -1,5 +1,6 @@
 package com.dekaresearch.simulation;
 
+import com.dekaresearch.simulation.data.PWMData;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManagerNotifier;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -54,6 +55,9 @@ public class SimulationOpModeListener implements OpModeManagerNotifier.Notificat
         RobotLog.ii(TAG, opModeManager.getActiveOpModeName() + " stop");
 
         if(!activeOpModeIsStop()) {
+            for(int i = 0; i < PWMData.MAX_DEVICES; i++) {
+                PWMData.getInstances()[i].speed.set(0.0);
+            }
             DriverStationData.getInstance().enabled.set(false);
         }
     }
