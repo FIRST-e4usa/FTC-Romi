@@ -1,14 +1,15 @@
-This is a home for the SDK after all the AARs have been extracted. It is the base for the OpenRC refresh.
+# FTC Romi
 
-Notes:
+## What is FTC Romi?
 
- - Currently holds v6.2
- - FIXME: Script_c_format_convert
- - annotations JAR replaced with gradle line
- - gson JAR replaced with gradle line (extras not published to maven/jcenter, so extras JAR still needed)
- - ~~JavaWebSocket JAR replaced with gradle line~~ (1.4.1 not on maven/jcenter yet)
- - ~~SL4J JAR omitted because aforementioned gradle line seems to pull it in~~
- - tensorflow-lite AAR replaced with gradle line
- - tfod FTC AAR replaced with gradle line (repacked AAR for Bintray)
- - temporarily added OpenFTC maven repo to root gradle file so above line resolved before repo linked to jcenter
- - Universal blocks vuforia key removed
+The Romi robot is a small and affordable robot that was recently adopted for use by FIRST® Robotics Competition (FRC) participants. It enables users to write real FRC robot code and run it on this robot, allowing them to learn and practice hands on FRC programming without needed a full-sized FRC robot.
+
+FTC Romi is an open-source project that brings this experience to the FIRST® Tech Challenge (FTC) program. In FTC, robots are controlled by an app that is downloaded to an Android phone, which they can then use to program their robot. FTC Romi allows users to download a modified version of the FTC app and use it to control and program a Romi robot.
+
+The FTC Romi app supports both the Blocks and Java programming languages that are used in FTC, so FTC Romi is great tool for learning real FTC programming skills!
+
+The FTC Romi app orginates from the official FTC app used in competitions, which can be found [here](https://github.com/FIRST-Tech-Challenge/FtcRobotController).
+
+## Setup and usage documenation
+
+https://ftc-romi-docs.readthedocs.io/en/latest
