@@ -204,6 +204,7 @@ public class SimDcMotorEncoded implements DcMotor, DcMotorEx, OpModeManagerNotif
     @Override
     public void onOpModePreStart(OpMode opMode) {
         if(!(opMode instanceof OpModeManagerImpl.DefaultOpMode)) {
+            pwmData.speed.set(0.0);
             pidThread.start();
         }
     }
@@ -213,6 +214,10 @@ public class SimDcMotorEncoded implements DcMotor, DcMotorEx, OpModeManagerNotif
         if(!(opMode instanceof OpModeManagerImpl.DefaultOpMode)) {
             pidThread.interrupt();
         }
+
+        isBusy = false;
+        mode = RunMode.RUN_WITHOUT_ENCODER;
+        targetPosition = 0;
     }
 
     private class PIDRunnable implements Runnable {
