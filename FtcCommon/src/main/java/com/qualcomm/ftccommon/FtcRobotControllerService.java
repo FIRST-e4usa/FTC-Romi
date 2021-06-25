@@ -61,6 +61,8 @@ import com.qualcomm.robotcore.util.WebServer;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkConnectionFactory;
 import com.qualcomm.robotcore.wifi.NetworkType;
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
 
 import org.firstinspires.ftc.robotcore.internal.hardware.android.DragonboardIndicatorLED;
 import org.firstinspires.ftc.robotcore.internal.network.CallbackResult;
@@ -136,6 +138,10 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     callback.updateRobotState(state);
     if (state == RobotState.RUNNING) {
       updateRobotStatus(RobotStatus.NONE);
+    }
+
+    if(SimulationConstants.isSimulation) {
+      SimulationWebSocketClient.getInstance().updateRobotState(state);
     }
   }
 
@@ -283,7 +289,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
         try {
 
           shutdownRobot();
-          awaitUSB();
+          if(!SimulationConstants.isSimulation) awaitUSB();
           initializeEventLoopAndRobot();  // unclear why this step couldn't be folded into startRobot()
           waitForNetwork();
           startRobot();

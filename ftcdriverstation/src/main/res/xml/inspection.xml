@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Inspection Reports">
+        <PreferenceScreen
+            android:title="@string/prefedit_launch_inspect_ds"
+            android:key="@string/pref_launch_inspect_ds"
+            android:summary="@string/prefedit_launch_inspect_ds_summary">
+            <intent
+                android:targetPackage="@string/packageName"
+                android:targetClass="org.firstinspires.inspection.DsInspectionActivity" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/prefedit_launch_inspect_rc"
+            android:key="@string/pref_launch_inspect_rc"
+            android:summary="@string/prefedit_launch_inspect_rc_summary">
+            <intent
+                android:targetPackage="@string/packageName"
+                android:targetClass="org.firstinspires.inspection.RcInspectionActivity" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>

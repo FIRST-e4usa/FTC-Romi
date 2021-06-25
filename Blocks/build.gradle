@@ -27,6 +27,7 @@ dependencies {
     implementation project(':RobotServer')
     implementation project(':FtcCommon')
     implementation project(':Hardware')
+    implementation project(':Simulation')
 
     /*
      * External

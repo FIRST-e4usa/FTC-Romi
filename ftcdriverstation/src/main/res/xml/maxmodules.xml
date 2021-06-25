@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Robot
+    name="MaxModules"
+    type="FirstInspires-FTC-template">
+    <MotorController
+        name="MR Motors 1-2"
+        serialNumber="" />
+    <MotorController
+        name="MR Motors 3-4"
+        serialNumber="" />
+    <MotorController
+        name="MR Motors 5-6"
+        serialNumber="" />
+    <MotorController
+        name="MR Motors 7-8"
+        serialNumber="" />
+    <ServoController
+        name="MR Servos 1-6"
+        serialNumber="" />
+    <ServoController
+        name="MR Servos 7-12"
+        serialNumber="" />
+    <LynxUsbDevice
+        name="REV Hub"
+        parentModuleAddress="2"
+        serialNumber="">
+        <LynxModule
+            name="Expansion Hub 1"
+            port="2" />
+        <LynxModule
+            name="Expansion Hub 2"
+            port="3" />
+    </LynxUsbDevice>
+</Robot>

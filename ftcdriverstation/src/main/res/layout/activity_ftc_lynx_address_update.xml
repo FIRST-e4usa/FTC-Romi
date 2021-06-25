@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@id/lynxAddressButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/button_list" />
+        </RelativeLayout>
+
+        <include layout="@layout/gray_line" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="5.0dip"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="8.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/lynxAddressButtons">
+
+        <TextView
+            android:paddingTop="3.0dip"
+            android:paddingBottom="3.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lynx_address_instructions_static" />
+
+        <TextView
+            android:id="@id/lynxAddressListInstructions"
+            android:paddingTop="3.0dip"
+            android:paddingBottom="3.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lynx_address_instructions_update" />
+
+        <include layout="@layout/red_line" />
+
+        <TextView
+            android:textSize="14.0sp"
+            android:textStyle="bold"
+            android:gravity="bottom"
+            android:id="@id/addressListCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/availableModuleListCaption" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@id/moduleList"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.0dip">
+
+                    <include layout="@layout/lynx_module_configure_address" />
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:id="@id/feedbackAnchor"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@id/load_bottom"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="5.0dip"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="8.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:background="?lineBright"
+            android:layout_width="fill_parent"
+            android:layout_height="2.0dip" />
+    </LinearLayout>
+</RelativeLayout>

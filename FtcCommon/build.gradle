@@ -27,6 +27,7 @@ dependencies {
     implementation project(':Inspection')
     implementation project(':RobotCore')
     implementation project(':RobotServer')
+    implementation project(':Simulation')
 
     /*
      * External

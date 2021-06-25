@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/titleAdvancedRCSettings2">
+        <PreferenceScreen
+            android:title="@string/prefedit_change_wifi_channel"
+            android:key="@string/pref_launch_wifi_channel_edit"
+            android:summary="@string/prefedit_edit_wifi_channel_summary">
+            <intent
+                android:targetPackage="@string/packageName"
+                android:targetClass="com.qualcomm.ftccommon.FtcWifiDirectChannelSelectorActivity" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/prefedit_remembered_groups"
+            android:key="@string/pref_launch_wifi_remembered_groups_edit"
+            android:summary="@string/prefedit_clear_remembered_groups_summary">
+            <intent
+                android:targetPackage="@string/packageName"
+                android:targetClass="com.qualcomm.ftccommon.FtcWifiDirectRememberedGroupsActivity" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/titleLynxFirmwareUpdate"
+            android:key="@string/pref_launch_lynx_firmware_update"
+            android:summary="@string/summaryLynxFirmwareUpdate">
+            <intent
+                android:targetPackage="@string/packageName"
+                android:targetClass="com.qualcomm.ftccommon.FtcLynxFirmwareUpdateActivity" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/titleLynxModuleAddressUpdate"
+            android:key="@string/pref_launch_lynx_address_update"
+            android:summary="@string/summaryLynxAddressUpdate">
+            <intent
+                android:targetPackage="@string/packageName"
+                android:targetClass="com.qualcomm.ftccommon.FtcLynxModuleAddressUpdateActivity" />
+        </PreferenceScreen>
+        <SwitchPreference
+            android:title="@string/titleWarnAboutOutdatedHubs"
+            android:key="@string/pref_warn_about_outdated_firmware"
+            android:summary="@string/summaryWarnAboutOutdatedHubs"
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:title="@string/titleWarnAboutMismatchedAppVersions"
+            android:key="@string/pref_warn_about_mismatched_app_versions"
+            android:summary="@string/summaryWarnAboutMismatchedAppVersions"
+            android:defaultValue="true" />
+        <SwitchPreference
+            android:title="@string/titleWarnAbout2_4GhzBand"
+            android:key="@string/pref_warn_about_2_4_ghz_band"
+            android:summary="@string/summaryWarnAbout2_4GhzBand"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

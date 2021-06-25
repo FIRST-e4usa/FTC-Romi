@@ -34,11 +34,17 @@ package com.qualcomm.ftccommon;
 import android.app.Activity;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
+import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.robot.RobotStatus;
 import com.qualcomm.robotcore.util.Dimmer;
@@ -47,12 +53,17 @@ import com.qualcomm.robotcore.util.ThreadPool;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 
 import org.firstinspires.ftc.ftccommon.external.RobotStateMonitor;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameListener;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManagerFactory;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.network.WifiDirectDeviceNameManager;
 import org.firstinspires.ftc.robotcore.internal.network.NetworkStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PeerStatus;
+import org.w3c.dom.Text;
+
+import java.util.Map;
+import java.util.TreeSet;
 
 @SuppressWarnings("WeakerAccess")
 public class UpdateUI {
@@ -68,6 +79,25 @@ public class UpdateUI {
 
     public Callback() {
       DeviceNameManagerFactory.getInstance().registerCallback(deviceNameManagerCallback);
+
+      if(SimulationConstants.isSimulation) {
+        SimulationWebSocketClient.getInstance().setListener(new SimulationWebSocketClient.Listener() {
+          @Override
+          public void onOpen() {
+            setWebSocketStatus("connected");
+          }
+
+          @Override
+          public void onClose() {
+            setWebSocketStatus("disconnected");
+          }
+
+          @Override
+          public void onOpening() {
+            setWebSocketStatus("connecting...");
+          }
+        });
+      }
     }
 
     public void close() {
@@ -200,6 +230,9 @@ public class UpdateUI {
       String format = activity.getString(R.string.networkStatusFormat);
       String strNetworkStatus = networkStatus.toString(activity, networkStatusExtra);
       String strPeerStatus    = peerStatus==PeerStatus.UNKNOWN ? "" : String.format(", %s", peerStatus.toString(activity));
+      if(SimulationConstants.isSimulation) {
+        strPeerStatus = "";
+      }
       final String message = String.format(format, strNetworkStatus, strPeerStatus);
 
       // Log if changed
@@ -283,11 +316,83 @@ public class UpdateUI {
       }
     }
 
+    public void setWebSocketStatus(final String status) {
+      activity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          setText(textWebSocketStatus, String.format("WebSocket Client Status: %s", status));
+        }
+      });
+    }
+
+    public void receiveTelemetry(final TelemetryMessage telemetryMessage) {
+      activity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          updateTelemetry(telemetryMessage);
+        }
+      });
+    }
+
+    protected void updateTelemetry(TelemetryMessage telemetryMessage) {
+      if (telemetryMessage.getRobotState() != RobotState.UNKNOWN) {
+        //setRobotState(telemetryMessage.getRobotState());
+      }
+      Map<String, String> dataStrings = telemetryMessage.getDataStrings();
+      String str = "";
+      boolean z = false;
+      for (String next : telemetryMessage.isSorted() ? new TreeSet<>(dataStrings.keySet()) : dataStrings.keySet()) {
+        if (next.equals(EventLoopManager.ROBOT_BATTERY_LEVEL_KEY)) {
+          //showRobotBatteryVoltage(dataStrings.get(next));
+        } else {
+          if (next.length() > 0 && next.charAt(0) != 0) {
+            str = str + next + ": ";
+          }
+          str = str + dataStrings.get(next) + "\n";
+          z = true;
+        }
+      }
+      String str2 = str + "\n";
+      Map<String, Float> dataNumbers = telemetryMessage.getDataNumbers();
+      for (String next2 : telemetryMessage.isSorted() ? new TreeSet<>(dataNumbers.keySet()) : dataNumbers.keySet()) {
+        if (next2.length() > 0 && next2.charAt(0) != 0) {
+          str2 = str2 + next2 + ": ";
+        }
+        str2 = str2 + dataNumbers.get(next2) + "\n";
+        z = true;
+      }
+      String tag = telemetryMessage.getTag();
+      if (tag.equals(EventLoopManager.SYSTEM_NONE_KEY)) {
+        //clearSystemTelemetry();
+      } else if (tag.equals(EventLoopManager.SYSTEM_ERROR_KEY)) {
+        //reportGlobalError(dataStrings.get(tag), true);
+      } else if (tag.equals(EventLoopManager.SYSTEM_WARNING_KEY)) {
+        //reportGlobalWarning(dataStrings.get(tag));
+      } else if (tag.equals(EventLoopManager.RC_BATTERY_STATUS_KEY)) {
+        //updateRcBatteryStatus(BatteryChecker.BatteryStatus.deserialize(dataStrings.get(tag)));
+      } else if (tag.equals(EventLoopManager.ROBOT_BATTERY_LEVEL_KEY)) {
+        //showRobotBatteryVoltage(dataStrings.get(tag));
+      } else if (z) {
+        setUserTelemetry(str2);
+      }
+    }
+
+    public void setUserTelemetry(String str) {
+      if (telemetryMode == Telemetry.DisplayFormat.CLASSIC || telemetryMode == Telemetry.DisplayFormat.MONOSPACE) {
+        setText(textTelemetry, str);
+      } else if (telemetryMode == Telemetry.DisplayFormat.HTML) {
+        setText(textTelemetry, Html.fromHtml(str.replace("\n", "<br>")));
+      }
+    }
+
+    public void clearUserTelemetry() {
+      setText(textTelemetry, "");
+    }
+
     String trimTextErrorMessage(String message) {
       // error text box is larger now; don't bother trimming
       return message;
     }
-
   }
 
   //------------------------------------------------------------------------------------------------
@@ -312,6 +417,11 @@ public class UpdateUI {
   protected PeerStatus peerStatus = PeerStatus.DISCONNECTED;
   protected String networkStatusMessage = null;
   protected String stateStatusMessage = null;
+
+  protected Telemetry.DisplayFormat telemetryMode = Telemetry.DisplayFormat.CLASSIC;
+  protected TextView textTelemetry;
+
+  protected TextView textWebSocketStatus;
 
   Restarter restarter;
   FtcRobotControllerService controllerService;
@@ -341,6 +451,11 @@ public class UpdateUI {
     this.textDeviceName = textDeviceName;
   }
 
+  public void setExtraTextViews(TextView textTelemetry, TextView textWebSocketStatus) {
+    this.textTelemetry = textTelemetry;
+    this.textWebSocketStatus = textWebSocketStatus;
+  }
+
   //------------------------------------------------------------------------------------------------
   // Operations
   //------------------------------------------------------------------------------------------------
@@ -349,6 +464,19 @@ public class UpdateUI {
     // Allow the view to be optional, change view visibility according to whether the message is empty or not
     if (textView != null && message != null) {
       message = message.trim();
+      if (message.length() > 0) {
+        textView.setText(message);
+        textView.setVisibility(View.VISIBLE);
+      } else {
+        textView.setVisibility(View.INVISIBLE);
+        textView.setText(" ");  // paranoia: there are rumors of Android not doing a redraw if "" is used
+      }
+    }
+  }
+
+  protected void setText(TextView textView, CharSequence message) {
+    // Allow the view to be optional, change view visibility according to whether the message is empty or not
+    if (textView != null && message != null) {
       if (message.length() > 0) {
         textView.setText(message);
         textView.setVisibility(View.VISIBLE);

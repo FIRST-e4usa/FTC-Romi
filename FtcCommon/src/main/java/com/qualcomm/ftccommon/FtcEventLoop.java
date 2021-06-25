@@ -63,6 +63,9 @@ package com.qualcomm.ftccommon;
 
 import android.app.Activity;
 import android.hardware.usb.UsbDevice;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+
 import androidx.annotation.Nullable;
 
 import com.qualcomm.ftccommon.configuration.RobotConfigFile;
@@ -86,6 +89,8 @@ import com.qualcomm.robotcore.robocol.Command;
 import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
+import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.simulation.SimulationOpModeListener;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.internal.camera.CameraManagerInternal;
@@ -120,6 +125,9 @@ public class FtcEventLoop extends FtcEventLoopBase {
   protected UsbModuleAttachmentHandler     usbModuleAttachmentHandler;
   protected final  Map<String,Long>        recentlyAttachedUsbDevices;  // serialNumber -> when to attach
   protected final  AtomicReference<OpMode> opModeStopRequested;
+
+  // For simulation only
+  protected final Gamepad localGamepad = new Gamepad();
 
   //------------------------------------------------------------------------------------------------
   // Construction
@@ -193,6 +201,11 @@ public class FtcEventLoop extends FtcEventLoopBase {
       hardwareMap.logDevices();
       CachedLynxFirmwareVersions.update(hardwareMap);
       LynxModuleWarningManager.getInstance().init(opModeManager, hardwareMap);
+
+      // TODO(Romi) Move?
+      if(SimulationConstants.isSimulation) {
+        SimulationOpModeListener.getInstance().init(opModeManager);
+      }
     } finally {
       if (temporaryEmbeddedLynxUsb != null) {
         // For performance, we wait until now to close this, so that another delegate will be created before we close this one.
@@ -222,7 +235,13 @@ public class FtcEventLoop extends FtcEventLoopBase {
     checkForChangedOpModes();
 
     ftcEventLoopHandler.displayGamePadInfo(opModeManager.getActiveOpModeName());
-    Gamepad gamepads[] = ftcEventLoopHandler.getGamepads();
+
+    Gamepad gamepads[];
+    if(SimulationConstants.isSimulation) {
+      gamepads = new Gamepad[] { localGamepad, localGamepad };
+    } else {
+      gamepads = ftcEventLoopHandler.getGamepads();
+    }
 
     opModeManager.runActiveOpMode(gamepads);
   }
@@ -562,5 +581,13 @@ public class FtcEventLoop extends FtcEventLoopBase {
     String nameOfUsbModule(RobotUsbModule module) {
       return HardwareFactory.getDeviceDisplayName(activityContext, module.getSerialNumber());
     }
+  }
+
+  public void updateLocalGamepad(KeyEvent keyEvent) {
+    localGamepad.update(keyEvent);
+  }
+
+  public void updateLocalGamepad(MotionEvent motionEvent) {
+    localGamepad.update(motionEvent);
   }
 }

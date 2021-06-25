@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow android:id="@id/row_port"
+    android:padding="2.0dip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:textSize="22.0sp"
+        android:textStyle="bold"
+        android:id="@id/port_number"
+        android:text="0"
+        android:paddingStart="10.0dip"
+        android:paddingEnd="10.0dip" />
+
+    <CheckBox
+        android:id="@id/checkbox_port"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@id/editTextResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_name_hint"
+            android:maxLength="200"
+            android:inputType="text"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@id/titleTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/input_name_label"
+            android:layout_below="@id/editTextResult" />
+    </RelativeLayout>
+</TableRow>
