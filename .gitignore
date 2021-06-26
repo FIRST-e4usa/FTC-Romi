@@ -7,5 +7,4 @@
 /build
 /captures
 .externalNativeBuild
-TeamCode/release/FTC_Romi.apk
-TeamCode/release/output.json
+TeamCode/release/*
