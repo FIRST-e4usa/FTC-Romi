@@ -1,4 +1,4 @@
-package com.dekaresearch.simulation;
+package com.dekaresearch.robotcore.simulation;
 
 public class SimulationConstants {
 

@@ -32,7 +32,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 package com.qualcomm.ftccommon;
 
 import android.content.Context;
-import android.view.KeyEvent;
 
 import androidx.annotation.Nullable;
 
@@ -60,7 +59,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.MovingStatistics;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
-import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
 import com.dekaresearch.simulation.romi.RomiHardwareFactory;
 
 import org.firstinspires.ftc.robotcore.external.function.Supplier;
