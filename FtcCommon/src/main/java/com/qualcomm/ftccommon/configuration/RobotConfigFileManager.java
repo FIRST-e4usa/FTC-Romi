@@ -251,7 +251,7 @@ public class RobotConfigFileManager {
             {
                 @Override public void run()
                 {
-                    if(SimulationConstants.isSimulation && SimulationConstants.isRomi) {
+                    if(SimulationConstants.isSimulation) {
                         TextView activeFile = (TextView) activity.findViewById(idActiveConfigName);
                         if (activeFile != null) {
                             activeFile.setText("Romi (built in)");
