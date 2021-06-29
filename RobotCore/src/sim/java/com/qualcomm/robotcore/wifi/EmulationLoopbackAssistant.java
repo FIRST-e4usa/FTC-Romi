@@ -1,50 +1,36 @@
-package com.dekaresearch.robotcore.simulation;
+package com.qualcomm.robotcore.wifi;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.wifi.SupplicantState;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 
 import com.qualcomm.robotcore.util.Network;
-import com.qualcomm.robotcore.util.RobotLog;
-import com.qualcomm.robotcore.wifi.NetworkConnection;
-import com.qualcomm.robotcore.wifi.NetworkType;
 
 import org.firstinspires.ftc.robotcore.internal.network.ApChannel;
 import org.firstinspires.ftc.robotcore.internal.network.InvalidNetworkSettingException;
-import org.firstinspires.ftc.robotcore.internal.network.WifiUtil;
-import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 
 @SuppressWarnings("WeakerAccess")
-public class ExternalApAssistant extends NetworkConnection {
+public class EmulationLoopbackAssistant extends NetworkConnection {
 
-    private static ExternalApAssistant externalApAssistant = null;
+    private static EmulationLoopbackAssistant emulationLoopbackAssistant = null;
 
-    @SuppressLint("WifiManagerLeak")
-    protected final WifiManager wifiManager = (WifiManager) AppUtil.getDefContext().getSystemService(Context.WIFI_SERVICE);
-
-    private ExternalApAssistant(Context context) {
+    private EmulationLoopbackAssistant(Context context) {
         super(context);
     }
 
-    public synchronized static ExternalApAssistant getExternalApAssistant(Context context) {
-        if (externalApAssistant == null) {
-            externalApAssistant = new ExternalApAssistant(context);
+    public synchronized static EmulationLoopbackAssistant getEmulationLoopbackAssistant(Context context) {
+        if (emulationLoopbackAssistant == null) {
+            emulationLoopbackAssistant = new EmulationLoopbackAssistant(context);
         }
 
-        return externalApAssistant;
+        return emulationLoopbackAssistant;
     }
 
     @Override
     public NetworkType getNetworkType() {
-        return NetworkType.EXTERNALAP;
+        return NetworkType.EMULATION_LOOPBACK;
     }
 
     @Override
@@ -89,21 +75,12 @@ public class ExternalApAssistant extends NetworkConnection {
 
     @Override
     public InetAddress getConnectionOwnerAddress() {
-        ArrayList<InetAddress> localIpAddresses = Network.getLocalIpAddresses();
-        localIpAddresses = Network.removeLoopbackAddresses(localIpAddresses);
-        localIpAddresses = Network.removeIPv6Addresses(localIpAddresses);
-
-        // Safety
-        if(localIpAddresses.size() == 0) {
-            return Network.getLoopbackAddress();
-        }
-
-        return localIpAddresses.get(0);
+        return Network.getLoopbackAddress();
     }
 
     @Override
     public String getConnectionOwnerName() {
-        return WifiUtil.getConnectedSsid();
+        return "";
     }
 
     @Override
@@ -113,13 +90,7 @@ public class ExternalApAssistant extends NetworkConnection {
 
     @Override
     public boolean isConnected() {
-        if (wifiManager.isWifiEnabled()) {
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-
-            boolean acquiredIp = !getConnectionOwnerAddress().equals(Network.getLoopbackAddress());
-            return wifiInfo.getNetworkId() != -1 && acquiredIp;
-        }
-        return false;
+        return true;
     }
 
     @Override
