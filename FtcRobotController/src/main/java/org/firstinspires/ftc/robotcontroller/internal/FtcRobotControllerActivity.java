@@ -67,6 +67,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.dekaresearch.robotcore.simulation.SimulationConstants;
+import com.dekaresearch.simulation.util.EmulationDetection;
 import com.google.blocks.ftcrobotcontroller.ProgrammingWebHandlers;
 import com.google.blocks.ftcrobotcontroller.runtime.BlocksOpMode;
 import com.qualcomm.ftccommon.ClassManagerFactory;
@@ -517,7 +518,11 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     if (Device.isRevControlHub() == true) {
       networkType = NetworkType.RCWIRELESSAP;
     } if(SimulationConstants.isSimulation) {
-      networkType = NetworkType.EXTERNALAP;
+      if(EmulationDetection.isBlueStacks()) {
+        networkType = NetworkType.EMULATION_LOOPBACK;
+      } else {
+        networkType = NetworkType.EXTERNALAP;
+      }
     } else {
       networkType = NetworkType.fromString(preferencesHelper.readString(context.getString(R.string.pref_pairing_kind), NetworkType.globalDefaultAsString()));
     }

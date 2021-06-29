@@ -99,7 +99,7 @@ public class EmulationLoopbackAssistant extends NetworkConnection {
 
     @Override
     public String getDeviceName() {
-        return "";
+        return getConnectionOwnerName();
     }
 
     @Override
