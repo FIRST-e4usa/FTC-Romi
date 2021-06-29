@@ -1,0 +1,34 @@
+android {
+
+    flavorDimensions 'type'
+    productFlavors {
+        stock {
+            dimension 'type'
+        }
+        sim {
+            dimension 'type'
+        }
+    }
+
+    sourceSets {
+        stock {
+            res.srcDirs = ['src/stock/res']
+            java.srcDirs = ['src/stock/java']
+            assets.srcDirs = ['src/stock/assets']
+        }
+
+        sim {
+            res.srcDirs = ['src/sim/res']
+            java.srcDirs = ['src/sim/java']
+            assets.srcDirs = ['src/sim/assets']
+        }
+    }
+
+    // Selecting a release variant will prompt teams to set up a signing key. Now that there's
+    // a reason to select other variants, better to filter out the ones that will confuse teams.
+    variantFilter { variant ->
+        if (variant.buildType.name == "release") {
+            setIgnore(true)
+        }
+    }
+}

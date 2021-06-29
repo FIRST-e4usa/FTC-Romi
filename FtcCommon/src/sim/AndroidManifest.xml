@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- FtcCommon manifest -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.qualcomm.ftccommon">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -16,7 +17,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher" >
+        android:icon="@mipmap/ic_launcher"
+        tools:replace="android:icon" >
         <activity
             android:name="com.qualcomm.ftccommon.FtcRobotControllerSettingsActivity"
             android:exported="true"
