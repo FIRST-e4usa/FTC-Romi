@@ -32,6 +32,8 @@ package com.qualcomm.robotcore.wifi;
 
 import android.content.Context;
 
+import com.dekaresearch.robotcore.simulation.EmulationLoopbackAssistant;
+import com.dekaresearch.robotcore.simulation.ExternalApAssistant;
 import com.qualcomm.robotcore.util.RobotLog;
 
 public class NetworkConnectionFactory {
@@ -51,6 +53,10 @@ public static NetworkConnection getNetworkConnection(NetworkType type, Context c
         return DriverStationAccessPointAssistant.getDriverStationAccessPointAssistant(context);
       case RCWIRELESSAP:
         return RobotControllerAccessPointAssistant.getRobotControllerAccessPointAssistant(context);
+      case EXTERNALAP:
+        return ExternalApAssistant.getExternalApAssistant(context);
+      case EMULATION_LOOPBACK:
+        return EmulationLoopbackAssistant.getEmulationLoopbackAssistant(context);
       default:
         return null;
     }

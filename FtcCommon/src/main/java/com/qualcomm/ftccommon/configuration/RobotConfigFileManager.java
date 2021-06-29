@@ -4,7 +4,6 @@
 
 package com.qualcomm.ftccommon.configuration;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +16,7 @@ import androidx.annotation.XmlRes;
 import android.view.View;
 import android.widget.TextView;
 
-import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
 import com.google.gson.reflect.TypeToken;
 import com.qualcomm.ftccommon.CommandList;
 import com.qualcomm.ftccommon.R;
@@ -252,7 +251,7 @@ public class RobotConfigFileManager {
             {
                 @Override public void run()
                 {
-                    if(SimulationConstants.isSimulation && SimulationConstants.isRomi) {
+                    if(SimulationConstants.isSimulation) {
                         TextView activeFile = (TextView) activity.findViewById(idActiveConfigName);
                         if (activeFile != null) {
                             activeFile.setText("Romi (built in)");

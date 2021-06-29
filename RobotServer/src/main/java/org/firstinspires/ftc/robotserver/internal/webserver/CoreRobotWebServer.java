@@ -30,6 +30,7 @@
 
 package org.firstinspires.ftc.robotserver.internal.webserver;
 
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.WebHandlerManager;
 import com.qualcomm.robotcore.util.WebServer;
@@ -154,6 +155,11 @@ public class CoreRobotWebServer implements WebServer {
                     else
                     {
                         networkName = null;
+                    }
+                    if(SimulationConstants.isSimulation) {
+                        if(networkConnection.getNetworkType() == NetworkType.EXTERNALAP) {
+                            networkName = networkConnection.getConnectionOwnerName();
+                        }
                     }
                     connectionOwnerAddress = networkConnection.getConnectionOwnerAddress();
 

@@ -39,7 +39,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import com.dekaresearch.simulation.SimulationConstants;
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
 import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
 import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
@@ -57,10 +57,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameListener;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManagerFactory;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import org.firstinspires.ftc.robotcore.internal.network.WifiDirectDeviceNameManager;
 import org.firstinspires.ftc.robotcore.internal.network.NetworkStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PeerStatus;
-import org.w3c.dom.Text;
 
 import java.util.Map;
 import java.util.TreeSet;
