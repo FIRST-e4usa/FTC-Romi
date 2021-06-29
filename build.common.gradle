@@ -89,15 +89,6 @@ android {
                 abiFilters "armeabi-v7a"
             }
         }
-
-        sim {
-            initWith release
-            matchingFallbacks = ['release']
-        }
-        simDebug {
-            initWith debug
-            matchingFallbacks = ['debug']
-        }
     }
 
     compileOptions {
