@@ -588,7 +588,6 @@ Choose from the following list of Robot Controller phones. Non-matching/incorrec
     <string name="pref_os_version">pref_os_version</string>
     <string name="pref_os_version_rc">pref_os_version_rc</string>
     <string name="pref_pair_rc">pref_pair_rc</string>
-    <string name="pref_pairing_kind">pref_pairing_kind</string>
     <string name="pref_pairing_kind_default">WifiDirect</string>
     <string name="pref_pairing_kind_title">Pairing Kind</string>
     <string name="pref_rc_connected">pref_rc_connected</string>

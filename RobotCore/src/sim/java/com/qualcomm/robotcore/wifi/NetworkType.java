@@ -51,7 +51,7 @@ public enum NetworkType
     }
 
     public static NetworkType globalDefault() {
-      return WIFIDIRECT;
+      return EXTERNALAP;
     }
 
     public static String globalDefaultAsString() {
