@@ -1,0 +1,26 @@
+android {
+
+    flavorDimensions 'type'
+    productFlavors {
+        stock {
+            dimension 'type'
+        }
+        sim {
+            dimension 'type'
+        }
+    }
+
+    sourceSets {
+        stock {
+            res.srcDirs = ['src/stock/res']
+            java.srcDirs = ['src/stock/java']
+            assets.srcDirs = ['src/stock/assets']
+        }
+
+        sim {
+            res.srcDirs = ['src/sim/res']
+            java.srcDirs = ['src/sim/java']
+            assets.srcDirs = ['src/sim/assets']
+        }
+    }
+}

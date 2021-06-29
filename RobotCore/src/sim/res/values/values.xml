@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_pairing_kind">pref_pairing_kind_sim</string>
+</resources>
