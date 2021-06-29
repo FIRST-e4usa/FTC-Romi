@@ -38,7 +38,9 @@ public enum NetworkType
     SOFTAP,
     WIRELESSAP,
     RCWIRELESSAP,
-    UNKNOWN_NETWORK_TYPE;
+    UNKNOWN_NETWORK_TYPE,
+    EXTERNALAP, // Simulation
+    EMULATION_LOOPBACK; // Simulation
 
     public static @NonNull NetworkType fromString(String type) {
       try {

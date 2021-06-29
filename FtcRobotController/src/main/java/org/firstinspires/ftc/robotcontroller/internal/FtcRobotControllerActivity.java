@@ -516,6 +516,8 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     // being always runs the wifi direct model.
     if (Device.isRevControlHub() == true) {
       networkType = NetworkType.RCWIRELESSAP;
+    } if(SimulationConstants.isSimulation) {
+      networkType = NetworkType.EXTERNALAP;
     } else {
       networkType = NetworkType.fromString(preferencesHelper.readString(context.getString(R.string.pref_pairing_kind), NetworkType.globalDefaultAsString()));
     }
