@@ -5,5 +5,5 @@ public class SimulationConstants {
     /**
      * Change this to enable or disable all simulation related code
      */
-    public static boolean isSimulation = false;
+    public static final boolean isSimulation = false;
 }
