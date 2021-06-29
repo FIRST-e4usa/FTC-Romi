@@ -50,24 +50,18 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import ftcdriverstation.OpModeSelectionDialogFragment;
-
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.dekaresearch.robotcore.simulation.SimulationConstants;
-import com.dekaresearch.simulation.util.EmulationDetection;
 import com.google.blocks.ftcrobotcontroller.ProgrammingWebHandlers;
 import com.google.blocks.ftcrobotcontroller.runtime.BlocksOpMode;
 import com.qualcomm.ftccommon.ClassManagerFactory;
@@ -91,7 +85,6 @@ import com.qualcomm.hardware.HardwareFactory;
 import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.FtcRobotControllerServiceState;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegister;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.hardware.configuration.Utility;
 import com.qualcomm.robotcore.robot.Robot;
@@ -110,7 +103,6 @@ import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogServic
 import org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity;
 import org.firstinspires.ftc.onbotjava.OnBotJavaHelperImpl;
 import org.firstinspires.ftc.onbotjava.OnBotJavaProgrammingMode;
-import org.firstinspires.ftc.robotcore.external.Predicate;
 import org.firstinspires.ftc.robotcore.external.navigation.MotionDetection;
 import org.firstinspires.ftc.robotcore.internal.hardware.android.AndroidBoard;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManagerFactory;
@@ -120,8 +112,6 @@ import org.firstinspires.ftc.robotcore.internal.network.WifiDirectChannelChanger
 import org.firstinspires.ftc.robotcore.internal.network.WifiMuteEvent;
 import org.firstinspires.ftc.robotcore.internal.network.WifiMuteStateMachine;
 import org.firstinspires.ftc.robotcore.internal.opmode.ClassManager;
-import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
-import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes;
 import org.firstinspires.ftc.robotcore.internal.system.AppAliveNotifier;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.system.Assert;
@@ -133,13 +123,12 @@ import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo
 import org.firstinspires.ftc.robotserver.internal.programmingmode.ProgrammingModeManager;
 import org.firstinspires.inspection.RcInspectionActivity;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @SuppressWarnings("WeakerAccess")
-public class FtcRobotControllerActivity extends Activity implements OpModeSelectionDialogFragment.OpModeSelectionDialogListener
+public class FtcRobotControllerActivity extends Activity
   {
   public static final String TAG = "RCActivity";
   public String getTag() { return TAG; }
@@ -164,7 +153,6 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
   protected TextView textDeviceName;
   protected TextView textNetworkConnectionStatus;
   protected TextView textRobotStatus;
-  protected TextView textWebSocketStatus;
   protected TextView[] textGamepad = new TextView[NUM_GAMEPADS];
   protected TextView textOpMode;
   protected TextView textErrorMessage;
@@ -187,7 +175,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
 
   private WifiDirectChannelChanger wifiDirectChannelChanger;
 
-    protected class RobotRestarter implements Restarter {
+  protected class RobotRestarter implements Restarter {
 
     public void requestRestart() {
       requestRobotRestart();
@@ -306,8 +294,6 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
 
     setContentView(R.layout.activity_ftc_controller);
 
-    driverStationOnCreate();
-
     preferencesHelper = new PreferencesHelper(TAG, context);
     preferencesHelper.writeBooleanPrefIfDifferent(context.getString(R.string.pref_rc_connected), true);
     preferencesHelper.getSharedPreferences().registerOnSharedPreferenceChangeListener(sharedPreferencesListener);
@@ -325,10 +311,6 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
           }
         });
         popupMenu.inflate(R.menu.ftc_robot_controller);
-        if(SimulationConstants.isSimulation) {
-          popupMenu.getMenu().findItem(R.id.action_configure_robot).setVisible(false);
-          // TODO(Romi) make simulation related buttons visible
-        }
         popupMenu.show();
       }
     });
@@ -362,13 +344,12 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     textNetworkConnectionStatus = (TextView) findViewById(R.id.textNetworkConnectionStatus);
     textRobotStatus = (TextView) findViewById(R.id.textRobotStatus);
     textOpMode = (TextView) findViewById(R.id.textOpMode);
-    textWebSocketStatus = (TextView) findViewById(R.id.textWebSocketStatus);
     textErrorMessage = (TextView) findViewById(R.id.textErrorMessage);
     textGamepad[0] = (TextView) findViewById(R.id.textGamepad1);
     textGamepad[1] = (TextView) findViewById(R.id.textGamepad2);
     immersion = new ImmersiveMode(getWindow().getDecorView());
     dimmer = new Dimmer(this);
-    //dimmer.longBright();
+    dimmer.longBright();
 
     programmingModeManager = new ProgrammingModeManager();
     programmingModeManager.register(new ProgrammingWebHandlers());
@@ -409,9 +390,6 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     UpdateUI result = new UpdateUI(this, dimmer);
     result.setRestarter(restarter);
     result.setTextViews(textNetworkConnectionStatus, textRobotStatus, textGamepad, textOpMode, textErrorMessage, textDeviceName);
-    if(SimulationConstants.isSimulation) {
-      result.setExtraTextViews(textTelemetry, textWebSocketStatus);
-    }
     return result;
   }
 
@@ -429,7 +407,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     entireScreenLayout.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
-        //dimmer.handleDimTimer();
+        dimmer.handleDimTimer();
         return false;
       }
     });
@@ -517,12 +495,6 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     // being always runs the wifi direct model.
     if (Device.isRevControlHub() == true) {
       networkType = NetworkType.RCWIRELESSAP;
-    } if(SimulationConstants.isSimulation) {
-      if(EmulationDetection.isBlueStacks()) {
-        networkType = NetworkType.EMULATION_LOOPBACK;
-      } else {
-        networkType = NetworkType.EXTERNALAP;
-      }
     } else {
       networkType = NetworkType.fromString(preferencesHelper.readString(context.getString(R.string.pref_pairing_kind), NetworkType.globalDefaultAsString()));
     }
@@ -585,7 +557,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       startActivity(inspectionModeIntent);
       return true;
     } else if (id == R.id.action_restart_robot) {
-      //dimmer.handleDimTimer();
+      dimmer.handleDimTimer();
       AppUtil.getInstance().showToast(UILocation.BOTH, context.getString(R.string.toastRestartingRobot));
       requestRobotRestart();
       return true;
@@ -792,7 +764,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
         @Override
         public void onMenuVisibilityChanged(boolean isVisible) {
           if (isVisible) {
-            //dimmer.handleDimTimer();
+            dimmer.handleDimTimer();
           }
         }
       });
@@ -842,506 +814,5 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     if (wifiMuteStateMachine != null) {
       wifiMuteStateMachine.consumeEvent(WifiMuteEvent.USER_ACTIVITY);
     }
-  }
-
-  // DRIVER STATION
-  //protected View batteryInfo;
-  protected Button buttonAutonomous;
-  protected View buttonInit;
-  protected View buttonInitStop;
-  protected View buttonStart;
-  protected ImageButton buttonStop;
-  protected Button buttonTeleOp;
-  protected View controlPanelBack;
-  //protected ImageView cameraStreamImageView;
-  //protected LinearLayout cameraStreamLayout;
-  //protected boolean cameraStreamOpen;
-  protected View chooseOpModePrompt;
-  //protected boolean clientConnected;
-  //protected String connectionOwner;
-  //protected String connectionOwnerPassword;
-  //protected View controlPanelBack;
-  protected TextView currentOpModeName;
-  protected View timerAndTimerSwitch;
-
-  protected TextView systemTelemetry;
-  protected int systemTelemetryOriginalColor;
-  protected TextView textTelemetry;
-
-  protected UIState uiState;
-
-  protected OpModeMeta queuedOpMode;
-  protected final OpModeMeta defaultOpMode;
-
-  public FtcRobotControllerActivity() {
-    final OpModeMeta queuedOpModeWhenMuted = new OpModeMeta.Builder().setName(".Stop.Robot.").build();
-    this.defaultOpMode = queuedOpModeWhenMuted;
-    this.queuedOpMode = queuedOpModeWhenMuted;
-  }
-
-  public void driverStationOnCreate() {
-    this.timerAndTimerSwitch = findViewById(R.id.timerAndTimerSwitch);
-    this.buttonAutonomous = (Button) findViewById(R.id.buttonAutonomous);
-    this.buttonTeleOp = (Button) findViewById(R.id.buttonTeleOp);
-    this.currentOpModeName = (TextView) findViewById(R.id.currentOpModeName);
-    this.chooseOpModePrompt = findViewById(R.id.chooseOpModePrompt);
-    this.buttonInit = findViewById(R.id.buttonInit);
-    this.buttonInitStop = findViewById(R.id.buttonInitStop);
-    this.buttonStart = findViewById(R.id.buttonStart);
-    this.buttonStop = (ImageButton) findViewById(R.id.buttonStop);
-    this.controlPanelBack = findViewById(R.id.controlPanel);
-
-    this.textTelemetry = (TextView) findViewById(R.id.textTelemetry);
-    //TextView textView = (TextView) findViewById(R.id.textSystemTelemetry);
-    //this.systemTelemetry = textView;
-    //this.systemTelemetryOriginalColor = textView.getCurrentTextColor();
-
-    handleDefaultOpModeInitOrStart(false);
-  }
-
-  //region Gamepad events
-  @Override
-  public boolean dispatchKeyEvent(final KeyEvent keyEvent) {
-    eventLoop.updateLocalGamepad(keyEvent);
-    if (Gamepad.isGamepadDevice(keyEvent.getDeviceId())) {
-      //this.gamepadManager.handleGamepadEvent(keyEvent);
-      eventLoop.updateLocalGamepad(keyEvent);
-      return true;
-    }
-    return super.dispatchKeyEvent(keyEvent);
-  }
-
-  @Override
-  public boolean dispatchGenericMotionEvent(final MotionEvent motionEvent) {
-    if (Gamepad.isGamepadDevice(motionEvent.getDeviceId())) {
-      //this.gamepadManager.handleGamepadEvent(motionEvent);
-      eventLoop.updateLocalGamepad(motionEvent);
-      return true;
-    }
-    return super.dispatchGenericMotionEvent(motionEvent);
-  }
-  //endregion
-
-  //region Button clicks
-  public void onClickButtonAutonomous(View view) {
-    showOpModeDialog(filterOpModes(new Predicate<OpModeMeta>() {
-      public boolean test(OpModeMeta opModeMeta) {
-        return opModeMeta.flavor == OpModeMeta.Flavor.AUTONOMOUS;
-      }
-    }), R.string.opmodeDialogTitleAutonomous);
-  }
-
-  public void onClickButtonTeleOp(View view) {
-    showOpModeDialog(filterOpModes(new Predicate<OpModeMeta>() {
-      public boolean test(OpModeMeta opModeMeta) {
-        return opModeMeta.flavor == OpModeMeta.Flavor.TELEOP;
-      }
-    }), R.string.opmodeDialogTitleTeleOp);
-  }
-
-  public void onClickButtonInit(final View view) {
-    this.handleOpModeInit();
-  }
-
-  public void onClickButtonStart(final View view) {
-    this.handleOpModeStart();
-  }
-
-  public void onClickButtonStop(final View view) {
-    this.handleOpModeStop();
-  }
-
-  public void onClickTimer(final View view) {
-    //this.enableAndResetTimer(this.opModeUseTimer ^= true);
-  }
-  //endregion
-
-  //region OpMode lifecycle
-  protected void handleDefaultOpModeInitOrStart(final boolean b) {
-
-    if (this.isDefaultOpMode(this.queuedOpMode)) {
-      this.uiWaitingForOpModeSelection();
-    }
-    else {
-      this.uiWaitingForInitEvent();
-      /*
-      if (!b) {
-        this.runDefaultOpMode();
-      }
-      */
-    }
-  }
-
-  protected void handleOpModeInit() {
-    if (this.uiState != UIState.WAITING_FOR_INIT_EVENT) {
-      return;
-    }
-    this.traceUiStateChange("ui:uiWaitingForAck", UIState.WAITING_FOR_ACK);
-    //this.sendMatchNumberIfNecessary();
-    //this.networkConnectionHandler.sendCommand(new Command("CMD_INIT_OP_MODE", this.queuedOpMode.name));
-    /*if (!this.queuedOpMode.name.equals(this.defaultOpMode.name)) {
-      this.wifiMuteStateMachine.consumeEvent((Event)WifiMuteEvent.RUNNING_OPMODE);
-    }*/
-    //this.hideCameraStream();
-    if (isDefaultOpMode(queuedOpMode)) {
-      //this.androidTextToSpeech.stop();
-      //stopKeepAlives();
-      runOnUiThread(new Runnable() {
-        public void run() {
-          //FtcDriverStationActivityBase.this.telemetryMode = Telemetry.DisplayFormat.CLASSIC;
-          //FtcDriverStationActivityBase.this.textTelemetry.setTypeface(Typeface.DEFAULT);
-        }
-      });
-      handleDefaultOpModeInitOrStart(false);
-    } else {
-      callback.clearUserTelemetry();
-      //startKeepAlives();
-      if (setQueuedOpModeIfDifferent(queuedOpMode)) {
-        RobotLog.vv(TAG, "timer: init new opmode");
-        //enableAndResetTimerForQueued();
-      } else if (/*this.opModeCountDown.isEnabled()*/false) {
-        RobotLog.vv(TAG, "timer: init w/ timer enabled");
-        //this.opModeCountDown.resetCountdown();
-      } else {
-        RobotLog.vv(TAG, "timer: init w/o timer enabled");
-      }
-
-      eventLoop.getOpModeManager().initActiveOpMode(queuedOpMode.name);
-      uiWaitingForStartEvent();
-    }
-  }
-
-  protected void handleOpModeStart() {
-    if (this.uiState != UIState.WAITING_FOR_START_EVENT) {
-      return;
-    }
-    this.traceUiStateChange("ui:uiWaitingForAck", UIState.WAITING_FOR_ACK);
-
-    if (this.isDefaultOpMode(queuedOpMode)) {
-      //this.androidTextToSpeech.stop();
-      //this.stopKeepAlives();
-      this.handleDefaultOpModeInitOrStart(true);
-    }
-    else {
-      if (this.setQueuedOpModeIfDifferent(queuedOpMode)) {
-        //RobotLog.vv("DriverStation", "timer: started new opmode: auto-initing timer");
-        //this.enableAndResetTimerForQueued();
-      }
-      eventLoop.getOpModeManager().startActiveOpMode();
-      this.uiWaitingForStopEvent();
-      /*
-      if (this.opModeUseTimer) {
-        this.opModeCountDown.start();
-      }
-      else {
-        this.stopTimerAndReset();
-      }
-      */
-    }
-  }
-
-  protected void handleOpModeStop() {
-    if (this.uiState != UIState.WAITING_FOR_START_EVENT && this.uiState != UIState.WAITING_FOR_STOP_EVENT) {
-      return;
-    }
-    this.traceUiStateChange("ui:uiWaitingForAck", UIState.WAITING_FOR_ACK);
-    //this.clearMatchNumberIfNecessary();
-    this.initDefaultOpMode();
-  }
-  //endregion
-
-  //region OpMode selection
-  protected void showOpModeDialog(final List<OpModeMeta> opModes, final int title) {
-    //this.stopTimerPreservingRemainingTime();
-    this.initDefaultOpMode();
-    final OpModeSelectionDialogFragment opModeSelectionDialogFragment = new OpModeSelectionDialogFragment();
-    opModeSelectionDialogFragment.setOnSelectionDialogListener((OpModeSelectionDialogFragment.OpModeSelectionDialogListener)this);
-    opModeSelectionDialogFragment.setOpModes((List)opModes);
-    opModeSelectionDialogFragment.setTitle(title);
-    opModeSelectionDialogFragment.show(this.getFragmentManager(), "op_mode_selection");
-  }
-
-  protected void initDefaultOpMode() {
-    //this.networkConnectionHandler.sendCommand(new Command("CMD_INIT_OP_MODE", this.defaultOpMode.name));
-    eventLoop.getOpModeManager().initActiveOpMode(defaultOpMode.name);
-    handleDefaultOpModeInitOrStart(false);
-  }
-
-  public List<OpModeMeta> filterOpModes(Predicate<OpModeMeta> predicate) {
-    LinkedList linkedList = new LinkedList();
-    for (OpModeMeta next : RegisteredOpModes.getInstance().getOpModes()) {
-      if (predicate.test(next)) {
-        linkedList.add(next);
-      }
-    }
-    return linkedList;
-  }
-
-  @Override
-  public void onOpModeSelectionClick(OpModeMeta var1) {
-    this.handleOpModeQueued(var1);
-  }
-
-  protected void handleOpModeQueued(final OpModeMeta queuedOpModeIfDifferent) {
-    if (this.setQueuedOpModeIfDifferent(queuedOpModeIfDifferent)) {
-      //this.enableAndResetTimerForQueued();
-    }
-    this.uiWaitingForInitEvent();
-  }
-
-  protected boolean setQueuedOpModeIfDifferent(final String s) {
-    return this.setQueuedOpModeIfDifferent(this.getOpModeMeta(s));
-  }
-
-  protected boolean setQueuedOpModeIfDifferent(final OpModeMeta queuedOpMode) {
-    if (!queuedOpMode.name.equals(this.queuedOpMode.name)) {
-      this.queuedOpMode = queuedOpMode;
-      this.showQueuedOpModeName();
-      return true;
-    }
-    return false;
-  }
-
-  protected void showQueuedOpModeName() {
-    this.showQueuedOpModeName(this.queuedOpMode);
-  }
-
-  protected void showQueuedOpModeName(final OpModeMeta opModeMeta) {
-    if (this.isDefaultOpMode(opModeMeta)) {
-      this.setVisibility((View)this.currentOpModeName, 8);
-      this.setVisibility(this.chooseOpModePrompt, 0);
-    }
-    else {
-      this.setTextView(this.currentOpModeName, opModeMeta.name);
-      this.setVisibility((View)this.currentOpModeName, 0);
-      this.setVisibility(this.chooseOpModePrompt, 8);
-    }
-  }
-
-  protected boolean isDefaultOpMode(final OpModeMeta opModeMeta) {
-    return this.isDefaultOpMode(opModeMeta.name);
-  }
-
-  protected boolean isDefaultOpMode(final String anObject) {
-    return this.defaultOpMode.name.equals(anObject);
-  }
-
-  protected OpModeMeta getOpModeMeta(final String anObject) {
-    synchronized (RegisteredOpModes.getInstance().getOpModes()) {
-      for (final OpModeMeta opModeMeta : RegisteredOpModes.getInstance().getOpModes()) {
-        if (opModeMeta.name.equals(anObject)) {
-          return opModeMeta;
-        }
-      }
-      // monitorexit(this.opModes)
-      return new OpModeMeta.Builder().setName(anObject).build();
-    }
-  }
-  //endregion
-
-  //region Telemetry
-
-  /*
-  protected void clearSystemTelemetry() {
-    this.setVisibility((View)this.systemTelemetry, 8);
-    this.setTextView(this.systemTelemetry, "");
-    this.setTextColor(this.systemTelemetry, this.systemTelemetryOriginalColor);
-    RobotLog.clearGlobalErrorMsg();
-    RobotLog.clearGlobalWarningMsg();
-  }
-  */
-
-  //endregion
-
-  //region UI state
-  protected void traceUiStateChange(final String s, final UIState uiState) {
-    RobotLog.vv("DriverStation", s);
-    this.uiState = uiState;
-    //this.setTextView(this.textDsUiStateIndicator, uiState.indicator);
-    this.invalidateOptionsMenu();
-  }
-
-  protected void uiWaitingForOpModeSelection() {
-    this.traceUiStateChange("ui:uiWaitingForOpModeSelection", UIState.WAITING_FOR_OPMODE_SELECTION);
-    this.checkConnectedEnableBrighten(ControlPanelBack.DIM);
-    this.dimControlPanelBack();
-    this.enableAndBrightenOpModeMenu();
-    this.showQueuedOpModeName();
-    this.disableOpModeControls();
-  }
-
-  protected void uiWaitingForInitEvent() {
-    this.traceUiStateChange("ui:uiWaitingForInitEvent", UIState.WAITING_FOR_INIT_EVENT);
-    this.checkConnectedEnableBrighten(ControlPanelBack.BRIGHT);
-    this.brightenControlPanelBack();
-    this.showQueuedOpModeName();
-    this.enableAndBrightenOpModeMenu();
-    this.setEnabled(this.buttonInit, true);
-    this.setVisibility(this.buttonInit, 0);
-    this.setVisibility(this.buttonStart, 4);
-    this.setVisibility((View)this.buttonStop, 4);
-    this.setVisibility(this.buttonInitStop, 4);
-    this.setTimerButtonEnabled(true);
-    //this.setVisibility(this.timerAndTimerSwitch, 0);
-    //this.hideCameraStream();
-  }
-
-  protected void uiWaitingForStartEvent() {
-    this.traceUiStateChange("ui:uiWaitingForStartEvent", UIState.WAITING_FOR_START_EVENT);
-    this.checkConnectedEnableBrighten(ControlPanelBack.BRIGHT);
-    this.showQueuedOpModeName();
-    this.enableAndBrightenOpModeMenu();
-    this.setVisibility(this.buttonStart, 0);
-    this.setVisibility(this.buttonInit, 4);
-    this.setVisibility((View)this.buttonStop, 4);
-    this.setVisibility(this.buttonInitStop, 0);
-    this.setTimerButtonEnabled(true);
-    //this.setVisibility(this.timerAndTimerSwitch, 0);
-    //this.hideCameraStream();
-  }
-
-  protected void uiWaitingForStopEvent() {
-    this.traceUiStateChange("ui:uiWaitingForStopEvent", UIState.WAITING_FOR_STOP_EVENT);
-    this.checkConnectedEnableBrighten(ControlPanelBack.BRIGHT);
-    this.showQueuedOpModeName();
-    this.enableAndBrightenOpModeMenu();
-    this.setVisibility((View)this.buttonStop, 0);
-    this.setVisibility(this.buttonInit, 4);
-    this.setVisibility(this.buttonStart, 4);
-    this.setVisibility(this.buttonInitStop, 4);
-    this.setTimerButtonEnabled(false);
-    //this.setVisibility(this.timerAndTimerSwitch, 0);
-    //this.hideCameraStream();
-  }
-  //endregion
-
-  //region UI util
-  protected void disableOpModeControls() {
-    this.setEnabled(this.buttonInit, false);
-    this.setVisibility(this.buttonInit, 0);
-    this.setVisibility(this.buttonStart, 4);
-    this.setVisibility((View)this.buttonStop, 4);
-    this.setVisibility(this.buttonInitStop, 4);
-    //this.setVisibility(this.timerAndTimerSwitch, 4);
-    //this.hideCameraStream();
-  }
-
-  public void setTimerButtonEnabled(boolean z) {
-    setEnabled(this.timerAndTimerSwitch, z);
-    setEnabled(findViewById(R.id.timerBackground), z);
-    setEnabled(findViewById(R.id.timerStopWatch), z);
-    setEnabled(findViewById(R.id.timerText), z);
-    setEnabled(findViewById(R.id.timerSwitchOn), z);
-    setEnabled(findViewById(R.id.timerSwitchOff), z);
-  }
-
-  public void setControlPanelBack(ControlPanelBack controlPanelBack2) {
-    if (controlPanelBack2 == ControlPanelBack.DIM) {
-      dimControlPanelBack();
-    } else if (controlPanelBack2 == ControlPanelBack.BRIGHT) {
-      brightenControlPanelBack();
-    }
-  }
-
-  protected void dimControlPanelBack() {
-    this.setOpacity(this.controlPanelBack, 0.3f);
-  }
-
-  protected void brightenControlPanelBack() {
-    this.setOpacity(this.controlPanelBack, 1.0f);
-  }
-
-  protected void checkConnectedEnableBrighten(final ControlPanelBack controlPanelBack) {
-    if (true) {
-      RobotLog.vv("DriverStation", "auto-rebrightening for connected state");
-      this.enableAndBrightenForConnected(controlPanelBack);
-      //this.setClientConnected(true);
-      //this.requestUIState();
-    }
-  }
-
-  protected void enableAndBrightenForConnected(final ControlPanelBack controlPanelBack) {
-    this.setControlPanelBack(controlPanelBack);
-    //this.setOpacity(this.wifiInfo, 1.0f);
-    //this.setOpacity(this.batteryInfo, 1.0f);
-    this.enableAndBrightenOpModeMenu();
-  }
-
-  protected void enableAndBrightenOpModeMenu() {
-    this.enableAndBrighten((View)this.buttonAutonomous);
-    this.enableAndBrighten((View)this.buttonTeleOp);
-    this.setOpacity((View)this.currentOpModeName, 1.0f);
-    this.setOpacity(this.chooseOpModePrompt, 1.0f);
-  }
-
-  protected void enableAndBrighten(final View view) {
-    this.setOpacity(view, 1.0f);
-    this.setEnabled(view, true);
-  }
-
-  public void setEnabled(final View view, final boolean z) {
-    runOnUiThread(new Runnable() {
-      public void run() {
-        view.setEnabled(z);
-      }
-    });
-  }
-
-  public void setVisibility(final View view, final int i) {
-    runOnUiThread(new Runnable() {
-      public void run() {
-        view.setVisibility(i);
-      }
-    });
-  }
-
-  public void setTextColor(final TextView textView, final int i) {
-    runOnUiThread(new Runnable() {
-      public void run() {
-        textView.setTextColor(i);
-      }
-    });
-  }
-
-  public void setTextView(final TextView textView, final CharSequence charSequence) {
-    runOnUiThread(new Runnable() {
-      public void run() {
-        textView.setText(charSequence);
-      }
-    });
-  }
-
-  public void setOpacity(final View view, final float f) {
-    runOnUiThread(new Runnable() {
-      public void run() {
-        view.setAlpha(f);
-      }
-    });
-  }
-  //endregion
-
-  protected enum UIState {
-    UNKNOWN("U"),
-    CANT_CONTINUE("E"),
-    DISCONNECTED("X"),
-    CONNNECTED("C"),
-    WAITING_FOR_OPMODE_SELECTION("M"),
-    WAITING_FOR_INIT_EVENT("K"),
-    WAITING_FOR_ACK("KW"),
-    WAITING_FOR_START_EVENT("S"),
-    WAITING_FOR_STOP_EVENT("P"),
-    ROBOT_STOPPED("Z");
-
-    public final String indicator;
-
-    private UIState(String str) {
-      this.indicator = str;
-    }
-  }
-
-  protected enum ControlPanelBack {
-    NO_CHANGE,
-    DIM,
-    BRIGHT
   }
 }
