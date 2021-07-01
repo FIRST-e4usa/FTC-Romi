@@ -8,7 +8,7 @@ import java.util.List;
 public class SimDataValue<T> {
     private T value;
 
-    private List<Consumer<T>> callbacks = new ArrayList<>();
+    private final List<Consumer<T>> callbacks = new ArrayList<>();
 
     public SimDataValue(T initialValue) {
         value = initialValue;
@@ -16,8 +16,10 @@ public class SimDataValue<T> {
 
     public void set(T value) {
         if(!this.value.equals(value)) {
-            for (Consumer<T> callback : callbacks) {
-                callback.accept(value);
+            synchronized (callbacks) {
+                for (Consumer<T> callback : callbacks) {
+                    callback.accept(value);
+                }
             }
         }
         this.value = value;
@@ -37,11 +39,15 @@ public class SimDataValue<T> {
     }
 
     public void registerCallback(Consumer<T> callback, boolean sendInitial) {
-        callbacks.add(callback);
-        if(sendInitial) callback.accept(this.value);
+        synchronized (callbacks) {
+            callbacks.add(callback);
+            if (sendInitial) callback.accept(this.value);
+        }
     }
 
     public void unregisterAllCallbacks() {
-        callbacks.clear();
+        synchronized (callbacks) {
+            callbacks.clear();
+        }
     }
 }
