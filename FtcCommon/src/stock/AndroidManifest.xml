@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.qualcomm.ftccommon">
     <application
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/ic_launcher">
     </application>
 
 </manifest>
