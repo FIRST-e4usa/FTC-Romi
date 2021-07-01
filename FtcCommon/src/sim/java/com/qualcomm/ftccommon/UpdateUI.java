@@ -83,11 +83,13 @@ public class UpdateUI {
           @Override
           public void onOpen() {
             setWebSocketStatus("connected");
+            updateNetworkConnectionStatus(NetworkStatus.ENABLED);
           }
 
           @Override
           public void onClose() {
             setWebSocketStatus("disconnected");
+            updateNetworkConnectionStatus(NetworkStatus.ACTIVE);
           }
 
           @Override

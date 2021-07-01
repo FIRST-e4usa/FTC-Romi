@@ -266,7 +266,19 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
         networkConnection.createConnection();
       }
       // Wait until we're free and clear to go
+
+      boolean networkIsSimulation = networkConnection.getNetworkType() == NetworkType.EXTERNALAP || networkConnection.getNetworkType() == NetworkType.EMULATION_LOOPBACK;
+
+      if(networkIsSimulation) {
+        updateNetworkConnectionStatus(NetworkConnection.NetworkEvent.DISCONNECTED);
+      }
+
       waitForNetworkConnection();
+
+      if(networkIsSimulation) {
+        updateNetworkConnectionStatus(NetworkConnection.NetworkEvent.CONNECTION_INFO_AVAILABLE);
+      }
+
       webServer.start();
     }
 
