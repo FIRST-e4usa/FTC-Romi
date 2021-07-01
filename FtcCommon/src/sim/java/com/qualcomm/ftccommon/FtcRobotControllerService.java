@@ -67,6 +67,7 @@ import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
 import org.firstinspires.ftc.robotcore.internal.hardware.android.DragonboardIndicatorLED;
 import org.firstinspires.ftc.robotcore.internal.network.CallbackResult;
 import org.firstinspires.ftc.robotcore.internal.network.NetworkConnectionHandler;
+import org.firstinspires.ftc.robotcore.internal.network.NetworkStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PeerStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PreferenceRemoterRC;
 import org.firstinspires.ftc.robotcore.internal.network.WifiDirectAgent;
@@ -470,6 +471,10 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     this.callback = callback;
     // Ensure that the callback starts with the correct peer status
     callback.updatePeerStatus(NetworkConnectionHandler.getInstance().isPeerConnected() ? PeerStatus.CONNECTED : PeerStatus.DISCONNECTED);
+
+    if(SimulationConstants.isSimulation) {
+      setSimulationCallback(this.callback);
+    }
   }
 
   public synchronized void setupRobot(EventLoop eventLoop, EventLoop idleEventLoop, @Nullable Runnable runOnComplete) {
@@ -553,5 +558,28 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     if (callback != null) {
       callback.updateRobotStatus(status);
     }
+  }
+
+  private void setSimulationCallback(final UpdateUI.Callback callback) {
+    SimulationWebSocketClient.getInstance().setListener(new SimulationWebSocketClient.Listener() {
+      @Override
+      public void onOpen() {
+        RobotLog.ii("Simulation", "callback open");
+        callback.setWebSocketStatus("connected");
+        callback.updateNetworkConnectionStatus(NetworkStatus.ENABLED);
+      }
+
+      @Override
+      public void onClose() {
+        RobotLog.ii("Simulation", "callback close");
+        callback.setWebSocketStatus("disconnected");
+        callback.updateNetworkConnectionStatus(NetworkStatus.ACTIVE);
+      }
+
+      @Override
+      public void onOpening() {
+        callback.setWebSocketStatus("connecting...");
+      }
+    });
   }
 }

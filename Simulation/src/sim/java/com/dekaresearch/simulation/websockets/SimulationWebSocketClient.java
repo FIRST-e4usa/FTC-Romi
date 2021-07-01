@@ -121,6 +121,7 @@ public class SimulationWebSocketClient {
         if(client != null) {
             RobotLog.ii(TAG, "Close WebSocket");
             client.close();
+            if(listener != null) listener.onClose();
         }
         client = null;
     }

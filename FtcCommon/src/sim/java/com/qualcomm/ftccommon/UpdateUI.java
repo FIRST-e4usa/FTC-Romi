@@ -77,27 +77,6 @@ public class UpdateUI {
 
     public Callback() {
       DeviceNameManagerFactory.getInstance().registerCallback(deviceNameManagerCallback);
-
-      if(SimulationConstants.isSimulation) {
-        SimulationWebSocketClient.getInstance().setListener(new SimulationWebSocketClient.Listener() {
-          @Override
-          public void onOpen() {
-            setWebSocketStatus("connected");
-            updateNetworkConnectionStatus(NetworkStatus.ENABLED);
-          }
-
-          @Override
-          public void onClose() {
-            setWebSocketStatus("disconnected");
-            updateNetworkConnectionStatus(NetworkStatus.ACTIVE);
-          }
-
-          @Override
-          public void onOpening() {
-            setWebSocketStatus("connecting...");
-          }
-        });
-      }
     }
 
     public void close() {
