@@ -23,7 +23,7 @@ public class PWMProvider extends Provider {
     public void registerCallbacks() {
         data.init.registerCallback(new BasicCallback<Boolean>("<init"));
         data.speed.registerCallback(new BasicCallback<Double>("<speed"));
-        data.position.registerCallback(new BasicCallback<Double>("<position"));
+        data.position.registerCallback(new BasicCallback<Double>("<position"), false);
     }
 
     @Override

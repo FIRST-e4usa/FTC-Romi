@@ -7,6 +7,7 @@ import com.dekaresearch.simulation.hardware.SimDcMotor;
 import com.dekaresearch.simulation.hardware.SimDcMotorEncoded;
 import com.dekaresearch.simulation.hardware.SimDigitalChannel;
 import com.dekaresearch.simulation.hardware.SimGyroSensor;
+import com.dekaresearch.simulation.hardware.SimServo;
 import com.dekaresearch.simulation.hardware.SimVoltageSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -23,6 +24,10 @@ public class RomiHardwareFactory {
 
         map.gyroSensor.put("gyro", new SimGyroSensor());
         map.accelerationSensor.put("accelerometer", new SimAccelerationSensor());
+
+        for(int i = 2; i <= 6; i++) {
+            map.servo.put("servo_" + i, new SimServo(i));
+        }
 
         return map;
     }

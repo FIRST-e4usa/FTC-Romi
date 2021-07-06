@@ -1,7 +1,7 @@
 package com.dekaresearch.simulation.data;
 
 public class PWMData {
-    public static final int MAX_DEVICES = 2;
+    public static final int MAX_DEVICES = 2 + 5;
 
     private static final PWMData[] instances = new PWMData[MAX_DEVICES];
 
