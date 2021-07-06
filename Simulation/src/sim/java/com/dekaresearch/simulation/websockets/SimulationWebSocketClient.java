@@ -179,6 +179,9 @@ public class SimulationWebSocketClient {
         for(int i = 0; i < EncoderData.MAX_DEVICES; i++) {
             addProvider(new EncoderProvider(Integer.toString(i)));
         }
+        for(int i = 0; i < AIData.MAX_DEVICES; i++) {
+            addProvider(new AIProvider(Integer.toString(i)));
+        }
         addProvider(new AccelerometerProvider("BuiltInAccel"));
 
         for(Provider provider : providers.values()) {
