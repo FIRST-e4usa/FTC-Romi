@@ -97,5 +97,8 @@ public class EncoderProvider extends Provider {
         if(key.equals(">count")) {
             data.count.set(value.getAsInt() - countOffset);
         }
+        if(key.equals(">period")) {
+            data.period.set(value.getAsDouble());
+        }
     }
 }
