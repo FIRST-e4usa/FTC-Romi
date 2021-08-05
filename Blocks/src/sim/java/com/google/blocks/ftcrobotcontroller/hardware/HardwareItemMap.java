@@ -18,6 +18,7 @@ package com.google.blocks.ftcrobotcontroller.hardware;
 
 import com.dekaresearch.robotcore.simulation.SimulationConstants;
 import com.dekaresearch.simulation.hardwarefactory.SimulationHardwareFactory;
+import com.dekaresearch.simulation.util.SimulationHardwareUtil;
 import com.qualcomm.ftccommon.configuration.RobotConfigFile;
 import com.qualcomm.ftccommon.configuration.RobotConfigFileManager;
 import com.qualcomm.robotcore.exception.RobotCoreException;
@@ -131,10 +132,15 @@ public class HardwareItemMap {
    * Constructs a {@link HardwareItemMap} with the supported hardware items in the given
    * {@link HardwareMap}.
    */
-  private HardwareItemMap(HardwareMap hardwareMap) {
+  private HardwareItemMap(final HardwareMap hardwareMap) {
     HardwareItem parent = null;
     for (HardwareType hardwareType : HardwareType.values()) {
       List<HardwareDevice> devices = hardwareMap.getAll(hardwareType.deviceType);
+
+      if(SimulationConstants.isSimulation) {
+        SimulationHardwareUtil.sortDevices(devices, hardwareMap);
+      }
+
       for (HardwareDevice device : devices) {
         // Having multiple names for a single device is confusing in our UI here, so we pick
         // one arbitrarily. Note that this virtually never actually happens in practice; the
