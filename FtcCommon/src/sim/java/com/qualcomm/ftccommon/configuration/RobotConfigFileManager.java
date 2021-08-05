@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dekaresearch.robotcore.simulation.SimulationConstants;
+import com.dekaresearch.simulation.hardwarefactory.SimulationHardwareFactory;
 import com.google.gson.reflect.TypeToken;
 import com.qualcomm.ftccommon.CommandList;
 import com.qualcomm.ftccommon.R;
@@ -254,7 +255,7 @@ public class RobotConfigFileManager {
                     if(SimulationConstants.isSimulation) {
                         TextView activeFile = (TextView) activity.findViewById(idActiveConfigName);
                         if (activeFile != null) {
-                            activeFile.setText("Romi (built in)");
+                            activeFile.setText(SimulationHardwareFactory.getName());
                             changeHeaderBackground(R.id.backgroundMediumHolder);
                         } else {
                             RobotLog.ee(TAG, "unable to find header text 0x%08x", idActiveConfigName);
