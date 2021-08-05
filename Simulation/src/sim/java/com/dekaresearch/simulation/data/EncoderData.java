@@ -68,5 +68,6 @@ public class EncoderData {
 
     public SimDataValue<Boolean> init = new SimDataValue<>(false);
     public SimDataValue<Integer> count = new SimDataValue<>(0);
+    public SimDataValue<Double> period = new SimDataValue<>(0.0);
     public SimDataValue<Boolean> reset = new SimDataValue<>(false);
 }

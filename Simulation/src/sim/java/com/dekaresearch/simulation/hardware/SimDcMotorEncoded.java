@@ -305,22 +305,36 @@ public class SimDcMotorEncoded implements DcMotor, DcMotorEx, OpModeManagerNotif
 
     @Override
     public double getVelocity() {
-        return 0;
+        double period = encoderData.period.get();
+        if(period == 0) return 0;
+        if(period >= 0.1) return 0;
+        return 1 / period;
     }
 
     @Override
     public double getVelocity(AngleUnit unit) {
+        double rotations = getVelocity() / 1440d;
+        if(unit == AngleUnit.DEGREES) return rotations * 360d;
+        if(unit == AngleUnit.RADIANS) return rotations * 2d * Math.PI;
         return 0;
     }
 
     @Override
     public void setPIDCoefficients(RunMode mode, PIDCoefficients pidCoefficients) {
-
+        if(mode == RunMode.RUN_TO_POSITION) {
+            pid.setP(pidCoefficients.p);
+            pid.setI(pidCoefficients.i);
+            pid.setD(pidCoefficients.d);
+        }
     }
 
     @Override
     public void setPIDFCoefficients(RunMode mode, PIDFCoefficients pidfCoefficients) throws UnsupportedOperationException {
-
+        if(mode == RunMode.RUN_TO_POSITION) {
+            pid.setP(pidfCoefficients.p);
+            pid.setI(pidfCoefficients.i);
+            pid.setD(pidfCoefficients.d);
+        }
     }
 
     @Override
@@ -330,17 +344,27 @@ public class SimDcMotorEncoded implements DcMotor, DcMotorEx, OpModeManagerNotif
 
     @Override
     public void setPositionPIDFCoefficients(double p) {
-
+        pid.setP(p);
     }
 
     @Override
     public PIDCoefficients getPIDCoefficients(RunMode mode) {
-        return null;
+        PIDCoefficients pidCoefficients = new PIDCoefficients();
+
+        if (mode == RunMode.RUN_TO_POSITION) {
+            pidCoefficients.p = pid.getP();
+            pidCoefficients.i = pid.getI();
+            pidCoefficients.d = pid.getD();
+        }
+
+        return pidCoefficients;
     }
 
     @Override
     public PIDFCoefficients getPIDFCoefficients(RunMode mode) {
-        return null;
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients();
+
+        return pidfCoefficients;
     }
 
     @Override
