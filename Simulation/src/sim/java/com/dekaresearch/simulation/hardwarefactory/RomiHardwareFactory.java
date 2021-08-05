@@ -56,6 +56,10 @@ public class RomiHardwareFactory extends SimulationHardwareFactoryHandler {
             map.digitalChannel.put("dio_" + i, new SimDigitalChannel(i));
         }
 
+        for(int i = 8; i <= 12; i++) {
+            map.digitalChannel.put("dio_extra_" + i, new SimDigitalChannel(i));
+        }
+
         map.gyroSensor.put("gyro", new SimGyroSensor());
         map.accelerationSensor.put("accelerometer", new SimAccelerationSensor());
 

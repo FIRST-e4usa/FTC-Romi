@@ -34,7 +34,7 @@
 package com.dekaresearch.simulation.data;
 
 public class DIOData {
-    public static final int MAX_DEVICES = 8;
+    public static final int MAX_DEVICES = 13;
 
     private static final DIOData[] instances = new DIOData[MAX_DEVICES];
 
