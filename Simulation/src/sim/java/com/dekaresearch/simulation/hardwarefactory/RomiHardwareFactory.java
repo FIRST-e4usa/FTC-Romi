@@ -37,9 +37,11 @@ import android.content.Context;
 
 import com.dekaresearch.simulation.hardware.SimAccelerationSensor;
 import com.dekaresearch.simulation.hardware.SimAnalogInputController;
+import com.dekaresearch.simulation.hardware.SimDcMotor;
 import com.dekaresearch.simulation.hardware.SimDcMotorEncoded;
 import com.dekaresearch.simulation.hardware.SimDigitalChannel;
 import com.dekaresearch.simulation.hardware.SimGyroSensor;
+import com.dekaresearch.simulation.hardware.SimServo;
 import com.dekaresearch.simulation.hardware.SimVoltageSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -48,21 +50,36 @@ public class RomiHardwareFactory extends SimulationHardwareFactoryHandler {
     @Override
     public HardwareMap createHardwareMap(Context context) {
         HardwareMap map = new HardwareMap(context);
+
+        // Left and right drive motors
         map.dcMotor.put("left_drive", new SimDcMotorEncoded(0, 4, 5));
         map.dcMotor.put("right_drive", new SimDcMotorEncoded(1, 6, 7));
+
+        // Battery
         map.voltageSensor.put("battery", new SimVoltageSensor());
 
+        // Extra PWM ports
+        for(int i = 2; i <= 6; i++) {
+            map.servo.put("servo_" + i, new SimServo(i));
+        }
+
+        // DIO (leds and buttons)
         for(int i = 0; i <= 3; i++) {
             map.digitalChannel.put("dio_" + i, new SimDigitalChannel(i));
         }
 
+        // Extra DIO ports
         for(int i = 8; i <= 12; i++) {
             map.digitalChannel.put("dio_extra_" + i, new SimDigitalChannel(i));
         }
 
+        // Built in gyro
         map.gyroSensor.put("gyro", new SimGyroSensor());
+
+        // Built in accelerometer
         map.accelerationSensor.put("accelerometer", new SimAccelerationSensor());
 
+        // Extra AI ports
         SimAnalogInputController analogInputController = new SimAnalogInputController();
         map.put("analog_input_controller", analogInputController);
         for(int i = 0; i <= 3; i++) {
