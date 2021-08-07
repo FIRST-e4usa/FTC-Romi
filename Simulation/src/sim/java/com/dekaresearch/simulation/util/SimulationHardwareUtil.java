@@ -31,30 +31,30 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.dekaresearch.simulation.websockets;
+package com.dekaresearch.simulation.util;
 
-import com.google.gson.JsonElement;
-import com.dekaresearch.simulation.data.DriverStationData;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class DriverStationProvider extends Provider {
-    private final DriverStationData data = DriverStationData.getInstance();
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-    public DriverStationProvider() {
-        super("DriverStation", "");
-    }
-
-    @Override
-    public void registerCallbacks() {
-        data.enabled.registerCallback(new BasicCallback<Boolean>(">enabled"));
-    }
-
-    @Override
-    public void unregisterCallbacks() {
-        data.enabled.unregisterAllCallbacks();
-    }
-
-    @Override
-    public void onNetValueChanged(String key, JsonElement value) {
-
+public class SimulationHardwareUtil {
+    public static void sortDevices(List<HardwareDevice> devices, final HardwareMap hardwareMap) {
+        Collections.sort(devices, new Comparator<HardwareDevice>() {
+            @Override
+            public int compare(HardwareDevice lhs, HardwareDevice rhs) {
+                String nameA = new ArrayList<String>(hardwareMap.getNamesOf(lhs)).get(0);
+                String nameB = new ArrayList<String>(hardwareMap.getNamesOf(rhs)).get(0);
+                // sort first by length (shortest first) and second by content
+                int result = nameA.length() - nameB.length();
+                if (result == 0) {
+                    result = nameA.compareToIgnoreCase(nameB);
+                }
+                return result;
+            }
+        });
     }
 }

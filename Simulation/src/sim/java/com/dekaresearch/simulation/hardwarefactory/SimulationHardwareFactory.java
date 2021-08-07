@@ -31,30 +31,32 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.dekaresearch.simulation.websockets;
+package com.dekaresearch.simulation.hardwarefactory;
 
-import com.google.gson.JsonElement;
-import com.dekaresearch.simulation.data.DriverStationData;
+import android.content.Context;
 
-public class DriverStationProvider extends Provider {
-    private final DriverStationData data = DriverStationData.getInstance();
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-    public DriverStationProvider() {
-        super("DriverStation", "");
+/**
+ * The simulation hardware factory. Replace the constructor of {@link #handler} with the  {@link SimulationHardwareFactoryHandler}
+ * that you want to use to create hardware. In the Romi project, the handler is constructed from <code>RomiHardwareFactory</code>.
+ */
+public class SimulationHardwareFactory {
+    /**
+     * Handles the creation of hardware.
+     *
+     * Replace the constructor with the  {@link SimulationHardwareFactoryHandler}
+     * that you want to use to create hardware. In the Romi project, the handler is constructed from <code>RomiHardwareFactory</code>.
+     */
+    private static final SimulationHardwareFactoryHandler handler =
+            // TYPE OF HARDWARE FACTORY HANDLER HERE
+            new RomiHardwareFactory();
+
+    public static String getName() {
+        return handler.getName();
     }
 
-    @Override
-    public void registerCallbacks() {
-        data.enabled.registerCallback(new BasicCallback<Boolean>(">enabled"));
-    }
-
-    @Override
-    public void unregisterCallbacks() {
-        data.enabled.unregisterAllCallbacks();
-    }
-
-    @Override
-    public void onNetValueChanged(String key, JsonElement value) {
-
+    public static HardwareMap createHardwareMap(Context context) {
+        return handler.createHardwareMap(context);
     }
 }

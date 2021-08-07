@@ -31,30 +31,63 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.dekaresearch.simulation.websockets;
+package com.dekaresearch.simulation.hardware;
 
-import com.google.gson.JsonElement;
-import com.dekaresearch.simulation.data.DriverStationData;
+import com.dekaresearch.simulation.data.AIData;
+import com.qualcomm.robotcore.hardware.AnalogInputController;
+import com.qualcomm.robotcore.util.SerialNumber;
 
-public class DriverStationProvider extends Provider {
-    private final DriverStationData data = DriverStationData.getInstance();
+public class SimAnalogInputController implements AnalogInputController {
 
-    public DriverStationProvider() {
-        super("DriverStation", "");
+    public SimAnalogInputController() {
+        for(AIData data : AIData.getInstances()) {
+            data.init.set(false);
+            data.init.set(true);
+        }
     }
 
     @Override
-    public void registerCallbacks() {
-        data.enabled.registerCallback(new BasicCallback<Boolean>(">enabled"));
+    public double getAnalogInputVoltage(int channel) {
+        return AIData.getInstances()[channel].voltage.get();
     }
 
     @Override
-    public void unregisterCallbacks() {
-        data.enabled.unregisterAllCallbacks();
+    public double getMaxAnalogInputVoltage() {
+        return 5;
     }
 
     @Override
-    public void onNetValueChanged(String key, JsonElement value) {
+    public SerialNumber getSerialNumber() {
+        return null;
+    }
+
+    @Override
+    public Manufacturer getManufacturer() {
+        return null;
+    }
+
+    @Override
+    public String getDeviceName() {
+        return null;
+    }
+
+    @Override
+    public String getConnectionInfo() {
+        return null;
+    }
+
+    @Override
+    public int getVersion() {
+        return 0;
+    }
+
+    @Override
+    public void resetDeviceConfigurationForOpMode() {
+
+    }
+
+    @Override
+    public void close() {
 
     }
 }

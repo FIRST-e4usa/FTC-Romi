@@ -31,30 +31,23 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.dekaresearch.simulation.websockets;
+package com.dekaresearch.simulation.data;
 
-import com.google.gson.JsonElement;
-import com.dekaresearch.simulation.data.DriverStationData;
+public class AIData {
+    public static final int MAX_DEVICES = 4;
 
-public class DriverStationProvider extends Provider {
-    private final DriverStationData data = DriverStationData.getInstance();
+    private static final AIData[] instances = new AIData[MAX_DEVICES];
 
-    public DriverStationProvider() {
-        super("DriverStation", "");
+    static {
+        for(int i = 0; i < MAX_DEVICES; i++) {
+            instances[i] = new AIData();
+        }
     }
 
-    @Override
-    public void registerCallbacks() {
-        data.enabled.registerCallback(new BasicCallback<Boolean>(">enabled"));
+    public static AIData[] getInstances() {
+        return instances;
     }
 
-    @Override
-    public void unregisterCallbacks() {
-        data.enabled.unregisterAllCallbacks();
-    }
-
-    @Override
-    public void onNetValueChanged(String key, JsonElement value) {
-
-    }
+    public SimDataValue<Boolean> init = new SimDataValue<>(false);
+    public SimDataValue<Double> voltage = new SimDataValue<>(0.0);
 }

@@ -31,30 +31,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.dekaresearch.simulation.websockets;
+package com.dekaresearch.simulation.hardwarefactory;
 
-import com.google.gson.JsonElement;
-import com.dekaresearch.simulation.data.DriverStationData;
+import android.content.Context;
 
-public class DriverStationProvider extends Provider {
-    private final DriverStationData data = DriverStationData.getInstance();
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-    public DriverStationProvider() {
-        super("DriverStation", "");
-    }
-
-    @Override
-    public void registerCallbacks() {
-        data.enabled.registerCallback(new BasicCallback<Boolean>(">enabled"));
-    }
-
-    @Override
-    public void unregisterCallbacks() {
-        data.enabled.unregisterAllCallbacks();
-    }
-
-    @Override
-    public void onNetValueChanged(String key, JsonElement value) {
-
-    }
+public abstract class SimulationHardwareFactoryHandler {
+    public abstract String getName();
+    public abstract HardwareMap createHardwareMap(Context context);
 }

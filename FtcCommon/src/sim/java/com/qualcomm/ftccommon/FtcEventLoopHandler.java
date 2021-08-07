@@ -35,6 +35,8 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
+import com.dekaresearch.simulation.hardwarefactory.SimulationHardwareFactory;
 import com.qualcomm.ftccommon.configuration.USBScanManager;
 import com.qualcomm.hardware.HardwareFactory;
 import com.qualcomm.hardware.lynx.LynxUsbDevice;
@@ -59,8 +61,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.MovingStatistics;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
-import com.dekaresearch.robotcore.simulation.SimulationConstants;
-import com.dekaresearch.simulation.romi.RomiHardwareFactory;
 
 import org.firstinspires.ftc.robotcore.external.function.Supplier;
 
@@ -176,7 +176,7 @@ public class FtcEventLoopHandler implements BatteryChecker.BatteryWatcher {
 
         // Create a newly-active hardware map
         if(SimulationConstants.isSimulation) {
-          hardwareMap = RomiHardwareFactory.createHardwareMap(robotControllerContext);
+          hardwareMap = SimulationHardwareFactory.createHardwareMap(robotControllerContext);
         } else {
           hardwareMap = hardwareFactory.createHardwareMap(eventLoopManager);
         }

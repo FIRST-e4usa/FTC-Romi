@@ -31,66 +31,49 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.dekaresearch.simulation.hardware;
+package com.dekaresearch.simulation.hardwarefactory;
 
-import com.dekaresearch.simulation.data.AccelerometerData;
-import com.qualcomm.robotcore.hardware.AccelerationSensor;
+import android.content.Context;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import com.dekaresearch.simulation.hardware.SimAccelerationSensor;
+import com.dekaresearch.simulation.hardware.SimAnalogInputController;
+import com.dekaresearch.simulation.hardware.SimDcMotorEncoded;
+import com.dekaresearch.simulation.hardware.SimDigitalChannel;
+import com.dekaresearch.simulation.hardware.SimGyroSensor;
+import com.dekaresearch.simulation.hardware.SimVoltageSensor;
+import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class SimAccelerationSensor implements AccelerationSensor {
+public class RomiHardwareFactory extends SimulationHardwareFactoryHandler {
+    @Override
+    public HardwareMap createHardwareMap(Context context) {
+        HardwareMap map = new HardwareMap(context);
+        map.dcMotor.put("left_drive", new SimDcMotorEncoded(0, 4, 5));
+        map.dcMotor.put("right_drive", new SimDcMotorEncoded(1, 6, 7));
+        map.voltageSensor.put("battery", new SimVoltageSensor());
 
-    private final AccelerometerData data;
+        for(int i = 0; i <= 3; i++) {
+            map.digitalChannel.put("dio_" + i, new SimDigitalChannel(i));
+        }
 
-    public SimAccelerationSensor() {
-        data = AccelerometerData.getInstance();
+        for(int i = 8; i <= 12; i++) {
+            map.digitalChannel.put("dio_extra_" + i, new SimDigitalChannel(i));
+        }
 
-        data.init.set(false);
-        data.init.set(true);
+        map.gyroSensor.put("gyro", new SimGyroSensor());
+        map.accelerationSensor.put("accelerometer", new SimAccelerationSensor());
+
+        SimAnalogInputController analogInputController = new SimAnalogInputController();
+        map.put("analog_input_controller", analogInputController);
+        for(int i = 0; i <= 3; i++) {
+            map.analogInput.put("analog_" + i, new AnalogInput(analogInputController, i));
+        }
+
+        return map;
     }
 
     @Override
-    public Acceleration getAcceleration() {
-        return Acceleration.fromGravity(
-                data.x.get(),
-                data.y.get(),
-                data.z.get(),
-                0
-        );
-    }
-
-    @Override
-    public String status() {
-        return null;
-    }
-
-    @Override
-    public Manufacturer getManufacturer() {
-        return null;
-    }
-
-    @Override
-    public String getDeviceName() {
-        return null;
-    }
-
-    @Override
-    public String getConnectionInfo() {
-        return null;
-    }
-
-    @Override
-    public int getVersion() {
-        return 0;
-    }
-
-    @Override
-    public void resetDeviceConfigurationForOpMode() {
-
-    }
-
-    @Override
-    public void close() {
-
+    public String getName() {
+        return "Romi (built in)";
     }
 }

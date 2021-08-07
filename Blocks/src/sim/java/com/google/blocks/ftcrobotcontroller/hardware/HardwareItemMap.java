@@ -16,6 +16,9 @@
 
 package com.google.blocks.ftcrobotcontroller.hardware;
 
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
+import com.dekaresearch.simulation.hardwarefactory.SimulationHardwareFactory;
+import com.dekaresearch.simulation.util.SimulationHardwareUtil;
 import com.qualcomm.ftccommon.configuration.RobotConfigFile;
 import com.qualcomm.ftccommon.configuration.RobotConfigFileManager;
 import com.qualcomm.robotcore.exception.RobotCoreException;
@@ -30,8 +33,6 @@ import com.qualcomm.robotcore.hardware.configuration.MotorControllerConfiguratio
 import com.qualcomm.robotcore.hardware.configuration.ReadXMLFileHandler;
 import com.qualcomm.robotcore.hardware.configuration.ServoControllerConfiguration;
 import com.qualcomm.robotcore.util.RobotLog;
-import com.dekaresearch.robotcore.simulation.SimulationConstants;
-import com.dekaresearch.simulation.romi.RomiHardwareFactory;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -41,8 +42,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.SortedMap;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -61,7 +62,7 @@ public class HardwareItemMap {
    */
   public static HardwareItemMap newHardwareItemMap() {
     if(SimulationConstants.isSimulation) {
-      return new HardwareItemMap(RomiHardwareFactory.createHardwareMap(null));
+      return new HardwareItemMap(SimulationHardwareFactory.createHardwareMap(null));
     }
 
     try {
@@ -131,10 +132,15 @@ public class HardwareItemMap {
    * Constructs a {@link HardwareItemMap} with the supported hardware items in the given
    * {@link HardwareMap}.
    */
-  private HardwareItemMap(HardwareMap hardwareMap) {
+  private HardwareItemMap(final HardwareMap hardwareMap) {
     HardwareItem parent = null;
     for (HardwareType hardwareType : HardwareType.values()) {
       List<HardwareDevice> devices = hardwareMap.getAll(hardwareType.deviceType);
+
+      if(SimulationConstants.isSimulation) {
+        SimulationHardwareUtil.sortDevices(devices, hardwareMap);
+      }
+
       for (HardwareDevice device : devices) {
         // Having multiple names for a single device is confusing in our UI here, so we pick
         // one arbitrarily. Note that this virtually never actually happens in practice; the
