@@ -61,6 +61,7 @@ public class RomiHardwareFactory extends SimulationHardwareFactoryHandler {
         // Extra PWM ports
         for(int i = 2; i <= 6; i++) {
             map.servo.put("servo_" + i, new SimServo(i));
+            map.dcMotor.put("motor_extra_" + i, new SimDcMotor(i));
         }
 
         // DIO (leds and buttons)
