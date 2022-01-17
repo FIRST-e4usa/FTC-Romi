@@ -108,6 +108,7 @@ import com.qualcomm.robotcore.wifi.NetworkType;
 import org.firstinspires.ftc.ftccommon.external.SoundPlayingRobotMonitor;
 import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogService;
 import org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity;
+import org.firstinspires.ftc.onbotjava.ExternalLibraries;
 import org.firstinspires.ftc.onbotjava.OnBotJavaHelperImpl;
 import org.firstinspires.ftc.onbotjava.OnBotJavaProgrammingMode;
 import org.firstinspires.ftc.robotcore.external.Predicate;
@@ -120,6 +121,7 @@ import org.firstinspires.ftc.robotcore.internal.network.WifiDirectChannelChanger
 import org.firstinspires.ftc.robotcore.internal.network.WifiMuteEvent;
 import org.firstinspires.ftc.robotcore.internal.network.WifiMuteStateMachine;
 import org.firstinspires.ftc.robotcore.internal.opmode.ClassManager;
+import org.firstinspires.ftc.robotcore.internal.opmode.OnBotJavaHelper;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.robotcore.internal.opmode.RegisteredOpModes;
 import org.firstinspires.ftc.robotcore.internal.system.AppAliveNotifier;
@@ -132,7 +134,9 @@ import org.firstinspires.ftc.robotcore.internal.ui.UILocation;
 import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo;
 import org.firstinspires.ftc.robotserver.internal.programmingmode.ProgrammingModeManager;
 import org.firstinspires.inspection.RcInspectionActivity;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -149,6 +153,8 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
 
   protected WifiManager.WifiLock wifiLock;
   protected RobotConfigFileManager cfgFileMgr;
+
+  private OnBotJavaHelper onBotJavaHelper;
 
   protected ProgrammingModeManager programmingModeManager;
 
@@ -337,6 +343,9 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
 
     BlocksOpMode.setActivityAndWebView(this, (WebView) findViewById(R.id.webViewBlocksRuntime));
 
+    ExternalLibraries.getInstance().onCreate();
+    onBotJavaHelper = new OnBotJavaHelperImpl();
+
     /*
      * Paranoia as the ClassManagerFactory requires EXTERNAL_STORAGE permissions
      * and we've seen on the DS where the finish() call above does not short-circuit
@@ -344,7 +353,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
      * have permissions. So...
      */
     if (permissionsValidated) {
-      ClassManager.getInstance().setOnBotJavaClassHelper(new OnBotJavaHelperImpl());
+      ClassManager.getInstance().setOnBotJavaClassHelper(onBotJavaHelper);
       ClassManagerFactory.registerFilters();
       ClassManagerFactory.processAllClasses();
     }
@@ -398,7 +407,7 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       initWifiMute(true);
     }
 
-    FtcAboutActivity.setBuildTimeFromBuildConfig(BuildConfig.BUILD_TIME);
+    // FtcAboutActivity.setBuildTimeFromBuildConfig(BuildConfig.BUILD_TIME);
 
     // check to see if there is a preferred Wi-Fi to use.
     checkPreferredChannel();
@@ -688,12 +697,20 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
     controllerService = service;
     updateUI.setControllerService(controllerService);
 
+    controllerService.setOnBotJavaHelper(onBotJavaHelper);
+
     updateUIAndRequestRobotSetup();
     programmingModeManager.setState(new FtcRobotControllerServiceState() {
       @NonNull
       @Override
       public WebServer getWebServer() {
         return service.getWebServer();
+      }
+
+      @Nullable
+      @Override
+      public OnBotJavaHelper getOnBotJavaHelper() {
+        return service.getOnBotJavaHelper();
       }
 
       @Override
@@ -727,8 +744,14 @@ public class FtcRobotControllerActivity extends Activity implements OpModeSelect
       hardwareFactory.setXmlPullParser(file.getXml());
     } catch (Resources.NotFoundException e) {
       file = RobotConfigFile.noConfig(cfgFileMgr);
-      hardwareFactory.setXmlPullParser(file.getXml());
+      try {
+        hardwareFactory.setXmlPullParser(file.getXml());
+      } catch (FileNotFoundException | XmlPullParserException fileNotFoundException) {
+        fileNotFoundException.printStackTrace();
+      }
       cfgFileMgr.setActiveConfigAndUpdateUI(false, file);
+    } catch (FileNotFoundException | XmlPullParserException e) {
+      e.printStackTrace();
     }
 
     OpModeRegister userOpModeRegister = createOpModeRegister();

@@ -31,12 +31,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package com.qualcomm.ftccommon;
 
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.IBinder;
+import android.view.ContextThemeWrapper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -54,23 +58,23 @@ import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.robot.RobotState;
 import com.qualcomm.robotcore.robot.RobotStatus;
+import com.qualcomm.robotcore.util.ClockWarningSource;
 import com.qualcomm.robotcore.util.Device;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.qualcomm.robotcore.util.SoftwareVersionWarningSource;
 import com.qualcomm.robotcore.util.ThreadPool;
 import com.qualcomm.robotcore.util.WebServer;
 import com.qualcomm.robotcore.wifi.NetworkConnection;
 import com.qualcomm.robotcore.wifi.NetworkConnectionFactory;
 import com.qualcomm.robotcore.wifi.NetworkType;
-import com.dekaresearch.robotcore.simulation.SimulationConstants;
-import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
 
 import org.firstinspires.ftc.robotcore.internal.hardware.android.DragonboardIndicatorLED;
 import org.firstinspires.ftc.robotcore.internal.network.CallbackResult;
 import org.firstinspires.ftc.robotcore.internal.network.NetworkConnectionHandler;
-import org.firstinspires.ftc.robotcore.internal.network.NetworkStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PeerStatus;
 import org.firstinspires.ftc.robotcore.internal.network.PreferenceRemoterRC;
 import org.firstinspires.ftc.robotcore.internal.network.WifiDirectAgent;
+import org.firstinspires.ftc.robotcore.internal.opmode.OnBotJavaHelper;
 import org.firstinspires.ftc.robotcore.internal.system.AppAliveNotifier;
 import org.firstinspires.ftc.robotcore.internal.system.PreferencesHelper;
 import org.firstinspires.ftc.robotserver.internal.webserver.CoreRobotWebServer;
@@ -115,7 +119,11 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
   private WifiDirectAgent wifiDirectAgent = WifiDirectAgent.getInstance();
   private final Object    wifiDirectCallbackLock = new Object();
 
+  private AlertDialog alertDialogWifiDirectNameNonPrintableChars;
+  private AlertDialog alertDialogConnectedAsPeer;
+
   private WebServer webServer;
+  private OnBotJavaHelper onBotJavaHelper;
 
   //----------------------------------------------------------------------------------------------
   // Initialization
@@ -139,10 +147,6 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     callback.updateRobotState(state);
     if (state == RobotState.RUNNING) {
       updateRobotStatus(RobotStatus.NONE);
-    }
-
-    if(SimulationConstants.isSimulation) {
-      SimulationWebSocketClient.getInstance().updateRobotState(state);
     }
   }
 
@@ -244,7 +248,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     }
 
     boolean waitForNetworkConnection() throws InterruptedException {
-      RobotLog.vv(TAG, "Waiting for a connection to a wifi service");
+      RobotLog.vv(TAG, "Waiting for a connection to a Wi-Fi service");
       updateRobotStatus(RobotStatus.WAITING_ON_NETWORK_CONNECTION);
       boolean waited = false;
       for (;;) {
@@ -267,19 +271,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
         networkConnection.createConnection();
       }
       // Wait until we're free and clear to go
-
-      boolean networkIsSimulation = networkConnection.getNetworkType() == NetworkType.EXTERNALAP || networkConnection.getNetworkType() == NetworkType.EMULATION_LOOPBACK;
-
-      if(networkIsSimulation) {
-        updateNetworkConnectionStatus(NetworkConnection.NetworkEvent.DISCONNECTED);
-      }
-
       waitForNetworkConnection();
-
-      if(networkIsSimulation) {
-        updateNetworkConnectionStatus(NetworkConnection.NetworkEvent.CONNECTION_INFO_AVAILABLE);
-      }
-
       webServer.start();
     }
 
@@ -302,7 +294,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
         try {
 
           shutdownRobot();
-          if(!SimulationConstants.isSimulation) awaitUSB();
+          awaitUSB();
           initializeEventLoopAndRobot();  // unclear why this step couldn't be folded into startRobot()
           waitForNetwork();
           startRobot();
@@ -319,7 +311,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
         }
 
         if (isFirstRun) {
-          RobotLog.dd(TAG, "Detecting WiFi reset");
+          RobotLog.dd(TAG, "Detecting Wi-Fi reset");
           networkConnection.detectWifiReset();
         }
       }});
@@ -327,7 +319,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
   }
 
   //----------------------------------------------------------------------------------------------
-  // Wifi processing
+  // Wi-Fi processing
   //----------------------------------------------------------------------------------------------
 
   @Override public void onReceive(Context context, Intent intent) {
@@ -354,6 +346,11 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     return networkConnectionStatus;
   }
 
+  // Called from FtcRobotControllerActivity.onServiceBind.
+  public void setOnBotJavaHelper(OnBotJavaHelper onBotJavaHelper) {
+    this.onBotJavaHelper = onBotJavaHelper;
+  }
+
   public RobotStatus getRobotStatus() {
     return robotStatus;
   }
@@ -362,15 +359,25 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     return this.robot;
   }
 
-  public @NonNull WebServer getWebServer() {
+  @Override public @NonNull WebServer getWebServer() {
     return this.webServer;
   }
 
+  @Override public OnBotJavaHelper getOnBotJavaHelper() {
+    return onBotJavaHelper;
+  }
+
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   @Override public void onCreate() {
     super.onCreate();
     RobotLog.vv(TAG, "onCreate()");
     wifiDirectAgent.registerCallback(this);
     startLEDS();
+
+    // Ensure that certain system-wide warning sources get started early, without requiring other
+    // code to report data to them first.
+    SoftwareVersionWarningSource.getInstance();
+    ClockWarningSource.getInstance();
   }
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
@@ -396,9 +403,13 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     webServer = new CoreRobotWebServer(networkType);
 
     networkConnection = NetworkConnectionFactory.getNetworkConnection(networkType, getBaseContext());
-    networkConnection.setCallback(this);
-    networkConnection.enable();
-    networkConnection.createConnection();
+    if (networkConnection == null) {
+      RobotLog.setGlobalErrorMsg("Setup failure: A valid network connection type was not found for \"%s\"", networkType);
+    } else {
+      networkConnection.setCallback(this);
+      networkConnection.enable();
+      networkConnection.createConnection();
+    }
 
     return binder;
   }
@@ -472,9 +483,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     // Ensure that the callback starts with the correct peer status
     callback.updatePeerStatus(NetworkConnectionHandler.getInstance().isPeerConnected() ? PeerStatus.CONNECTED : PeerStatus.DISCONNECTED);
 
-    if(SimulationConstants.isSimulation) {
-      setSimulationCallback(this.callback);
-    }
+    SimFtcCommon.setSimulationCallback(callback);
   }
 
   public synchronized void setupRobot(EventLoop eventLoop, EventLoop idleEventLoop, @Nullable Runnable runOnComplete) {
@@ -519,16 +528,16 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     RobotLog.ii(TAG, "onNetworkConnectionEvent: " + event.toString());
     switch (event) {
       case CONNECTED_AS_GROUP_OWNER:
-        RobotLog.ii(TAG, "Wifi Direct - connected as group owner");
+        RobotLog.ii(TAG, "Wi-Fi Direct - connected as group owner");
         if (!NetworkConnection.isDeviceNameValid(networkConnection.getDeviceName())) {
           RobotLog.ee(TAG, "Network Connection device name contains non-printable characters");
-          ConfigWifiDirectActivity.launch(getBaseContext(), ConfigWifiDirectActivity.Flag.WIFI_DIRECT_DEVICE_NAME_INVALID);
+          showWifiDirectNameUnprintableCharsDialog();
           result = CallbackResult.HANDLED;
         }
         break;
       case CONNECTED_AS_PEER:
-        RobotLog.ee(TAG, "Wifi Direct - connected as peer, was expecting Group Owner");
-        ConfigWifiDirectActivity.launch(getBaseContext(), ConfigWifiDirectActivity.Flag.WIFI_DIRECT_FIX_CONFIG);
+        RobotLog.ee(TAG, "Wi-Fi Direct - connected as peer, was expecting Group Owner");
+        showWifiDirectConnectedAsPeerDialog();
         result = CallbackResult.HANDLED;
         break;
       case CONNECTION_INFO_AVAILABLE:
@@ -548,6 +557,38 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     return result;
   }
 
+  private void showWifiDirectNameUnprintableCharsDialog() {
+    if (alertDialogWifiDirectNameNonPrintableChars == null) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+      builder.setTitle(getString(R.string.title_p2p_unprintable_chars));
+      builder.setMessage(getString(R.string.msg_p2p_unprintable_chars));
+      builder.setCancelable(false);
+      builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          alertDialogWifiDirectNameNonPrintableChars = null;
+        }
+      });
+      alertDialogWifiDirectNameNonPrintableChars = builder.show();
+    }
+  }
+
+  private void showWifiDirectConnectedAsPeerDialog() {
+    if (alertDialogConnectedAsPeer == null) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_Holo_Dialog));
+      builder.setTitle(getString(R.string.title_p2p_misconfigured));
+      builder.setMessage(getString(R.string.msg_rc_p2p_misconfigured));
+      builder.setCancelable(false);
+      builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          alertDialogConnectedAsPeer = null;
+        }
+      });
+      alertDialogConnectedAsPeer = builder.show();
+    }
+  }
+
   private void updateNetworkConnectionStatus(final NetworkConnection.NetworkEvent event) {
     networkConnectionStatus = event;
     if (callback != null) callback.networkConnectionUpdate(networkConnectionStatus);
@@ -558,28 +599,5 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     if (callback != null) {
       callback.updateRobotStatus(status);
     }
-  }
-
-  private void setSimulationCallback(final UpdateUI.Callback callback) {
-    SimulationWebSocketClient.getInstance().setListener(new SimulationWebSocketClient.Listener() {
-      @Override
-      public void onOpen() {
-        RobotLog.ii("Simulation", "callback open");
-        callback.setWebSocketStatus("connected");
-        callback.updateNetworkConnectionStatus(NetworkStatus.ENABLED);
-      }
-
-      @Override
-      public void onClose() {
-        RobotLog.ii("Simulation", "callback close");
-        callback.setWebSocketStatus("disconnected");
-        callback.updateNetworkConnectionStatus(NetworkStatus.ACTIVE);
-      }
-
-      @Override
-      public void onOpening() {
-        callback.setWebSocketStatus("connecting...");
-      }
-    });
   }
 }

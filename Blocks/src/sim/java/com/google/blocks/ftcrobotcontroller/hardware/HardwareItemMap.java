@@ -19,6 +19,7 @@ package com.google.blocks.ftcrobotcontroller.hardware;
 import com.dekaresearch.robotcore.simulation.SimulationConstants;
 import com.dekaresearch.simulation.hardwarefactory.SimulationHardwareFactory;
 import com.dekaresearch.simulation.util.SimulationHardwareUtil;
+
 import com.qualcomm.ftccommon.configuration.RobotConfigFile;
 import com.qualcomm.ftccommon.configuration.RobotConfigFileManager;
 import com.qualcomm.robotcore.exception.RobotCoreException;
@@ -33,17 +34,17 @@ import com.qualcomm.robotcore.hardware.configuration.MotorControllerConfiguratio
 import com.qualcomm.robotcore.hardware.configuration.ReadXMLFileHandler;
 import com.qualcomm.robotcore.hardware.configuration.ServoControllerConfiguration;
 import com.qualcomm.robotcore.util.RobotLog;
-
+import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.xmlpull.v1.XmlPullParser;
-
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedMap;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -53,7 +54,7 @@ import java.util.TreeMap;
  */
 public class HardwareItemMap {
   private final SortedMap<HardwareType, List<HardwareItem>> map =
-      new TreeMap<HardwareType, List<HardwareItem>>();
+          new TreeMap<HardwareType, List<HardwareItem>>();
 
   private final Set<DeviceConfiguration> devices = new HashSet<DeviceConfiguration>();
 
@@ -63,6 +64,14 @@ public class HardwareItemMap {
   public static HardwareItemMap newHardwareItemMap() {
     if(SimulationConstants.isSimulation) {
       return new HardwareItemMap(SimulationHardwareFactory.createHardwareMap(null));
+    }
+
+    OpModeManagerImpl opModeManagerImpl = OpModeManagerImpl.getOpModeManagerOfActivity(AppUtil.getInstance().getRootActivity());
+    if (opModeManagerImpl != null) {
+      HardwareMap hardwareMap = opModeManagerImpl.getHardwareMap();
+      if (hardwareMap != null) {
+        return newHardwareItemMap(hardwareMap);
+      }
     }
 
     try {
@@ -132,8 +141,9 @@ public class HardwareItemMap {
    * Constructs a {@link HardwareItemMap} with the supported hardware items in the given
    * {@link HardwareMap}.
    */
-  private HardwareItemMap(final HardwareMap hardwareMap) {
+  private HardwareItemMap(HardwareMap hardwareMap) {
     HardwareItem parent = null;
+
     for (HardwareType hardwareType : HardwareType.values()) {
       List<HardwareDevice> devices = hardwareMap.getAll(hardwareType.deviceType);
 
@@ -141,26 +151,35 @@ public class HardwareItemMap {
         SimulationHardwareUtil.sortDevices(devices, hardwareMap);
       }
 
-      for (HardwareDevice device : devices) {
-        // Having multiple names for a single device is confusing in our UI here, so we pick
-        // one arbitrarily. Note that this virtually never actually happens in practice; the
-        // one current (Sept '16) occurrence involves Matrix motor and servo controllers.
-        List<String> deviceNames = new ArrayList<String>(hardwareMap.getNamesOf(device));
-        if (!deviceNames.isEmpty()) {
-          Collections.sort(deviceNames, new Comparator<String>() {
-            @Override public int compare(String lhs, String rhs) {
-              // sort first by length (shortest first) and second by content
-              int result = lhs.length() - rhs.length();
-              if (result == 0) {
-                result = lhs.compareToIgnoreCase(rhs);
-              }
-              return result;
-            }
-          });
-          addHardwareItem(parent, hardwareType, deviceNames.get(0));
+      for (HardwareDevice hardwareDevice : devices) {
+        String deviceName = getDeviceName(hardwareMap, hardwareDevice);
+        if (deviceName != null) {
+          addHardwareItem(parent, hardwareType, deviceName);
         }
       }
     }
+  }
+
+  static String getDeviceName(HardwareMap hardwareMap, HardwareDevice hardwareDevice) {
+    // Having multiple names for a single device is confusing in our UI here, so we pick
+    // one arbitrarily. Note that this virtually never actually happens in practice; the
+    // one current (Sept '16) occurrence involves Matrix motor and servo controllers.
+    List<String> deviceNames = new ArrayList<String>(hardwareMap.getNamesOf(hardwareDevice));
+    if (deviceNames.isEmpty()) {
+      return null;
+    }
+
+    Collections.sort(deviceNames, new Comparator<String>() {
+      @Override public int compare(String lhs, String rhs) {
+        // sort first by length (shortest first) and second by content
+        int result = lhs.length() - rhs.length();
+        if (result == 0) {
+          result = lhs.compareToIgnoreCase(rhs);
+        }
+        return result;
+      }
+    });
+    return deviceNames.get(0);
   }
 
   /**
@@ -173,31 +192,31 @@ public class HardwareItemMap {
     }
     if (controllerConfiguration instanceof DeviceInterfaceModuleConfiguration) {
       DeviceInterfaceModuleConfiguration deviceInterfaceModuleConfiguration =
-          (DeviceInterfaceModuleConfiguration) controllerConfiguration;
+              (DeviceInterfaceModuleConfiguration) controllerConfiguration;
       for (DeviceConfiguration deviceConfiguration :
-          deviceInterfaceModuleConfiguration.getPwmOutputs()) {
+              deviceInterfaceModuleConfiguration.getPwmOutputs()) {
         addDevice(parent, deviceConfiguration);
       }
       for (DeviceConfiguration deviceConfiguration :
-          deviceInterfaceModuleConfiguration.getI2cDevices()) {
+              deviceInterfaceModuleConfiguration.getI2cDevices()) {
         addDevice(parent, deviceConfiguration);
       }
       for (DeviceConfiguration deviceConfiguration :
-          deviceInterfaceModuleConfiguration.getAnalogInputDevices()) {
+              deviceInterfaceModuleConfiguration.getAnalogInputDevices()) {
         addDevice(parent, deviceConfiguration);
       }
       for (DeviceConfiguration deviceConfiguration :
-          deviceInterfaceModuleConfiguration.getDigitalDevices()) {
+              deviceInterfaceModuleConfiguration.getDigitalDevices()) {
         addDevice(parent, deviceConfiguration);
       }
       for (DeviceConfiguration deviceConfiguration :
-          deviceInterfaceModuleConfiguration.getAnalogOutputDevices()) {
+              deviceInterfaceModuleConfiguration.getAnalogOutputDevices()) {
         addDevice(parent, deviceConfiguration);
       }
     }
     if (controllerConfiguration instanceof MatrixControllerConfiguration) {
       MatrixControllerConfiguration matrixControllerConfiguration =
-          (MatrixControllerConfiguration) controllerConfiguration;
+              (MatrixControllerConfiguration) controllerConfiguration;
       for (DeviceConfiguration deviceConfiguration : matrixControllerConfiguration.getServos()) {
         addDevice(parent, deviceConfiguration);
       }
@@ -207,21 +226,21 @@ public class HardwareItemMap {
     }
     if (controllerConfiguration instanceof MotorControllerConfiguration) {
       MotorControllerConfiguration motorControllerConfiguration =
-          (MotorControllerConfiguration) controllerConfiguration;
+              (MotorControllerConfiguration) controllerConfiguration;
       for (DeviceConfiguration motorConfiguration : motorControllerConfiguration.getMotors()) {
         addDevice(parent, motorConfiguration);
       }
     }
     if (controllerConfiguration instanceof ServoControllerConfiguration) {
       ServoControllerConfiguration servoControllerConfiguration =
-          (ServoControllerConfiguration) controllerConfiguration;
+              (ServoControllerConfiguration) controllerConfiguration;
       for (DeviceConfiguration deviceConfiguration : servoControllerConfiguration.getServos()) {
         addDevice(parent, deviceConfiguration);
       }
     }
     if (controllerConfiguration instanceof LynxModuleConfiguration) {
       LynxModuleConfiguration lynxModuleConfiguration =
-          (LynxModuleConfiguration) controllerConfiguration;
+              (LynxModuleConfiguration) controllerConfiguration;
       for (DeviceConfiguration deviceConfiguration : lynxModuleConfiguration.getServos()) {
         addDevice(parent, deviceConfiguration);
       }
@@ -277,7 +296,7 @@ public class HardwareItemMap {
   HardwareItem addHardwareItem(HardwareItem parent, HardwareType hardwareType, String deviceName) {
     if (deviceName.isEmpty()) {
       RobotLog.w("Blocks cannot support a hardware device (" +
-          hardwareType.deviceType.getSimpleName() + ") whose name is empty.");
+              hardwareType.deviceType.getSimpleName() + ") whose name is empty.");
       return null;
     }
     List<HardwareItem> hardwareItemList = map.get(hardwareType);
@@ -315,8 +334,8 @@ public class HardwareItemMap {
    */
   public List<HardwareItem> getHardwareItems(HardwareType hardwareType) {
     return map.containsKey(hardwareType)
-        ? Collections.<HardwareItem>unmodifiableList(map.get(hardwareType))
-        : Collections.<HardwareItem>emptyList();
+            ? Collections.<HardwareItem>unmodifiableList(map.get(hardwareType))
+            : Collections.<HardwareItem>emptyList();
   }
 
   /**

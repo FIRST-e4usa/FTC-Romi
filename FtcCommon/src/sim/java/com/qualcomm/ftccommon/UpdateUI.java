@@ -270,19 +270,19 @@ public class UpdateUI {
     void refreshTextErrorMessage() {
 
       String errorMessage   = RobotLog.getGlobalErrorMsg();
-      String warningMessage = RobotLog.getGlobalWarningMessage();
+      RobotLog.GlobalWarningMessage warningMessage = RobotLog.getGlobalWarningMessage();
 
-      if (!errorMessage.isEmpty() || !warningMessage.isEmpty()) {
+      if (!errorMessage.isEmpty() || !warningMessage.message.isEmpty()) {
         if (!errorMessage.isEmpty()) {
           String message = activity.getString(R.string.error_text_error, trimTextErrorMessage(errorMessage));
           setText(textErrorMessage, message);
           textErrorMessage.setTextColor(AppUtil.getInstance().getColor(R.color.text_error));
           if (stateMonitor != null) stateMonitor.updateErrorMessage(message);
         } else {
-          String message = activity.getString(R.string.error_text_warning, trimTextErrorMessage(warningMessage));
+          String message = activity.getString(R.string.error_text_warning, trimTextErrorMessage(warningMessage.message));
           setText(textErrorMessage, message);
           textErrorMessage.setTextColor(AppUtil.getInstance().getColor(R.color.text_warning));
-          if (stateMonitor != null) stateMonitor.updateWarningMessage(message);
+          if (stateMonitor != null) stateMonitor.updateWarningMessage(warningMessage);
         }
         dimmer.longBright();
       } else {

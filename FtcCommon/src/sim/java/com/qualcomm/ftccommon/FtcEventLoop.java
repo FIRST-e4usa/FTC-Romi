@@ -89,8 +89,6 @@ import com.qualcomm.robotcore.robocol.Command;
 import com.qualcomm.robotcore.robocol.TelemetryMessage;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.SerialNumber;
-import com.dekaresearch.robotcore.simulation.SimulationConstants;
-import com.dekaresearch.simulation.SimulationOpModeListener;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.internal.camera.CameraManagerInternal;
@@ -99,11 +97,16 @@ import org.firstinspires.ftc.robotcore.internal.ftdi.FtDeviceManager;
 import org.firstinspires.ftc.robotcore.internal.hardware.CachedLynxFirmwareVersions;
 import org.firstinspires.ftc.robotcore.internal.network.CallbackResult;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
+import org.xmlpull.v1.XmlPullParserException;
+
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
+import com.dekaresearch.simulation.SimulationOpModeListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -202,7 +205,6 @@ public class FtcEventLoop extends FtcEventLoopBase {
       CachedLynxFirmwareVersions.update(hardwareMap);
       LynxModuleWarningManager.getInstance().init(opModeManager, hardwareMap);
 
-      // TODO(Romi) Move?
       if(SimulationConstants.isSimulation) {
         SimulationOpModeListener.getInstance().init(opModeManager);
       }
@@ -235,13 +237,16 @@ public class FtcEventLoop extends FtcEventLoopBase {
     checkForChangedOpModes();
 
     ftcEventLoopHandler.displayGamePadInfo(opModeManager.getActiveOpModeName());
+    Gamepad gamepads[] = ftcEventLoopHandler.getGamepads();
 
-    Gamepad gamepads[];
     if(SimulationConstants.isSimulation) {
       gamepads = new Gamepad[] { localGamepad, localGamepad };
     } else {
       gamepads = ftcEventLoopHandler.getGamepads();
     }
+
+    //TODO(Romi)
+    //ftcEventLoopHandler.rumbleGamepads();
 
     opModeManager.runActiveOpMode(gamepads);
   }
@@ -485,14 +490,14 @@ public class FtcEventLoop extends FtcEventLoopBase {
 
   @Override
   public void handleUsbModuleDetach(RobotUsbModule module) throws RobotCoreException, InterruptedException {
-  // Called on the event loop thread
+    // Called on the event loop thread
     UsbModuleAttachmentHandler handler = this.usbModuleAttachmentHandler;
     if (handler != null)
       handler.handleUsbModuleDetach(module);
   }
 
   public void handleUsbModuleAttach(RobotUsbModule module) throws RobotCoreException, InterruptedException {
-  // Called on the event loop thread
+    // Called on the event loop thread
     UsbModuleAttachmentHandler handler = this.usbModuleAttachmentHandler;
     if (handler != null)
       handler.handleUsbModuleAttach(module);
@@ -525,20 +530,20 @@ public class FtcEventLoop extends FtcEventLoopBase {
     RobotLog.vv(TAG, "We just auto-changed the Control Hub's address. Now auto-updating configuration files.");
     ReadXMLFileHandler xmlReader = new ReadXMLFileHandler(startUsbScanMangerIfNecessary().getDeviceManager());
     RobotConfigFileManager configFileManager = new RobotConfigFileManager();
-    try {
-      for (RobotConfigFile configFile : configFileManager.getXMLFiles()) {
-        if (!configFile.isReadOnly()) {
-          // The embedded parent address will be read as 173, regardless of what the XML says (see LynxUsbDeviceConfiguration).
-          // That means we can turn right around and re-serialize it with no additional processing.
-          RobotLog.vv(TAG, "Updating \"%s\" config file", configFile.getName());
+    for (RobotConfigFile configFile : configFileManager.getXMLFiles()) {
+      if (!configFile.isReadOnly()) {
+        // The embedded parent address will be read as 173, regardless of what the XML says (see LynxUsbDeviceConfiguration).
+        // That means we can turn right around and re-serialize it with no additional processing.
+        RobotLog.vv(TAG, "Updating \"%s\" config file", configFile.getName());
+        try {
           RobotConfigMap deserializedConfig = new RobotConfigMap(xmlReader.parse(configFile.getXml()));
           String reserializedConfig = configFileManager.toXml(deserializedConfig);
           configFileManager.writeToFile(configFile, false, reserializedConfig);
+        } catch (IOException | XmlPullParserException e) {
+          RobotLog.ee(TAG, e, String.format(Locale.ENGLISH, "Failed to auto-update config file %s after automatically changing embedded Control Hub module address. This is OK.", configFile.getName()));
+          // It's not the end of the world if this fails, as the Control Hub's address will be read as 173 regardless of what the XML says.
         }
       }
-    } catch (IOException e) {
-      RobotLog.ee(TAG, e, "Failed to auto-update config files after automatically changing embedded Control Hub module address. This is OK.");
-      // It's not the end of the world if this fails, as the Control Hub's address will be read as 173 regardless of what the XML says.
     }
   }
 
@@ -560,8 +565,8 @@ public class FtcEventLoop extends FtcEventLoopBase {
 
     @Override
     public void handleUsbModuleDetach(RobotUsbModule module) throws RobotCoreException, InterruptedException {
-    // This provides the default policy for dealing with hardware modules that have experienced
-    // abnormal termination because they, e.g., had their USB cable disconnected.
+      // This provides the default policy for dealing with hardware modules that have experienced
+      // abnormal termination because they, e.g., had their USB cable disconnected.
 
       String id = nameOfUsbModule(module);
 
@@ -584,10 +589,10 @@ public class FtcEventLoop extends FtcEventLoopBase {
   }
 
   public void updateLocalGamepad(KeyEvent keyEvent) {
-    localGamepad.update(keyEvent);
+    SimFtcCommon.updateGamepad(localGamepad, keyEvent);
   }
 
   public void updateLocalGamepad(MotionEvent motionEvent) {
-    localGamepad.update(motionEvent);
+    SimFtcCommon.updateGamepad(localGamepad, motionEvent);
   }
 }
