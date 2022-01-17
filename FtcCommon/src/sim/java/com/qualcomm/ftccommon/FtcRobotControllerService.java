@@ -44,6 +44,8 @@ import android.view.ContextThemeWrapper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.dekaresearch.robotcore.simulation.SimulationConstants;
+import com.dekaresearch.simulation.websockets.SimulationWebSocketClient;
 import com.qualcomm.robotcore.eventloop.EventLoop;
 import com.qualcomm.robotcore.eventloop.EventLoopManager;
 import com.qualcomm.robotcore.eventloop.opmode.EventLoopManagerClient;
@@ -147,6 +149,10 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
     callback.updateRobotState(state);
     if (state == RobotState.RUNNING) {
       updateRobotStatus(RobotStatus.NONE);
+    }
+
+    if(SimulationConstants.isSimulation) {
+      SimulationWebSocketClient.getInstance().updateRobotState(state);
     }
   }
 
@@ -294,7 +300,7 @@ public class FtcRobotControllerService extends Service implements NetworkConnect
         try {
 
           shutdownRobot();
-          awaitUSB();
+          if(!SimulationConstants.isSimulation) awaitUSB();
           initializeEventLoopAndRobot();  // unclear why this step couldn't be folded into startRobot()
           waitForNetwork();
           startRobot();
