@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+apply from: '../moduleFlavors.gradle'
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 82
+        versionName "14.6"
+
+        buildConfigField "int", "RS_TARGET_API", "28"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    /*
+     * We use 'api' so that modules that depend on us will implicitly
+     * inherit these dependencies as well
+     */
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api 'com.google.code.gson:gson:2.8.0'
+    api ('org.firstinspires.ftc:tfod:1.0.2') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    }
+    api ('org.tensorflow:tensorflow-lite:1.10.0') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    }
+    api 'androidx.appcompat:appcompat:1.2.0'
+}

@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+
+apply from: '../moduleFlavors.gradle'
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 82
+        versionName "14.6"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    /*
+     * Other Modules
+     */
+    implementation project(':Hardware')
+    implementation project(':Inspection')
+    implementation project(':RobotCore')
+    implementation project(':RobotServer')
+    implementation project(':Simulation')
+
+    /*
+     * External
+     */
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+}
