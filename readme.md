@@ -1,5 +1,7 @@
 # FTC Romi
 
+## Under Construction - Please Check Back Soon!
+
 ## What is FTC Romi?
 
 The Romi robot is a small and affordable robot that was recently adopted for use by FIRST® Robotics Competition (FRC) participants. It enables users to write real FRC robot code and run it on this robot, allowing them to learn and practice hands on FRC programming without needed a full-sized FRC robot.
